@@ -33,9 +33,11 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="canonical" href="https://rajwanyair.github.io/SchoolMeritPoints/">
+  <link rel="preload" as="image" href="./assets/hero-banner.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Secular+One&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Secular+One&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Secular+One&display=swap"></noscript>
   <style>
     :root {
       color-scheme: light;
@@ -96,7 +98,7 @@
       display: flex; align-items: center; justify-content: center; height: 100dvh;
       flex-direction: column; gap: 16px;
     }
-    .splash .star { font-size: 3rem; color: var(--gold); animation: pulse 1.5s ease infinite; }
+    .splash .star { font-size: 3rem; color: var(--gold); animation: pulse 1.5s ease infinite; will-change: transform; }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
     .splash p { color: var(--muted); font-size: 0.95rem; }
 
@@ -137,7 +139,7 @@
 
     /* App layout */
     .app { display: none; }
-    .app.active { display: flex; flex-direction: column; min-height: 100dvh; }
+    .app.active { display: flex; flex-direction: column; min-height: 100dvh; content-visibility: auto; }
     .topbar {
       display: flex; justify-content: space-between; align-items: center;
       padding: 8px 16px; background: var(--paper); border-bottom: 1px solid var(--line);
@@ -290,6 +292,7 @@
     .burst-star {
       position: absolute; left: 50%; top: 55%; font-size: 1.6rem;
       animation: star-fly 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      will-change: transform, opacity; contain: layout style;
     }
     @keyframes star-fly {
       0% { opacity: 1; transform: translate(-50%, -50%) scale(0.4); }

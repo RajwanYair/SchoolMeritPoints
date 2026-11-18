@@ -16,6 +16,7 @@ import os
 import secrets
 import sqlite3
 import sys
+import threading
 import time
 import urllib.parse
 from pathlib import Path
@@ -31,6 +32,7 @@ def get_db():
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL")
+    conn.execute("PRAGMA synchronous = NORMAL")
     return conn
 
 
@@ -273,8 +275,9 @@ def require_role(handler, *roles):
 class PointServer(http.server.BaseHTTPRequestHandler):
     """Single-threaded; for production use waitress/gunicorn."""
 
+    # Speed up the common static-file path by skipping per-request logging
     def log_message(self, fmt, *args):
-        sys.stderr.write(f"[{self.log_date_time_string()}] {args[0]}\n")
+        return
 
     def do_OPTIONS(self):
         self.send_response(200)
@@ -394,6 +397,10 @@ class PointServer(http.server.BaseHTTPRequestHandler):
         body = file_path.read_bytes()
         self.send_response(200)
         self.send_cors()
+        if ct.startswith("text/html") or ct in ("text/css; charset=utf-8", "application/javascript; charset=utf-8"):
+            self.send_header("Cache-Control", "public, max-age=60, stale-while-revalidate=300")
+        else:
+            self.send_header("Cache-Control", "public, max-age=3600")
         self.send_header("Content-Type", ct)
         self.send_header("Content-Length", len(body))
         self.end_headers()
@@ -668,10 +675,12 @@ class PointServer(http.server.BaseHTTPRequestHandler):
         # daily limit check
         if crit["daily_limit"] and delta > 0 and target_type == "student":
             today = time.strftime("%Y-%m-%d")
+            start_today = f"{today} 00:00:00"
+            end_today = f"{today} 23:59:59"
             for tid in target_ids:
                 cnt = conn.execute(
-                    "SELECT COUNT(*) FROM entries WHERE target_type='student' AND target_id=? AND criterion_id=? AND delta>0 AND ts LIKE ?",
-                    (tid, crit_id, f"{today}%"),
+                    "SELECT COUNT(*) FROM entries WHERE target_type='student' AND target_id=? AND criterion_id=? AND delta>0 AND ts >= ? AND ts <= ?",
+                    (tid, crit_id, start_today, end_today),
                 ).fetchone()[0]
                 if cnt >= crit["daily_limit"]:
                     conn.close()
@@ -728,16 +737,18 @@ class PointServer(http.server.BaseHTTPRequestHandler):
             "SELECT COALESCE(SUM(CASE WHEN cancelled=0 THEN delta ELSE 0 END),0) FROM entries WHERE target_type='class' AND target_id=?",
             (cid,),
         ).fetchone()[0]
-        # Average personal score of class members
-        members = conn.execute(
-            "SELECT student_id FROM class_members WHERE class_id = ?", (cid,)
-        ).fetchall()
-        if members:
-            total_personal = sum(self._student_score(m["student_id"], conn) for m in members)
-            avg = total_personal / len(members)
-        else:
-            avg = 0
-        return direct + int(avg * 0.5)  # 50% weight to personal average
+        # Average personal score of class members — single aggregate query avoids N+1
+        row = conn.execute("""
+            SELECT COUNT(DISTINCT cm.student_id) as member_count,
+                   COALESCE(SUM(CASE WHEN e.cancelled=0 THEN e.delta ELSE 0 END), 0) as personal_total
+            FROM class_members cm
+            LEFT JOIN entries e ON e.target_type='student' AND e.target_id=cm.student_id
+            WHERE cm.class_id = ?
+        """, (cid,)).fetchone()
+        if row and row["member_count"]:
+            avg = row["personal_total"] / row["member_count"]
+            return direct + int(avg * 0.5)  # 50% weight to personal average
+        return direct
 
     def api_student_score(self):
         user = require_auth(self)
@@ -945,7 +956,7 @@ def main():
     args = parser.parse_args()
     DB_DEFAULT = args.db
     init_db()
-    server = http.server.HTTPServer(("0.0.0.0", args.port), PointServer)
+    server = http.server.ThreadingHTTPServer(("0.0.0.0", args.port), PointServer)
     print(f"PointSystemPrize running on http://0.0.0.0:{args.port}")
     try:
         server.serve_forever()

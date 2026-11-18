@@ -6,9 +6,14 @@ on:
   pull_request:
     branches: [ main ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
 
@@ -16,15 +21,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
 
-      - name: Validate Python, HTML, Manifest & SVGs
+      - name: Validate Python, HTML, Manifest & SVGs and run tests
         run: |
           python -m py_compile server.py
           python -c "from html.parser import HTMLParser; HTMLParser().feed(open('index.html', encoding='utf-8').read()); print('HTML OK')"
           python -c "import json; json.load(open('manifest.webmanifest', encoding='utf-8')); print('Manifest OK')"
           python -c "import glob, xml.etree.ElementTree as ET; [ET.parse(f) for f in ['icon.svg'] + glob.glob('assets/*.svg')]; print('SVGs OK')"
-
-      - name: Run Full Unit, API, Frontend/i18n & Documentation Test Suite
-        run: |
           python -m unittest discover -s tests -v
 
