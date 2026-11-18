@@ -992,10 +992,45 @@
         saveDemoDb(db);
         return { id, name: body.name };
       }
+      if (path.startsWith('/api/classes/') && method === 'PUT') {
+        const cid = +path.split('/').pop();
+        const cl = db.classes.find(c => c.id === cid);
+        if (cl) Object.assign(cl, body);
+        saveDemoDb(db);
+        return { ok: true };
+      }
       if (path.startsWith('/api/classes/') && method === 'DELETE') {
         const cid = +path.split('/').pop();
         db.class_members = db.class_members.filter(cm => cm.class_id !== cid);
         db.classes = db.classes.filter(c => c.id !== cid);
+        saveDemoDb(db);
+        return { ok: true };
+      }
+      if (path === '/api/class-members' && method === 'POST') {
+        db.class_members.push({
+          student_id: +body.student_id,
+          class_id: +body.class_id,
+          year: body.year || '2026'
+        });
+        saveDemoDb(db);
+        return { ok: true };
+      }
+      if (path.startsWith('/api/class-members/') && method === 'DELETE') {
+        const parts = path.split('/');
+        const sid = +parts[parts.length - 2];
+        const cid = +parts[parts.length - 1];
+        db.class_members = db.class_members.filter(cm => !(cm.student_id === sid && cm.class_id === cid));
+        saveDemoDb(db);
+        return { ok: true };
+      }
+      if (path === '/api/student-score' && method === 'GET') {
+        const sid = +(params.get('id') || USER.id);
+        return { student_id: sid, score: calcStudentScore(db, sid), breakdown: [] };
+      }
+      if (path.startsWith('/api/users/') && method === 'PUT') {
+        const uid = +path.split('/').pop();
+        const u = db.users.find(x => x.id === uid);
+        if (u) Object.assign(u, body);
         saveDemoDb(db);
         return { ok: true };
       }

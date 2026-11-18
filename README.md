@@ -254,10 +254,16 @@ All criteria are seeded automatically on first launch and can be customized or t
 | `POST` | `/api/logout` | Any | End current session |
 | `GET` | `/api/me` | Any | Return active user profile (`id`, `name`, `role`, `username`) |
 | `GET` | `/api/dashboard` | Any | Role-tailored summary (Student score/rank or Teacher/Admin overview) |
+| `GET` | `/api/users` | Teacher, Admin | List active users (`id`, `name`, `role`, `username`) |
+| `POST` | `/api/users` | Admin | Create a new user (`name`, `role`, `username`, `password`) |
+| `PUT` | `/api/users/:id` | Admin | Update user profile, password, PIN, barcode, or active flag |
+| `DELETE` | `/api/users/:id` | Admin | Soft-deactivate user (`active = 0`) |
 | `GET` | `/api/classes` | Any | List all classes with teacher name and enrolled student count |
 | `POST` | `/api/classes` | Admin | Create a new classroom (`name`, `grade`, `teacher_id`) |
 | `PUT` | `/api/classes/:id` | Admin | Update classroom metadata or homeroom teacher |
 | `DELETE` | `/api/classes/:id` | Admin | Remove classroom and its enrollment links |
+| `POST` | `/api/class-members` | Admin | Enroll a student in a classroom (`student_id`, `class_id`, `year`) |
+| `DELETE` | `/api/class-members/:sid/:cid` | Admin | Remove a student from a classroom |
 | `GET` | `/api/criteria` | Any | List all personal and classroom merit criteria |
 | `POST` | `/api/criteria` | Admin | Create a new merit criterion (`name`, `kind`, `add_value`, `sub_value`, `daily_limit`) |
 | `PUT` | `/api/criteria/:id` | Admin | Update criterion values or toggle `active` (`1` / `0`) |
@@ -297,23 +303,51 @@ Then open **`http://localhost:8080`** in your browser.
 
 ---
 
+## 🧪 Automated Test Suite & Quality Gate
+
+Every backend function, HTTP endpoint, frontend JavaScript function, bilingual `I18N` dictionary, responsive CSS breakpoint, SVG asset, configuration file, and documentation table is verified by a zero-dependency `unittest` suite under [`tests/`](tests/):
+
+```bash
+# Run the complete test suite (16 test cases covering all methods, APIs, UI, i18n & docs)
+python3 -m unittest discover -s tests -v
+
+# Enable the automatic Git pre-commit test hook
+git config core.hooksPath .githooks
+```
+
+| Test Module | Scope & What It Verifies |
+| :--- | :--- |
+| [`tests/test_server_unit.py`](tests/test_server_unit.py) | `get_db()` (WAL & FK pragmas), `init_db()` (6 tables, 3 indexes, idempotency, seeded users/classes/11 criteria), `hash_password()`, `make_session_token()`, `verify_session_token()` (HMAC & 24h expiry), `_student_score()`, and normalized `_class_score()`. |
+| [`tests/test_api_endpoints.py`](tests/test_api_endpoints.py) | Full live HTTP integration tests for all 19 `/api/*` endpoints, static asset serving, CORS `OPTIONS`, Bearer & Cookie auth, 3-tier RBAC enforcement (`401`/`403`/`404`/`409`), delta clamping, per-student `daily_limit`, 24-hour teacher self-undo window, student privacy isolation, and UTF-8 BOM CSV export. |
+| [`tests/test_frontend_and_i18n.py`](tests/test_frontend_and_i18n.py) | HTML5 DOM integrity, presence of all 53 JS functions in [`index.html`](index.html) and [`spec.html`](spec.html), 100% key parity between `I18N.he` and `I18N.en`, coverage of every `data-i18n` / `data-i18n-ph` attribute, `DATA_EN_MAP` criteria/class translations, PC (`1024px`) & Tablet (`768px`) media queries, and Dark/Light theme rules. |
+| [`tests/test_docs_and_configs.py`](tests/test_docs_and_configs.py) | [`manifest.webmanifest`](manifest.webmanifest) schema & `"orientation": "any"`, XML/SVG validity for [`icon.svg`](icon.svg) and [`assets/*.svg`](assets/), local link resolution in [`README.md`](README.md), Mermaid diagram presence, 100% parity between [`server.py`](server.py) routes and [`README.md`](README.md) documentation, and CI/Git config checks. |
+
+---
+
 ## 📁 Repository Structure
 
 ```text
 SchoolMeritPoints/
-├── index.html                   # Single-file RTL Hebrew PWA (Live Server + Serverless Web Demo Engine)
+├── index.html                   # Single-file RTL/LTR Bilingual PWA (Live Server + Serverless Web Demo)
 ├── server.py                    # Zero-dependency Python 3 HTTP + SQLite WAL backend
-├── manifest.webmanifest         # Progressive Web App (PWA) install manifest
+├── manifest.webmanifest         # Progressive Web App (PWA) install manifest (PC/Tablet/Mobile)
 ├── icon.svg                     # Vector star emblem for browser & mobile home screen
 ├── spec.md                      # Comprehensive English product & architecture specification
-├── spec.html                    # Original Hebrew interactive product specification
+├── spec.html                    # Interactive Bilingual (EN/HE) + Dark/Light specification & mockups
 ├── assets/
 │   ├── hero-banner.svg          # README hero banner with UI preview
 │   ├── system-flow.svg          # Architecture, dual runtime & scoring pipeline diagram
 │   └── ui-preview.svg           # 3-screen mobile UI showcase (Student, Teacher, Dark Mode)
+├── tests/
+│   ├── test_server_unit.py      # Unit tests for DB helpers, auth tokens & scoring formulas
+│   ├── test_api_endpoints.py    # End-to-end HTTP integration & RBAC tests for all 19 endpoints
+│   ├── test_frontend_and_i18n.py# DOM, JS function inventory, EN/HE i18n parity & responsive tests
+│   └── test_docs_and_configs.py # Manifest, SVG XML, README link/API parity & CI config tests
+├── .githooks/
+│   └── pre-commit               # Git pre-commit hook enforcing the full unittest suite
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml               # Automated Python, HTML, SVG & API integration tests
+│       ├── ci.yml               # Automated unittest suite + syntax/asset validation on push/PR
 │       └── pages.yml            # Automatic deployment to GitHub Pages on push to main
 ├── CONTRIBUTING.md              # Contributor guidelines
 ├── SECURITY.md                  # Security model & production hardening checklist

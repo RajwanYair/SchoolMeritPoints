@@ -24,43 +24,7 @@ jobs:
           python -c "import json; json.load(open('manifest.webmanifest', encoding='utf-8')); print('Manifest OK')"
           python -c "import glob, xml.etree.ElementTree as ET; [ET.parse(f) for f in ['icon.svg'] + glob.glob('assets/*.svg')]; print('SVGs OK')"
 
-      - name: Run API End-to-End Smoke Tests
+      - name: Run Full Unit, API, Frontend/i18n & Documentation Test Suite
         run: |
-          python - << 'EOF'
-          import json, os, tempfile, threading, time, urllib.request
-          import server
+          python -m unittest discover -s tests -v
 
-          tmp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
-          tmp_db.close()
-          server.DB_DEFAULT = tmp_db.name
-          server.init_db()
-
-          httpd = server.http.server.HTTPServer(("127.0.0.1", 0), server.PointServer)
-          port = httpd.server_address[1]
-          t = threading.Thread(target=httpd.serve_forever, daemon=True)
-          t.start()
-
-          base = f"http://127.0.0.1:{port}"
-          def req(method, path, body=None, token=None):
-              headers = {"Content-Type": "application/json"}
-              if token:
-                  headers["Authorization"] = f"Bearer {token}"
-              data = json.dumps(body).encode("utf-8") if body is not None else None
-              r = urllib.request.Request(base + path, data=data, headers=headers, method=method)
-              with urllib.request.urlopen(r) as resp:
-                  return resp.status, json.loads(resp.read().decode("utf-8"))
-
-          status, login = req("POST", "/api/login", {"username": "admin", "password": "admin123"})
-          assert status == 200 and login["user"]["role"] == "admin"
-          token = login["token"]
-
-          status, classes = req("GET", "/api/classes", token=token)
-          assert status == 200 and len(classes) >= 3
-
-          status, rankings = req("GET", "/api/rankings/classes", token=token)
-          assert status == 200 and rankings[0]["rank"] == 1
-
-          httpd.shutdown()
-          os.unlink(tmp_db.name)
-          print("E2E API tests passed!")
-          EOF
