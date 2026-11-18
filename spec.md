@@ -4,9 +4,9 @@
 
 # ⭐ SchoolMeritPoints — Product & Architecture Specification
 
-**Open-Source Community Release · MIT License · Bilingual (EN / HE) · PC, Tablet & Mobile PWA**
+**Open-Source Release · MIT License · Bilingual (EN / HE) · PC, Tablet & Mobile PWA**
 
-> 🌍 **Open-Source Mission**: SchoolMeritPoints is a 100% free, open-source Progressive Web App (PWA) for schools. There are no subscriptions, no per-user licenses, and no external package dependencies. Schools and contributors can run it directly from GitHub Pages or host it on any local Python 3 + SQLite machine.
+> 🌍 **Mission**: SchoolMeritPoints is a free, open-source Progressive Web App for schools. There are no subscriptions, per-user licenses, or external dependencies. Schools can run it from GitHub Pages or self-host on any Python 3 + SQLite machine.
 
 [🚀 **Launch Live App (`index.html`)**](https://rajwanyair.github.io/SchoolMeritPoints/index.html) ·
 [🎨 **Interactive Visual Spec (`spec.html`)**](https://rajwanyair.github.io/SchoolMeritPoints/spec.html) ·
@@ -36,7 +36,7 @@
 
 ## 1. 🎯 System Vision & Scope
 
-**SchoolMeritPoints** reinforces positive student conduct and classroom teamwork through a transparent, fair, and lightning-fast merit tracking system. A teacher standing in a hallway can award points to an entire class in **under 3 seconds**, and students immediately see why points were awarded and how their classroom ranks.
+**SchoolMeritPoints** reinforces positive student conduct and classroom teamwork with a transparent, fair, and fast merit tracking system. A teacher can award points to an entire class in under three seconds, and students immediately see why points were awarded and how their classroom ranks.
 
 <div align="center">
   <img src="assets/user-journey.svg" alt="Daily School Merit Journey" width="100%"/>
@@ -45,11 +45,11 @@
 ### ✅ Core Capabilities (v1.0 — Implemented)
 
 - 🌟 **Personal Merit Tracking**: Award or deduct points per student with criterion and teacher attribution.
-- 🏫 **Normalized Classroom Merit Tracking**: Award direct classroom points combined with 50% of the class's average personal score.
-- 🏆 **Live Leaderboards**: Real-time class rankings and teacher-visible student rankings with visual progress bars.
-- 📋 **Immutable Audit Log & 24h Undo**: Every action is timestamped; teachers can undo their own mistakes within 24 hours.
-- 🌍 **Bilingual & Multi-Device**: Full Hebrew (`RTL`) and English (`LTR`) switching, Light/Dark themes, and responsive layouts for PC (`≥1024px`), Tablet (`768px–1023px`), and Mobile (`<768px`).
-- 📥 **One-Click CSV Export**: Instant UTF-8 BOM CSV export compatible with Microsoft Excel and LibreOffice.
+🏫 **Normalized Classroom Merit Tracking**: Direct classroom points combined with 50% of the class's average personal score.
+🏆 **Live Leaderboards**: Real-time class rankings and teacher-visible student rankings with progress bars.
+📋 **Immutable Audit Log & 24h Undo**: Every action is timestamped; teachers can undo their own entries within 24 hours.
+🌍 **Bilingual & Multi-Device**: Hebrew (`RTL`) and English (`LTR`) switching, Light/Dark themes, and responsive layouts for PC (`≥1024px`), Tablet (`768px–1023px`), and Mobile (`<768px`).
+📥 **One-Click CSV Export**: UTF-8 BOM CSV export compatible with Microsoft Excel and LibreOffice.
 
 ### 🔭 Out of Scope (Non-Goals)
 
@@ -101,7 +101,7 @@ flowchart TB
 
 ### 📋 Built-in Merit Categories (11 Default Rules)
 
-Administrators can edit point values, daily limits, or add new criteria directly from the Admin UI:
+Administrators can edit values, limits, and add new criteria directly from the Admin UI:
 
 | # | Emoji | Criterion (EN) | Hebrew Name | Scope | Frequency / Limit | Award (`+`) | Deduct (`−`) |
 | :-: | :-: | :--- | :--- | :---: | :---: | :---: | :---: |
@@ -152,8 +152,8 @@ stateDiagram-v2
 ```
 
 - 🔑 **Password Sign-In**: Salted `SHA-256` password verification issuing a signed 24-hour `HMAC-SHA256` session token.
-- ⚡ **Instant Demo Sign-In**: Pre-seeded one-click role buttons (`noam`, `david`, `admin`) and URL deep-links (`?demo=student|teacher|admin`).
-- 📷 **QR Badge & PIN Sign-In (Sprint 2 — `SMP-201..203`)**: Printable random-UUID QR cards for students and teachers, with a 4-digit PIN gate for teachers and 5-attempt lockout protection.
+⚡ **Instant Demo Sign-In**: Pre-seeded one-click role buttons (`noam`, `david`, `admin`) and URL deep links (`?demo=student|teacher|admin`).
+📷 **QR Badge & PIN Sign-In (Sprint 2 — `SMP-201..203`)**: Printable random-UUID QR cards for students and teachers, with a 4-digit PIN gate for teachers and five-attempt lockout protection.
 
 ---
 
@@ -165,19 +165,19 @@ stateDiagram-v2
 
 | Screen / Portal | Mobile (`< 768px`) | Tablet (`768px–1023px`) | PC / Desktop (`≥ 1024px`) |
 | :--- | :--- | :--- | :--- |
-| 🔐 **Welcome & Sign-In** | Full-height vertical stack with 1-click demo bar | Elevated `480px` card with shadow | Centered card + top language/theme bar |
-| 🎓 **Student Portal** | Hero score card + 2 mini cards + recent feed + bottom tabs | Centered `820px` view | 2-column grid (Hero card alongside Class stats) + side rail |
-| 👨‍🏫 **Teacher Portal** | Class selector + criteria chips + quick `+/-` bar + student checklist | Centered modal class picker | Left/Right vertical navigation sidebar + wide workspace |
-| 🛡️ **Admin Console** | Scrollable user/class/criteria cards + modal forms + CSV export | Wide tables + centered modals | Full 6-section sidebar console + instant CSV download |
+| 🔐 **Welcome & Sign-In** | Full-height vertical stack with one-click demo bar | Elevated `480px` card with shadow | Centered card + top language/theme bar |
+| 🎓 **Student Portal** | Hero score card + mini cards + recent feed + bottom tabs | Centered `820px` view | 2-column grid + side rail |
+| 👨‍🏫 **Teacher Portal** | Class selector + criteria chips + quick +/- bar + student checklist | Centered modal class picker | Left/Right navigation sidebar + wide workspace |
+| 🛡️ **Admin Console** | Scrollable user/class/criteria cards + modal forms + CSV export | Wide tables + centered modals | Full sidebar console + CSV download |
 
 ---
 
 ## 6. 🎨 Design System, Accessibility & Themes
 
-- 🌍 **Bilingual Directionality**: Automatic `dir="rtl"` for Hebrew (`עב`) and `dir="ltr"` for English (`EN`) using CSS logical properties (`border-inline-end`, `margin-inline-start`, `text-align: start`).
-- 🌓 **Light & Dark Themes**: High-contrast semantic tokens (`--brand`, `--gold`, `--plus`, `--minus`, `--bg`, `--paper`) with automatic OS `prefers-color-scheme` detection and manual `🌓` toggle.
-- 🔤 **Typography**: **Secular One** for expressive display headings and **Assistant** for crisp Hebrew/English body text and tabular numbers (`font-variant-numeric: tabular-nums`).
-- ♿ **Accessibility**: Large touch targets (`≥ 44px`), semantic color + sign pairing (`+` green, `−` red), and keyboard-navigable controls aligned with WCAG 2.1 / IS 5568 AA.
+- 🌍 **Bilingual Directionality**: `dir="rtl"` for Hebrew (`עב`) and `dir="ltr"` for English (`EN`) using CSS logical properties.
+- 🌓 **Light & Dark Themes**: Semantic tokens with OS `prefers-color-scheme` detection and a manual theme toggle.
+- 🔤 **Typography**: **Secular One** for display headings and **Assistant** for body text with `font-variant-numeric: tabular-nums`.
+- ♿ **Accessibility**: Large touch targets (≥44 px), semantic color + sign pairing (`+` green, `−` red), and keyboard-navigable controls.
 
 ---
 
@@ -203,7 +203,7 @@ stateDiagram-v2
 - 🔒 **Zero Sensitive PII**: Stores only display name, classroom, and merit events—never national ID numbers, home addresses, phone numbers, or photos.
 - 🙈 **Student Score Isolation**: Students can only query their own personal score (`/api/student-score` enforces `403 Forbidden` if a student requests another student's ID) and the school-wide class leaderboard.
 - 🔑 **Cryptographic Session Tokens**: Passwords are salted and hashed with `SHA-256`; sessions use `HMAC-SHA256` signatures with a strict 24-hour expiration window.
-- 🧾 **Complete Auditability**: Every point addition, deduction, and cancellation records the acting teacher and timestamp, and can be exported to CSV at any time.
+- 🧾 **Complete Auditability**: Every point addition, deduction, and cancellation records the acting teacher and timestamp and can be exported to CSV at any time.
 
 ---
 
@@ -265,7 +265,7 @@ All future features from this specification have been organized into actionable 
 2. 💻 **Cross-Platform & Multi-Device**: Verified on Mobile (`<768px`), Tablet (`768px–1023px`), and PC (`≥1024px`) across modern browsers.
 3. 🌍 **Bilingual & Bidirectional**: Complete parity between Hebrew (`RTL`) and English (`LTR`) across all UI strings and seeded records.
 4. 🔒 **RBAC & Privacy Enforcement**: Students are strictly blocked (`403 Forbidden`) from viewing other students' personal scores or mutating state.
-5. 🧪 **Mandatory Automated Test Suite**: Every method, API endpoint, frontend function, i18n key, SVG diagram, and documentation link is checked by `python3 -m unittest discover -s tests -v` via `.githooks/pre-commit` and GitHub Actions CI.
+5. 🧪 **Mandatory Automated Test Suite**: Every method, API endpoint, frontend function, i18n key, SVG diagram, and documentation link is checked by `python3 -m unittest discover -s tests -v` through `.githooks/pre-commit` and GitHub Actions CI.
 
 ---
 
@@ -276,4 +276,4 @@ Schools deploying **SchoolMeritPoints** can tailor the following educational pol
 - 🏆 **In-Class Student Leaderboard Visibility**: Disabled for students by default to protect lower-scoring students; visible to teachers and admins.
 - 📉 **Deduction Policy per Criterion**: Any criterion can be configured as award-only (`sub_value = 0`, e.g., *Decorated Classroom*) or bidirectional (`+add` / `−sub`).
 - 🗓️ **Scoring Period Cadence**: Monthly, semester, or annual leaderboard cycles with full historical archive preservation.
-- 🏫 **Teacher Scoring Scope**: Open school-wide teacher scoring (any teacher can award points to any class/student) vs. homeroom-restricted scoring.
+- 🏫 **Teacher Scoring Scope**: Open school-wide scoring (any teacher can award points to any class/student) versus homeroom-restricted scoring.

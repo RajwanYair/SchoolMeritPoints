@@ -14,7 +14,7 @@
 *אפליקציית רשת חכמה לניהול נקודות זכות אישיות וכיתתיות בבתי ספר — מותאמת לנייד ולמחשב, עם ממשק עברי מלא (RTL) ומצב כהה.*
 
 [🌐 **Launch Live Web App (`index.html`)**](https://rajwanyair.github.io/SchoolMeritPoints/index.html) ·
-[�🇧 **English Mode (`?lang=en`)**](https://rajwanyair.github.io/SchoolMeritPoints/?lang=en) ·
+[🇬🇧 **English Mode (`?lang=en`)**](https://rajwanyair.github.io/SchoolMeritPoints/?lang=en) ·
 [🇮🇱 **Hebrew Mode (`?lang=he`)**](https://rajwanyair.github.io/SchoolMeritPoints/?lang=he) ·
 [🌙 **Dark Mode (`?theme=dark`)**](https://rajwanyair.github.io/SchoolMeritPoints/?theme=dark) ·
 [🎓 **Student Demo**](https://rajwanyair.github.io/SchoolMeritPoints/?demo=student) ·
@@ -30,8 +30,8 @@
 
 | Pillar | What It Delivers |
 | :--- | :--- |
-| 💻 **PC, Tablet & Mobile Responsive** | Adaptive layout: **Desktop (`≥ 1024px`)** uses a sticky sidebar navigation rail + multi-column workspace; **Tablet (`768px–1023px`)** uses centered cards & modals; **Mobile (`< 768px`)** uses a thumb-friendly bottom tab bar. |
-| 🌍 **Bilingual English (LTR) & Hebrew (RTL)** | Instant 1-click **`🌐 EN / עב`** language switcher across [`index.html`](index.html) and [`spec.html`](spec.html), dynamically switching `dir="ltr"` / `dir="rtl"` and translating all UI labels, criteria, classes, and demo records. |
+| 💻 **PC, Tablet & Mobile Responsive** | Adaptive layout: **Desktop (`≥1024px`)** uses a sticky sidebar navigation rail + multi-column workspace; **Tablet (`768px–1023px`)** uses centered cards & modals; **Mobile (`<768px`)** uses a thumb-friendly bottom tab bar. |
+| 🌍 **Bilingual English (LTR) & Hebrew (RTL)** | Instant 1-click `🌐 EN / עב` language switcher across [`index.html`](index.html) and [`spec.html`](spec.html), dynamically switching `dir="ltr"` / `dir="rtl"` and translating all UI labels, criteria, classes, and demo records. |
 | 🌓 **Dark & Light Themes Everywhere** | 1-click **`🌓`** theme toggle on every screen (including Login & Specification), persisted in `localStorage` and controllable via `?theme=dark` or `?theme=light`. |
 | 🌐 **Run Anywhere on the Web** | Works **instantly on GitHub Pages** via an embedded client-side database engine (`LocalStorage`) **and** as a multi-user school server via `python3 server.py` (`SQLite WAL`). |
 | ⚡ **3-Tap Teacher Workflow** | Select a class, tap a criterion chip, select one or multiple students, and award/deduct points in **under 3 seconds**. |
@@ -45,9 +45,9 @@
 
 | Form Factor / Feature | Breakpoint / Trigger | Adaptive Behavior |
 | :--- | :--- | :--- |
-| 🖥️ **PC / Desktop** | `≥ 1024px` | 2-column CSS Grid shell (`240px` vertical navigation sidebar + `980px` workspace), side-by-side Student hero/stats cards, centered dialog modals, elevated login card. |
-| 📱 **Tablet (iPad / Android)** | `768px – 1023px` | Centered `820px` container, centered class-picker modal, spacious touch targets, landscape & portrait PWA support (`"orientation": "any"`). |
-| 📲 **Mobile Phone** | `< 768px` | Full-bleed single-column cards, sticky bottom navigation `.tabbar`, bottom-sheet class picker, one-hand corridor operation for teachers. |
+| 🖥️ **PC / Desktop** | `≥1024px` | 2-column CSS Grid shell (`240px` vertical navigation sidebar + `980px` workspace), side-by-side Student hero/stats cards, centered dialog modals, elevated login card. |
+| 📱 **Tablet (iPad / Android)** | `768px–1023px` | Centered `820px` container, centered class-picker modal, spacious touch targets, landscape & portrait PWA support (`"orientation": "any"`). |
+| 📲 **Mobile Phone** | `<768px` | Full-bleed single-column cards, sticky bottom navigation `.tabbar`, bottom-sheet class picker, one-hand operation for teachers. |
 | 🇬🇧 **English Mode (LTR)** | `🌐 EN` button or `?lang=en` | Sets `<html lang="en" dir="ltr">`, docks desktop sidebar on the left, translates UI + all 11 criteria, class names (`Grade 6-A`), and demo names. |
 | 🇮🇱 **Hebrew Mode (RTL)** | `🌐 עב` button or `?lang=he` | Sets `<html lang="he" dir="rtl">`, docks desktop sidebar on the right, native Hebrew school terminology. |
 | 🌓 **Dark / Light Theme** | `🌓` button or `?theme=dark\|light` | Switches CSS custom properties (`data-theme="dark"` / `"light"`), auto-detects OS `prefers-color-scheme`, and persists across sessions. |
@@ -56,18 +56,18 @@
 
 ## 🌐 Live Web App & Instant Role Demos
 
-You can access [`index.html`](https://rajwanyair.github.io/SchoolMeritPoints/index.html) directly from any phone, tablet, or desktop browser—no installation required:
+Open the app on any phone, tablet, or desktop browser—no installation is needed:
 
-- 🔗 **Primary URL**: **[https://rajwanyair.github.io/SchoolMeritPoints/](https://rajwanyair.github.io/SchoolMeritPoints/)**
-- 🔗 **Direct HTML Entry**: **[https://rajwanyair.github.io/SchoolMeritPoints/index.html](https://rajwanyair.github.io/SchoolMeritPoints/index.html)**
+- 🔗 **Primary URL**: [https://rajwanyair.github.io/SchoolMeritPoints/](https://rajwanyair.github.io/SchoolMeritPoints/)
+- 🔗 **Direct HTML Entry**: [https://rajwanyair.github.io/SchoolMeritPoints/index.html](https://rajwanyair.github.io/SchoolMeritPoints/index.html)
 
 ### Pre-Configured Demo Accounts (Web & Local Server)
 
-| Role | Display Name | Username | Password | One-Click Live Launch |
+| Role | Display Name | Username | Password | Live Demo |
 | :--- | :--- | :--- | :--- | :--- |
-| 🎓 **Student (תלמיד)** | נועם כהן (כיתה ו'1) | `noam` | `1234` | [Launch Student View →](https://rajwanyair.github.io/SchoolMeritPoints/?demo=student) |
-| 👨‍🏫 **Teacher (מורה)** | הרב דוד לוי | `david` | `teacher123` | [Launch Teacher View →](https://rajwanyair.github.io/SchoolMeritPoints/?demo=teacher) |
-| 🛡️ **Admin (מנהל)** | מנהל מערכת | `admin` | `admin123` | [Launch Admin View →](https://rajwanyair.github.io/SchoolMeritPoints/?demo=admin) |
+| 🎓 **Student (תלמיד)** | נועם כהן (כיתה ו'1) | `noam` | `1234` | [Student view →](https://rajwanyair.github.io/SchoolMeritPoints/?demo=student) |
+| 👨‍🏫 **Teacher (מורה)** | הרב דוד לוי | `david` | `teacher123` | [Teacher view →](https://rajwanyair.github.io/SchoolMeritPoints/?demo=teacher) |
+| 🛡️ **Admin (מנהל)** | מנהל מערכת | `admin` | `admin123` | [Admin view →](https://rajwanyair.github.io/SchoolMeritPoints/?demo=admin) |
 
 ---
 
@@ -200,7 +200,7 @@ erDiagram
 
 ## ⚖️ Fair Normalized Class Scoring Formula
 
-In many school merit systems, a class with **34 students** automatically accumulates more total points than a class with **22 students**. **SchoolMeritPoints** solves this with a normalized composite formula:
+A class with 34 students can easily outscore a class with 22 students if rankings are based only on raw points. SchoolMeritPoints prevents this with a normalized composite formula:
 
 $$\text{ClassScore}(c) = \sum_{e \in \text{Direct}(c)} \Delta_e \;+\; \left\lfloor 0.5 \times \frac{1}{|S_c|} \sum_{s \in S_c} \text{StudentScore}(s) \right\rfloor$$
 
@@ -213,7 +213,7 @@ Where:
 
 ## 📋 Built-in Merit Criteria (11 Default Rules)
 
-All criteria are seeded automatically on first launch and can be customized or toggled by an Administrator at any time:
+These criteria are seeded automatically on first launch. Administrators can edit, disable, and add new criteria through the Admin console:
 
 | # | Hebrew Name | English Meaning | Scope (`kind`) | Award (`+`) | Deduct (`−`) | Daily Limit |
 | :-: | :--- | :--- | :---: | :---: | :---: | :---: |
@@ -308,7 +308,7 @@ Then open **`http://localhost:8080`** in your browser.
 Every backend function, HTTP endpoint, frontend JavaScript function, bilingual `I18N` dictionary, responsive CSS breakpoint, SVG asset, configuration file, and documentation table is verified by a zero-dependency `unittest` suite under [`tests/`](tests/):
 
 ```bash
-# Run the complete test suite (16 test cases covering all methods, APIs, UI, i18n & docs)
+# Run the complete test suite (23 test cases covering methods, APIs, UI, i18n and docs)
 python3 -m unittest discover -s tests -v
 
 # Enable the automatic Git pre-commit test hook
@@ -318,9 +318,9 @@ git config core.hooksPath .githooks
 | Test Module | Scope & What It Verifies |
 | :--- | :--- |
 | [`tests/test_server_unit.py`](tests/test_server_unit.py) | `get_db()` (WAL & FK pragmas), `init_db()` (6 tables, 3 indexes, idempotency, seeded users/classes/11 criteria), `hash_password()`, `make_session_token()`, `verify_session_token()` (HMAC & 24h expiry), `_student_score()`, and normalized `_class_score()`. |
-| [`tests/test_api_endpoints.py`](tests/test_api_endpoints.py) | Full live HTTP integration tests for all 19 `/api/*` endpoints, static asset serving, CORS `OPTIONS`, Bearer & Cookie auth, 3-tier RBAC enforcement (`401`/`403`/`404`/`409`), delta clamping, per-student `daily_limit`, 24-hour teacher self-undo window, student privacy isolation, and UTF-8 BOM CSV export. |
-| [`tests/test_frontend_and_i18n.py`](tests/test_frontend_and_i18n.py) | HTML5 DOM integrity, presence of all 53 JS functions in [`index.html`](index.html) and [`spec.html`](spec.html), 100% key parity between `I18N.he` and `I18N.en`, coverage of every `data-i18n` / `data-i18n-ph` attribute, `DATA_EN_MAP` criteria/class translations, PC (`1024px`) & Tablet (`768px`) media queries, and Dark/Light theme rules. |
-| [`tests/test_docs_and_configs.py`](tests/test_docs_and_configs.py) | [`manifest.webmanifest`](manifest.webmanifest) schema & `"orientation": "any"`, XML/SVG validity for [`icon.svg`](icon.svg) and [`assets/*.svg`](assets/), local link resolution in [`README.md`](README.md), Mermaid diagram presence, 100% parity between [`server.py`](server.py) routes and [`README.md`](README.md) documentation, and CI/Git config checks. |
+| [`tests/test_api_endpoints.py`](tests/test_api_endpoints.py) | Full live HTTP integration tests for all `/api/*` endpoints, static asset serving, CORS `OPTIONS`, Bearer & Cookie auth, 3-tier RBAC enforcement, delta clamping, per-student `daily_limit`, 24-hour teacher self-undo window, student privacy isolation, and UTF-8 BOM CSV export. |
+| [`tests/test_frontend_and_i18n.py`](tests/test_frontend_and_i18n.py) | HTML5 DOM integrity, presence of all JavaScript functions in [`index.html`](index.html) and [`spec.html`](spec.html), key parity between `I18N.he` and `I18N.en`, coverage of every `data-i18n` / `data-i18n-ph` attribute, `DATA_EN_MAP` criteria/class translations, PC (`1024px`) & Tablet (`768px`) media queries, and Dark/Light theme rules. |
+| [`tests/test_docs_and_configs.py`](tests/test_docs_and_configs.py) | [`manifest.webmanifest`](manifest.webmanifest) schema & `"orientation": "any"`, XML/SVG validity for [`icon.svg`](icon.svg) and [`assets/*.svg`](assets/), local link resolution in [`README.md`](README.md), Mermaid diagram presence, parity between [`server.py`](server.py) routes and [`README.md`](README.md) documentation, and CI/Git config checks. |
 
 ---
 
