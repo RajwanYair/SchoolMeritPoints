@@ -41,7 +41,24 @@
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65}
-.wrap{direction:rtl;max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+.spec-topbar{
+  position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);
+  padding:10px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+.spec-topbar .brand-link{
+  font-family:var(--display);font-size:1.1rem;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+}
+.spec-topbar .actions{display:flex;gap:8px;align-items:center}
+.ctrl-btn{
+  background:var(--brand-soft);color:var(--brand);border:1px solid var(--line);border-radius:10px;
+  padding:6px 12px;font-family:var(--body);font-weight:800;font-size:.85rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;
+}
+.ctrl-btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+.ctrl-btn:hover{opacity:.92}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:36px 80px;display:flex;flex-direction:column;gap:52px}
+.wrap[dir="rtl"]{direction:rtl}
+.wrap[dir="ltr"]{direction:ltr}
+.hidden{display:none!important}
 h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.25;text-wrap:balance;margin:0}
 h1{font-size:clamp(2rem,5vw,3rem)}
 h2{font-size:1.7rem;display:flex;align-items:baseline;gap:12px}
@@ -68,7 +85,7 @@ header.top{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;
 /* tables */
 .tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:10px}
 table{border-collapse:collapse;width:100%;min-width:560px;font-size:.95rem}
-th,td{text-align:right;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th,td{text-align:start;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:.82rem;color:var(--muted);font-weight:700;background:var(--bg)}
 tr:last-child td{border-bottom:0}
 td.num{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
@@ -189,7 +206,16 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
-<div class="wrap">
+<div class="spec-topbar">
+  <a class="brand-link" href="./index.html">★ <span id="specTopTitle">SchoolMeritPoints · מסמך אפיון</span></a>
+  <div class="actions">
+    <a class="ctrl-btn primary" href="./index.html" id="launchAppBtn">🚀 פתח אפליקציה</a>
+    <button class="ctrl-btn" onclick="toggleSpecLang()">🌐 <span id="specLangLabel">EN</span></button>
+    <button class="ctrl-btn" onclick="toggleSpecTheme()" title="Dark / Light Mode">🌓</button>
+  </div>
+</div>
+
+<div id="wrapHe" class="wrap" dir="rtl">
 
 <header class="top">
   <div style="display:flex;flex-direction:column;gap:12px">
@@ -552,4 +578,138 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 <footer>מסמך זה הוא הצעת אפיון ראשונית. הערכים, לוחות הזמנים והמוקאפים נועדו לשמש בסיס לשיחה עם ספקים ואינם מחייבים.</footer>
 </div>
 
+<!-- ENGLISH SPECIFICATION VIEW -->
+<div id="wrapEn" class="wrap hidden" dir="ltr">
+  <header class="top">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <span class="label">PRODUCT &amp; ARCHITECTURE SPECIFICATION · VERSION 1.0</span>
+      <h1>SchoolMeritPoints — Smart School Merit System</h1>
+      <p class="muted">A mobile-first, desktop-ready Progressive Web App (PWA) that tracks personal and classroom merit points. Teachers award or deduct points in seconds, students track their progress and class leaderboard, and administrators manage classes, users, and criteria.</p>
+      <div class="doc-meta"><span>Version 1.0</span><span>November 16, 2026</span><span>PC · Tablet · Mobile · Bilingual (EN / HE) · Dark/Light Mode</span></div>
+    </div>
+    <div class="badge-star" aria-hidden="true">★</div>
+  </header>
+
+  <div class="summary">
+    <div><b>3 Access Tiers</b><span>Student, Teacher &amp; Admin</span></div>
+    <div><b>11 Built-in Criteria</b><span>5 Personal, 6 Classroom</span></div>
+    <div><b>Dual Runtime</b><span>GitHub Pages + Python/SQLite</span></div>
+    <div><b>Multi-Device</b><span>PC, Tablet &amp; Mobile PWA</span></div>
+  </div>
+
+  <section>
+    <h2><span class="sec">1</span>System Goal &amp; Scope</h2>
+    <p>Reinforce positive conduct across the school through a transparent, fair, and fast merit point system. Teachers can award points to an entire class in under 3 seconds; students immediately see why points were earned or deducted and where their class ranks.</p>
+    <div class="two">
+      <div class="role"><h3>Included in v1.0</h3>
+        <ul>
+          <li>Personal merit score tracking for every student</li>
+          <li>Normalized classroom merit score tracking (direct class points + 50% of student average)</li>
+          <li>Batch point award/deduction with criterion, teacher attribution, and timestamp</li>
+          <li>Live class &amp; student leaderboards with visual progress bars</li>
+          <li>Full audit trail with 24-hour teacher self-undo window &amp; Excel UTF-8 CSV export</li>
+        </ul>
+      </div>
+      <div class="role"><h3>Planned for Future Phases</h3>
+        <ul>
+          <li>Phase 2: Prize store &amp; point redemption catalog</li>
+          <li>Phase 2: Hallway TV live leaderboard display mode</li>
+          <li>Phase 2: Automated printable merit certificates</li>
+          <li>Phase 3: Parent read-only portal &amp; weekly digest notifications</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="sec">2</span>Roles &amp; Permissions (3-Tier RBAC)</h2>
+    <div class="two">
+      <div class="role">
+        <div class="head"><div class="ico">T</div><h3>Teacher &amp; Administrator</h3></div>
+        <ul>
+          <li>Award or deduct points for a single student, multi-selected students, or an entire class</li>
+          <li>Use quick-action chips (+1, +2, +3, +5, −1, −2, −3) or criterion defaults</li>
+          <li>Undo own accidental entries within 24 hours (Admins can undo any entry anytime)</li>
+          <li>Admin: Full CRUD for Users, Classes, and Merit Criteria + one-click CSV export</li>
+        </ul>
+      </div>
+      <div class="role">
+        <div class="head"><div class="ico gold">S</div><h3>Student</h3></div>
+        <ul>
+          <li>View own personal merit score, goal progress bar, and criterion breakdown</li>
+          <li>View own classroom score and standing on the school-wide class leaderboard</li>
+          <li>Inspect chronological personal &amp; classroom activity history</li>
+          <li>Strict privacy: cannot view other students' personal scores or modify any data</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="sec">3</span>Built-in Merit Criteria (11 Default Rules)</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Criterion (EN)</th><th>Hebrew Name</th><th>Scope</th><th>Frequency</th><th>Award</th><th>Deduct</th></tr></thead>
+      <tbody>
+        <tr><td>School Uniform</td><td>תלבושת</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−1</td></tr>
+        <tr><td>Tzitzit</td><td>ציצית</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−1</td></tr>
+        <tr><td>On-Time Arrival</td><td>הגעה בזמן</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+3</td><td class="num">−2</td></tr>
+        <tr><td>Special Study Initiative</td><td>מבצע חל"ל</td><td><span class="pill p-brand">Personal</span></td><td>Per campaign</td><td class="num">+5</td><td class="num">—</td></tr>
+        <tr><td>Exemplary Behavior</td><td>התנהגות בדרך ארץ</td><td><span class="pill p-brand">Personal</span></td><td>Unlimited</td><td class="num">+5</td><td class="num">−3</td></tr>
+        <tr><td>Classroom Cleanliness</td><td>סדר וניקיון הכיתה</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+5</td><td class="num">−3</td></tr>
+        <tr><td>Clean Classroom Walls</td><td>קירות נקיים</td><td><span class="pill p-gold">Classroom</span></td><td>Weekly</td><td class="num">+3</td><td class="num">−3</td></tr>
+        <tr><td>Decorated Classroom</td><td>כיתה מקושטת</td><td><span class="pill p-gold">Classroom</span></td><td>Monthly</td><td class="num">+10</td><td class="num">—</td></tr>
+        <tr><td>Chairs Raised at EOD</td><td>הרמת כיסאות בסוף היום</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−2</td></tr>
+        <tr><td>Classroom Duty Monitors</td><td>תורנים כיתתיים</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+3</td><td class="num">−2</td></tr>
+        <tr><td>Organized Cubbies</td><td>כוורות מסודרות</td><td><span class="pill p-gold">Classroom</span></td><td>Weekly</td><td class="num">+3</td><td class="num">−2</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <footer>SchoolMeritPoints Specification — Switch between English and Hebrew or toggle Dark/Light mode anytime using the top bar.</footer>
+</div>
+
+<script>
+  'use strict';
+  let specLang = 'he';
+  (() => {
+    const params = new URLSearchParams(location.search);
+    const qTheme = params.get('theme') || localStorage.getItem('points-theme');
+    if (qTheme === 'dark' || qTheme === 'light') {
+      document.documentElement.setAttribute('data-theme', qTheme);
+    }
+    const qLang = params.get('lang') || localStorage.getItem('points-lang');
+    if (qLang === 'en' || qLang === 'he') {
+      specLang = qLang;
+    }
+    applySpecLang();
+  })();
+
+  function applySpecLang() {
+    const isEn = specLang === 'en';
+    document.documentElement.lang = isEn ? 'en' : 'he';
+    document.getElementById('wrapHe').classList.toggle('hidden', isEn);
+    document.getElementById('wrapEn').classList.toggle('hidden', !isEn);
+    document.getElementById('specLangLabel').textContent = isEn ? 'עב' : 'EN';
+    document.getElementById('specTopTitle').textContent = isEn
+      ? 'SchoolMeritPoints · Specification'
+      : 'SchoolMeritPoints · מסמך אפיון';
+    document.getElementById('launchAppBtn').textContent = isEn
+      ? '🚀 Launch Live App'
+      : '🚀 פתח אפליקציה';
+  }
+
+  function toggleSpecLang() {
+    specLang = specLang === 'he' ? 'en' : 'he';
+    localStorage.setItem('points-lang', specLang);
+    applySpecLang();
+  }
+
+  function toggleSpecTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const isDark = cur === 'dark' || (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('points-theme', next);
+  }
+</script>
 </body></html>

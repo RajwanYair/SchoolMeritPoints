@@ -1,9 +1,9 @@
 {
-  "name": "נקודות זכות — SchoolMeritPoints",
-  "short_name": "נקודות",
+  "name": "SchoolMeritPoints — נקודות זכות",
+  "short_name": "MeritPoints",
   "start_url": "./",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#f5f7fb",
   "theme_color": "#1f4fa3",
   "icons": [{"src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}]

@@ -14,10 +14,13 @@
 *אפליקציית רשת חכמה לניהול נקודות זכות אישיות וכיתתיות בבתי ספר — מותאמת לנייד ולמחשב, עם ממשק עברי מלא (RTL) ומצב כהה.*
 
 [🌐 **Launch Live Web App (`index.html`)**](https://rajwanyair.github.io/SchoolMeritPoints/index.html) ·
+[�🇧 **English Mode (`?lang=en`)**](https://rajwanyair.github.io/SchoolMeritPoints/?lang=en) ·
+[🇮🇱 **Hebrew Mode (`?lang=he`)**](https://rajwanyair.github.io/SchoolMeritPoints/?lang=he) ·
+[🌙 **Dark Mode (`?theme=dark`)**](https://rajwanyair.github.io/SchoolMeritPoints/?theme=dark) ·
 [🎓 **Student Demo**](https://rajwanyair.github.io/SchoolMeritPoints/?demo=student) ·
 [👨‍🏫 **Teacher Demo**](https://rajwanyair.github.io/SchoolMeritPoints/?demo=teacher) ·
 [🛡️ **Admin Demo**](https://rajwanyair.github.io/SchoolMeritPoints/?demo=admin) ·
-[📄 **Specification (`spec.md`)**](spec.md)
+[📄 **Interactive Spec (`spec.html`)**](https://rajwanyair.github.io/SchoolMeritPoints/spec.html)
 
 </div>
 
@@ -27,12 +30,27 @@
 
 | Pillar | What It Delivers |
 | :--- | :--- |
+| 💻 **PC, Tablet & Mobile Responsive** | Adaptive layout: **Desktop (`≥ 1024px`)** uses a sticky sidebar navigation rail + multi-column workspace; **Tablet (`768px–1023px`)** uses centered cards & modals; **Mobile (`< 768px`)** uses a thumb-friendly bottom tab bar. |
+| 🌍 **Bilingual English (LTR) & Hebrew (RTL)** | Instant 1-click **`🌐 EN / עב`** language switcher across [`index.html`](index.html) and [`spec.html`](spec.html), dynamically switching `dir="ltr"` / `dir="rtl"` and translating all UI labels, criteria, classes, and demo records. |
+| 🌓 **Dark & Light Themes Everywhere** | 1-click **`🌓`** theme toggle on every screen (including Login & Specification), persisted in `localStorage` and controllable via `?theme=dark` or `?theme=light`. |
 | 🌐 **Run Anywhere on the Web** | Works **instantly on GitHub Pages** via an embedded client-side database engine (`LocalStorage`) **and** as a multi-user school server via `python3 server.py` (`SQLite WAL`). |
 | ⚡ **3-Tap Teacher Workflow** | Select a class, tap a criterion chip, select one or multiple students, and award/deduct points in **under 3 seconds**. |
 | ⚖️ **Fair Normalized Class Ranking** | Combines direct classroom awards with **50% of the class's average personal score**, preventing large classes from dominating smaller ones. |
 | 🔒 **Strict 3-Tier RBAC & Privacy** | **Students** see only their own score & class rank; **Teachers** award points and can undo their own actions within **24 hours**; **Admins** manage users, classes, criteria, and exports. |
 | 📦 **Zero External Dependencies** | Pure **Python 3 standard library** (`http.server`, `sqlite3`, `hmac`, `hashlib`) + vanilla HTML5/CSS3/ES2022 SPA. No `npm`, no `pip install`, no build step. |
-| 🇮🇱 **Native Hebrew RTL + Dark Mode** | Purpose-built RTL typography (`Secular One` + `Assistant`), installable on iOS/Android home screens (`manifest.webmanifest`), with instant Light/Dark theme switching. |
+
+---
+
+## 💻 Multi-Device, Language & Theme Matrix
+
+| Form Factor / Feature | Breakpoint / Trigger | Adaptive Behavior |
+| :--- | :--- | :--- |
+| 🖥️ **PC / Desktop** | `≥ 1024px` | 2-column CSS Grid shell (`240px` vertical navigation sidebar + `980px` workspace), side-by-side Student hero/stats cards, centered dialog modals, elevated login card. |
+| 📱 **Tablet (iPad / Android)** | `768px – 1023px` | Centered `820px` container, centered class-picker modal, spacious touch targets, landscape & portrait PWA support (`"orientation": "any"`). |
+| 📲 **Mobile Phone** | `< 768px` | Full-bleed single-column cards, sticky bottom navigation `.tabbar`, bottom-sheet class picker, one-hand corridor operation for teachers. |
+| 🇬🇧 **English Mode (LTR)** | `🌐 EN` button or `?lang=en` | Sets `<html lang="en" dir="ltr">`, docks desktop sidebar on the left, translates UI + all 11 criteria, class names (`Grade 6-A`), and demo names. |
+| 🇮🇱 **Hebrew Mode (RTL)** | `🌐 עב` button or `?lang=he` | Sets `<html lang="he" dir="rtl">`, docks desktop sidebar on the right, native Hebrew school terminology. |
+| 🌓 **Dark / Light Theme** | `🌓` button or `?theme=dark\|light` | Switches CSS custom properties (`data-theme="dark"` / `"light"`), auto-detects OS `prefers-color-scheme`, and persists across sessions. |
 
 ---
 
