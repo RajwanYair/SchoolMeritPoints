@@ -1,0 +1,30 @@
+# SQLite database files
+*.db
+*.db-wal
+*.db-shm
+
+# Python
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Session / tokens
+*.session

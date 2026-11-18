@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="100%" height="100%" role="img" aria-label="SchoolMeritPoints Hero Banner">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f2557"/>
+      <stop offset="55%" stop-color="#1f4fa3"/>
+      <stop offset="100%" stop-color="#15397a"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="100%" stop-color="#f2b705"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#061029" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="380" rx="24" fill="url(#bgGrad)"/>
+
+  <!-- Subtle decorative circles -->
+  <circle cx="1080" cy="60" r="180" fill="#ffffff" fill-opacity="0.04"/>
+  <circle cx="940" cy="340" r="140" fill="#f2b705" fill-opacity="0.07"/>
+  <circle cx="120" cy="330" r="110" fill="#ffffff" fill-opacity="0.03"/>
+
+  <!-- Left Side: Title, Subtitle, Feature Pills -->
+  <g transform="translate(60, 58)">
+    <!-- Star Emblem -->
+    <circle cx="38" cy="38" r="34" fill="url(#goldGrad)" stroke="#ffffff" stroke-width="3"/>
+    <text x="38" y="51" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="900" font-size="38" fill="#14213d">★</text>
+
+    <text x="92" y="34" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="800" font-size="15" fill="#f2b705" letter-spacing="2">OPEN-SOURCE EDTECH PWA · ZERO DEPENDENCIES</text>
+    <text x="92" y="72" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="900" font-size="40" fill="#ffffff">SchoolMeritPoints</text>
+
+    <text x="0" y="122" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif" font-weight="700" font-size="24" fill="#ffe066">מערכת נקודות זכות חכמה לבתי ספר — לתלמידים, מורים והנהלה</text>
+    <text x="0" y="156" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="400" font-size="16" fill="#d9e5ff">Real-time classroom &amp; personal merit tracking · Fair normalized class rankings · Dual runtime (GitHub Pages + Python/SQLite)</text>
+
+    <!-- Feature Pills -->
+    <g transform="translate(0, 188)" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="700" font-size="13">
+      <rect x="0" y="0" width="150" height="36" rx="18" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.25"/>
+      <text x="75" y="23" text-anchor="middle" fill="#ffffff">⚡ 3-Tap Scoring</text>
+
+      <rect x="162" y="0" width="168" height="36" rx="18" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.25"/>
+      <text x="246" y="23" text-anchor="middle" fill="#ffffff">⚖️ Normalized Ranks</text>
+
+      <rect x="342" y="0" width="155" height="36" rx="18" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.25"/>
+      <text x="419" y="23" text-anchor="middle" fill="#ffffff">🔒 3-Tier RBAC</text>
+
+      <rect x="509" y="0" width="175" height="36" rx="18" fill="#f2b705" fill-opacity="0.22" stroke="#f2b705" stroke-opacity="0.6"/>
+      <text x="596" y="23" text-anchor="middle" fill="#ffe066">🌐 Live Web Demo</text>
+    </g>
+
+    <!-- Bottom Metrics Strip -->
+    <g transform="translate(0, 248)" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+      <text x="0" y="20" font-weight="800" font-size="20" fill="#f2b705">11</text>
+      <text x="30" y="20" font-weight="500" font-size="14" fill="#c8d8f8">Built-in Criteria</text>
+
+      <text x="165" y="20" font-weight="800" font-size="20" fill="#4ccf95">0</text>
+      <text x="185" y="20" font-weight="500" font-size="14" fill="#c8d8f8">External Packages</text>
+
+      <text x="340" y="20" font-weight="800" font-size="20" fill="#ffe066">100%</text>
+      <text x="398" y="20" font-weight="500" font-size="14" fill="#c8d8f8">Hebrew RTL + Dark Mode</text>
+    </g>
+  </g>
+
+  <!-- Right Side: Mini UI Card Preview -->
+  <g transform="translate(830, 42)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="310" height="296" rx="22" fill="#f5f7fb" stroke="#dde3ef" stroke-width="2"/>
+    <!-- Top bar -->
+    <rect x="0" y="0" width="310" height="48" rx="22" fill="#ffffff"/>
+    <text x="285" y="30" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">שלום, נועם כהן 👋</text>
+    <circle cx="28" cy="24" r="12" fill="#e6eefc"/>
+    <text x="28" y="29" text-anchor="middle" font-size="12">🌓</text>
+
+    <!-- Hero score card -->
+    <rect x="18" y="60" width="274" height="96" rx="16" fill="#1f4fa3"/>
+    <text x="272" y="84" text-anchor="end" font-family="system-ui, sans-serif" font-size="12" fill="#d9e5ff">הנקודות שלי</text>
+    <text x="272" y="124" text-anchor="end" font-family="system-ui, sans-serif" font-weight="900" font-size="36" fill="#f2b705">128</text>
+    <rect x="36" y="136" width="236" height="7" rx="3.5" fill="#ffffff" fill-opacity="0.25"/>
+    <rect x="100" y="136" width="172" height="7" rx="3.5" fill="#f2b705"/>
+
+    <!-- Mini stats -->
+    <rect x="18" y="168" width="132" height="52" rx="12" fill="#ffffff" stroke="#dde3ef"/>
+    <text x="136" y="187" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#5b6782">מקום הכיתה</text>
+    <text x="136" y="209" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="16" fill="#14213d">#1 מתוך 3 🏆</text>
+
+    <rect x="160" y="168" width="132" height="52" rx="12" fill="#ffffff" stroke="#dde3ef"/>
+    <text x="278" y="187" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#5b6782">הכיתה שלי</text>
+    <text x="278" y="209" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="16" fill="#1f4fa3">כיתה ו'1</text>
+
+    <!-- Recent event pill -->
+    <rect x="18" y="232" width="274" height="46" rx="12" fill="#ffffff" stroke="#dde3ef"/>
+    <rect x="30" y="244" width="46" height="22" rx="6" fill="#dcf3e8"/>
+    <text x="53" y="259" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="13" fill="#1c8c5e">+5</text>
+    <text x="276" y="254" text-anchor="end" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#14213d">התנהגות בדרך ארץ</text>
+    <text x="276" y="269" text-anchor="end" font-family="system-ui, sans-serif" font-size="10" fill="#5b6782">הרב דוד לוי · היום 08:30</text>
+  </g>
+</svg>

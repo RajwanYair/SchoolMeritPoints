@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>נקודות זכות — SchoolMeritPoints</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Secular+One&display=swap">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --paper: #ffffff;
+      --ink: #14213d;
+      --muted: #5b6782;
+      --line: #dde3ef;
+      --brand: #1f4fa3;
+      --brand-soft: #e6eefc;
+      --gold: #f2b705;
+      --gold-soft: #fff5d1;
+      --plus: #1c8c5e;
+      --plus-soft: #dcf3e8;
+      --minus: #c8452f;
+      --minus-soft: #fbe3de;
+      --display: "Secular One", "Assistant", system-ui, sans-serif;
+      --body: "Assistant", system-ui, "Segoe UI", Arial, sans-serif;
+    }
+    [data-theme="dark"] {
+      --bg: #0d1426; --paper: #151f38; --ink: #e8edf8; --muted: #9aa7c4; --line: #27345a;
+      --brand: #7ea6f0; --brand-soft: #1d2c52; --gold: #f6c93b; --gold-soft: #3a3214;
+      --plus: #4ccf95; --plus-soft: #16382b; --minus: #f08a76; --minus-soft: #40211b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--ink); font-family: var(--body);
+      font-size: 16px; line-height: 1.5; -webkit-tap-highlight-color: transparent;
+    }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    input, select { font-family: inherit; }
+    .hidden { display: none !important; }
+
+    /* Splash */
+    .splash {
+      display: flex; align-items: center; justify-content: center; height: 100dvh;
+      flex-direction: column; gap: 16px;
+    }
+    .splash .star { font-size: 3rem; color: var(--gold); animation: pulse 1.5s ease infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+    .splash p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Login */
+    .login-page {
+      max-width: 400px; margin: 0 auto; padding: 24px 20px;
+      display: flex; flex-direction: column; gap: 20px; min-height: 100dvh;
+    }
+    .login-hero {
+      background: var(--brand); color: #fff; border-radius: 20px;
+      padding: 28px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .login-hero h1 { font-family: var(--display); font-weight: 400; font-size: 1.8rem; }
+    .login-hero p { opacity: 0.85; font-size: 0.95rem; }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg); border-radius: 12px; padding: 4px; font-weight: 700; text-align: center; }
+    .seg span { padding: 10px 8px; border-radius: 10px; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+    .seg span.on { background: var(--paper); color: var(--brand); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+    .fld { border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; color: var(--ink); background: var(--paper); font-size: 1rem; width: 100%; }
+    .fld:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
+    .fld::placeholder { color: var(--muted); }
+    .btn {
+      background: var(--brand); color: #fff; border-radius: 12px; padding: 14px;
+      font-weight: 800; font-size: 1.05rem; text-align: center; transition: opacity 0.2s;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn.ghost { background: transparent; color: var(--brand); border: 2px dashed var(--brand); }
+    .err { background: var(--minus-soft); color: var(--minus); border-radius: 10px; padding: 10px 14px; font-weight: 600; font-size: 0.9rem; }
+
+    /* App layout */
+    .app { display: none; }
+    .app.active { display: flex; flex-direction: column; min-height: 100dvh; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 16px; background: var(--paper); border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topbar h2 { font-family: var(--display); font-size: 1.2rem; }
+    .topbar .actions { display: flex; gap: 8px; align-items: center; }
+    .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--bg); font-size: 1.1rem; }
+    .icon-btn.danger { background: var(--minus-soft); color: var(--minus); }
+
+    /* Tab bar */
+    .tabbar {
+      display: flex; justify-content: space-around; background: var(--paper);
+      border-top: 1px solid var(--line); position: sticky; bottom: 0; z-index: 10;
+      padding: env(safe-area-inset-bottom, 4px) 0 4px;
+    }
+    .tabbar button {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      padding: 6px 10px; font-size: 11px; color: var(--muted); font-weight: 700;
+      min-width: 48px;
+    }
+    .tabbar button.on { color: var(--brand); }
+    .tabbar button .ico { font-size: 1.2rem; }
+
+    /* Main area */
+    .main { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+    .view { display: none; flex-direction: column; gap: 16px; }
+    .view.active { display: flex; }
+
+    /* Cards */
+    .card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .card.hero { background: var(--brand); color: #fff; border: none; }
+    .card.hero .big { font-family: var(--display); font-size: 2.5rem; line-height: 1; color: var(--gold); }
+    .card.hero .sub { opacity: 0.85; font-size: 0.92rem; }
+    .prog { height: 8px; border-radius: 9px; background: rgba(255,255,255,.25); overflow: hidden; margin: 4px 0; }
+    .prog i { display: block; height: 100%; background: var(--gold); border-radius: 9px; }
+    .row { display: flex; justify-content: space-between; align-items: center; }
+    .mini2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .mini { background: var(--bg); border-radius: 12px; padding: 12px; }
+    .mini b { display: block; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+    .mini span { font-size: 0.8rem; color: var(--muted); }
+    .label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; color: var(--muted); }
+
+    /* History list */
+    .ev { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); gap: 8px; }
+    .ev:last-child { border-bottom: 0; }
+    .ev small { display: block; color: var(--muted); font-size: 11px; }
+    .delta { font-weight: 800; font-variant-numeric: tabular-nums; padding: 2px 10px; border-radius: 8px; white-space: nowrap; }
+    .d-plus { color: var(--plus); background: var(--plus-soft); }
+    .d-minus { color: var(--minus); background: var(--minus-soft); }
+    .cancelled { text-decoration: line-through; opacity: 0.5; }
+
+    /* Rankings */
+    .rk { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+    .rk-num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 0.9rem; background: var(--bg); color: var(--muted); flex: none; }
+    .rk:nth-child(1) .rk-num, .rk:nth-child(2) .rk-num, .rk:nth-child(3) .rk-num { background: var(--gold); color: var(--ink); }
+    .rk-bar { flex: 1; height: 8px; border-radius: 9px; background: var(--brand-soft); overflow: hidden; }
+    .rk-bar i { display: block; height: 100%; background: var(--brand); border-radius: 9px; }
+    .rk-val { font-variant-numeric: tabular-nums; font-weight: 700; }
+
+    /* Score entry (teacher) */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px;
+      font-size: 13px; font-weight: 700; background: var(--paper); transition: all 0.15s;
+    }
+    .chip.on { background: var(--gold-soft); border-color: var(--gold); color: var(--ink); }
+    .st { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+    .box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--line); flex: none; cursor: pointer; transition: all 0.15s; }
+    .box.on { background: var(--brand); border-color: var(--brand); }
+    .box.on::after { content: "✓"; color: #fff; font-size: 12px; display: block; text-align: center; line-height: 18px; }
+    .pm2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .pm2 button { border-radius: 12px; padding: 14px; font-weight: 800; font-size: 1rem; text-align: center; }
+    .pm2 .add { background: var(--plus-soft); color: var(--plus); }
+    .pm2 .sub { background: var(--minus-soft); color: var(--minus); }
+
+    /* Class select dropdown */
+    .sel { display: flex; justify-content: space-between; align-items: center; background: var(--bg); border-radius: 12px; padding: 10px 14px; font-weight: 700; cursor: pointer; border: 1.5px solid var(--line); }
+    .sel:hover { border-color: var(--brand); }
+
+    /* Forms */
+    .form { display: flex; flex-direction: column; gap: 10px; }
+    .form label { font-weight: 600; font-size: 0.9rem; color: var(--muted); }
+    .form .fld { padding: 10px 12px; font-size: 0.95rem; }
+    select.fld { padding: 10px 12px; }
+
+    /* Class picker popup */
+    .popup { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 20; display: flex; align-items: flex-end; }
+    .popup-inner { background: var(--paper); border-radius: 18px 18px 0 0; padding: 20px; width: 100%; max-height: 70vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .popup-inner button { padding: 12px; border-radius: 10px; font-weight: 600; }
+    .popup-inner button:hover { background: var(--brand-soft); }
+    .popup-inner button.on { background: var(--brand); color: #fff; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 30;
+      background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 12px;
+      font-weight: 700; font-size: 0.9rem; animation: toast-in 0.3s ease;
+    }
+    @keyframes toast-in { from { opacity: 0; transform: translateX(-50%) translateY(10px); } }
+
+    /* Modal */
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 20; display: flex; align-items: center; justify-content: center; }
+    .modal-inner { background: var(--paper); border-radius: 18px; padding: 20px; max-width: 420px; width: 90%; max-height: 80vh; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+    .modal-inner h3 { font-family: var(--display); }
+
+    /* Quick action: +/- floating buttons for teacher */
+    .quick-bar { display: flex; gap: 8px; justify-content: center; padding: 4px 0; }
+    .quick-bar button { border-radius: 12px; padding: 10px 20px; font-weight: 800; font-size: 0.95rem; border: 2px solid; }
+    .quick-bar .q-plus { border-color: var(--plus); color: var(--plus); background: var(--plus-soft); }
+    .quick-bar .q-minus { border-color: var(--minus); color: var(--minus); background: var(--minus-soft); }
+
+    /* Delete row in admin */
+    .del { color: var(--minus); font-weight: 700; font-size: 0.85rem; background: var(--minus-soft); padding: 4px 10px; border-radius: 8px; margin-right: auto; margin-left: 0; }
+
+    /* Dark toggle */
+    .theme-toggle { font-size: 1.2rem; }
+
+    /* Scroll container for admin tables */
+    .scroll { overflow-x: auto; }
+
+    /* Quick Demo Login Box */
+    .demo-box {
+      border: 1.5px dashed var(--brand); background: var(--brand-soft);
+      border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .demo-box .demo-title {
+      font-size: 0.82rem; font-weight: 800; color: var(--brand);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .demo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .demo-btn {
+      background: var(--paper); color: var(--ink); border: 1px solid var(--line);
+      border-radius: 10px; padding: 8px 6px; font-size: 0.78rem; font-weight: 700;
+      text-align: center; transition: all 0.15s; display: flex; flex-direction: column; gap: 2px;
+    }
+    .demo-btn:hover { border-color: var(--brand); transform: translateY(-1px); }
+    .demo-btn small { color: var(--muted); font-size: 0.68rem; font-weight: 600; }
+    .mode-badge {
+      font-size: 0.72rem; padding: 2px 8px; border-radius: 99px;
+      background: var(--paper); color: var(--brand); font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SPLASH -->
+  <div id="splash" class="splash hidden">
+    <div class="star">★</div>
+    <p>טוען...</p>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="loginPage" class="login-page hidden">
+    <div class="login-hero">
+      <h1>נקודות זכות</h1>
+      <p>מערכת הנקודות של בית הספר</p>
+    </div>
+    <div class="seg">
+      <span id="segStudent" class="on" onclick="setLoginRole('student')">תלמיד</span>
+      <span id="segTeacher" onclick="setLoginRole('teacher')">מורה</span>
+    </div>
+    <input id="loginUser" class="fld" placeholder="שם משתמש" autocomplete="username" inputmode="text">
+    <input id="loginPass" class="fld" type="password" placeholder="סיסמה" autocomplete="current-password">
+    <div id="loginPinWrap" class="hidden"><input id="loginPin" class="fld" type="password" placeholder="קוד PIN (4 ספרות)" inputmode="numeric" maxlength="4" pattern="[0-9]*"></div>
+    <button class="btn" id="loginBtn" onclick="doLogin()">כניסה</button>
+    <div id="loginErr" class="err hidden"></div>
+    <div class="demo-box">
+      <div class="demo-title">
+        <span>⚡ כניסה מהירה להדגמה חיה</span>
+        <span id="modeBadge" class="mode-badge">טוען מצב...</span>
+      </div>
+      <div class="demo-grid">
+        <button class="demo-btn" onclick="quickDemoLogin('student', 'noam', '1234')">
+          <span>🎓 תלמיד</span>
+          <small>נועם כהן (ו'1)</small>
+        </button>
+        <button class="demo-btn" onclick="quickDemoLogin('teacher', 'david', 'teacher123')">
+          <span>👨‍🏫 מורה</span>
+          <small>הרב דוד לוי</small>
+        </button>
+        <button class="demo-btn" onclick="quickDemoLogin('teacher', 'admin', 'admin123')">
+          <span>🛡️ מנהל</span>
+          <small>מנהל מערכת</small>
+        </button>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--muted)">
+        <span>פועל מכל דפדפן ברשת (GitHub Pages / שרת מקומי)</span>
+        <button id="resetDemoBtn" class="hidden" style="color:var(--brand);font-weight:700;font-size:0.74rem" onclick="resetDemoStore()">↺ איפוס נתוני דמו</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP: STUDENT -->
+  <div id="appStudent" class="app">
+    <div class="topbar"><h2>שלום, <span id="stuName">תלמיד</span></h2><div class="actions"><button class="icon-btn theme-toggle" onclick="toggleTheme()">🌓</button><button class="icon-btn danger" onclick="doLogout()">✕</button></div></div>
+    <div class="main">
+      <div id="viewStudentHome" class="view active">
+        <div class="card hero">
+          <span class="sub">הנקודות שלי</span>
+          <span class="big" id="stuScore">0</span>
+          <div class="prog"><i style="width:0%"></i></div>
+          <span id="stuGoal" class="sub"></span>
+        </div>
+        <div class="mini2">
+          <div class="mini"><span>הכיתה שלי</span><b id="stuClass">-</b></div>
+          <div class="mini"><span>מקום הכיתה</span><b id="stuClassRank">-</b></div>
+        </div>
+        <span class="label">פעולות אחרונות</span>
+        <div id="stuRecent" class="card"></div>
+      </div>
+      <div id="viewStudentClass" class="view">
+        <div class="card" id="stuClassMembers"></div>
+      </div>
+      <div id="viewStudentRank" class="view">
+        <div class="card" id="stuClassRankings"></div>
+      </div>
+      <div id="viewStudentHist" class="view">
+        <div class="card" id="stuHistoryFull"></div>
+      </div>
+    </div>
+    <div class="tabbar">
+      <button class="on" onclick="switchStudentView('home')"><span class="ico">🏠</span>בית</button>
+      <button onclick="switchStudentView('class')"><span class="ico">👥</span>הכיתה</button>
+      <button onclick="switchStudentView('rank')"><span class="ico">🏆</span>דירוג</button>
+      <button onclick="switchStudentView('hist')"><span class="ico">📋</span>היסטוריה</button>
+    </div>
+  </div>
+
+  <!-- APP: TEACHER -->
+  <div id="appTeacher" class="app">
+    <div class="topbar"><h2>מורה</h2><div class="actions"><button class="icon-btn theme-toggle" onclick="toggleTheme()">🌓</button><button class="icon-btn danger" onclick="doLogout()">✕</button></div></div>
+    <div class="main">
+      <div id="viewTeacherScore" class="view active">
+        <div class="sel" onclick="pickClass()"><span id="teacherClassName">בחר כיתה</span><span class="muted">▾</span></div>
+        <div class="seg">
+          <span id="segPersonal" class="on" onclick="setEntryKind('personal')">אישי</span>
+          <span id="segClass" onclick="setEntryKind('class')">כיתתי</span>
+        </div>
+        <span class="label">על מה?</span>
+        <div class="chips" id="teacherChips"></div>
+        <div class="quick-bar">
+          <button class="q-plus" onclick="doQuick(+1)">+1</button>
+          <button class="q-plus" onclick="doQuick(+2)">+2</button>
+          <button class="q-plus" onclick="doQuick(+3)">+3</button>
+          <button class="q-plus" onclick="doQuick(+5)">+5</button>
+          <button class="q-minus" onclick="doQuick(-1)">−1</button>
+          <button class="q-minus" onclick="doQuick(-2)">−2</button>
+          <button class="q-minus" onclick="doQuick(-3)">−3</button>
+        </div>
+        <span class="label" id="teacherTargetLabel">מי?</span>
+        <div id="teacherStudentList" class="card"></div>
+        <div class="pm2">
+          <button class="add" id="teacherAddBtn" onclick="doAddPoints()">✔ הענק נקודות</button>
+          <button class="sub" id="teacherSubBtn" onclick="doSubPoints()">✔ הורד נקודות</button>
+        </div>
+      </div>
+      <div id="viewTeacherRank" class="view">
+        <div class="seg">
+          <span id="segRankClass" class="on" onclick="setRankView('class')">כיתות</span>
+          <span id="segRankStudent" onclick="setRankView('student')">תלמידים</span>
+        </div>
+        <div class="card" id="teacherRankings"></div>
+      </div>
+      <div id="viewTeacherHist" class="view">
+        <div class="card" id="teacherHist"></div>
+      </div>
+    </div>
+    <div class="tabbar">
+      <button class="on" onclick="switchTeacherView('score')"><span class="ico">⭐</span>מתן נקודות</button>
+      <button onclick="switchTeacherView('rank')"><span class="ico">🏆</span>דירוג</button>
+      <button onclick="switchTeacherView('hist')"><span class="ico">📋</span>היסטוריה</button>
+    </div>
+  </div>
+
+  <!-- APP: ADMIN -->
+  <div id="appAdmin" class="app">
+    <div class="topbar"><h2>ניהול מערכת</h2><div class="actions"><button class="icon-btn theme-toggle" onclick="toggleTheme()">🌓</button><button class="icon-btn danger" onclick="doLogout()">✕</button></div></div>
+    <div class="main">
+      <div id="viewAdminUsers" class="view active">
+        <div class="row"><span class="label">משתמשים</span><button class="btn" style="padding:6px 14px;font-size:.85rem" onclick="showUserModal()">+ הוסף</button></div>
+        <div class="card scroll" id="adminUsers"></div>
+      </div>
+      <div id="viewAdminClasses" class="view">
+        <div class="row"><span class="label">כיתות</span><button class="btn" style="padding:6px 14px;font-size:.85rem" onclick="showClassModal()">+ הוסף</button></div>
+        <div class="card scroll" id="adminClasses"></div>
+      </div>
+      <div id="viewAdminCriteria" class="view">
+        <div class="row"><span class="label">קריטריונים</span><button class="btn" style="padding:6px 14px;font-size:.85rem" onclick="showCriterionModal()">+ הוסף</button></div>
+        <div class="card scroll" id="adminCriteria"></div>
+      </div>
+      <div id="viewAdminScore" class="view">
+        <!-- teacher score view embedded for admin -->
+        <div class="sel" onclick="pickClass()"><span id="adminClassName">בחר כיתה</span><span class="muted">▾</span></div>
+        <div class="seg">
+          <span id="admSegPersonal" class="on" onclick="setEntryKind('personal')">אישי</span>
+          <span id="admSegClass" onclick="setEntryKind('class')">כיתתי</span>
+        </div>
+        <span class="label">על מה?</span>
+        <div class="chips" id="adminChips"></div>
+        <div class="quick-bar">
+          <button class="q-plus" onclick="doQuick(+1)">+1</button>
+          <button class="q-plus" onclick="doQuick(+2)">+2</button>
+          <button class="q-plus" onclick="doQuick(+3)">+3</button>
+          <button class="q-plus" onclick="doQuick(+5)">+5</button>
+          <button class="q-minus" onclick="doQuick(-1)">−1</button>
+          <button class="q-minus" onclick="doQuick(-2)">−2</button>
+          <button class="q-minus" onclick="doQuick(-3)">−3</button>
+        </div>
+        <span class="label" id="adminTargetLabel">מי?</span>
+        <div id="adminStudentList" class="card"></div>
+        <div class="pm2">
+          <button class="add" id="adminAddBtn" onclick="doAddPoints()">✔ הענק נקודות</button>
+          <button class="sub" id="adminSubBtn" onclick="doSubPoints()">✔ הורד נקודות</button>
+        </div>
+      </div>
+      <div id="viewAdminRank" class="view">
+        <div class="seg">
+          <span id="admSegRankClass" class="on" onclick="setRankView('class')">כיתות</span>
+          <span id="admSegRankStudent" onclick="setRankView('student')">תלמידים</span>
+        </div>
+        <div class="card" id="adminRankings"></div>
+      </div>
+      <div id="viewAdminExport" class="view">
+        <div class="card"><button class="btn" onclick="doExport()">📥 ייצא לאקסל (CSV)</button></div>
+      </div>
+    </div>
+    <div class="tabbar">
+      <button class="on" onclick="switchAdminView('users')">👥 משתמשים</button>
+      <button onclick="switchAdminView('classes')">🏫 כיתות</button>
+      <button onclick="switchAdminView('criteria')">📋 קריטריונים</button>
+      <button onclick="switchAdminView('score')">⭐ ניקוד</button>
+      <button onclick="switchAdminView('rank')">🏆 דירוג</button>
+      <button onclick="switchAdminView('export')">📥 ייצוא</button>
+    </div>
+  </div>
+
+  <!-- CLASS PICKER POPUP -->
+  <div id="classPicker" class="popup hidden">
+    <div class="popup-inner">
+      <div class="row"><h3>בחר כיתה</h3><button style="color:var(--minus);font-weight:700" onclick="closeClassPicker()">סגור</button></div>
+      <div id="classPickerList"></div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div id="genericModal" class="modal hidden"><div class="modal-inner" id="genericModalInner"></div></div>
+
+  <!-- TOAST -->
+  <div id="toast" class="hidden"></div>
+
+  <script>
+    'use strict';
+    let TOKEN = null, USER = null;
+    let loginRole = 'student';
+    let selectedClass = null;
+    let entryKind = 'personal';
+    let selectedCriterion = null;
+    let selectedStudents = new Set();
+    let rankView = 'class';
+    let studentClassId = null;
+    let USE_LOCAL_DEMO = false;
+    const DEMO_STORAGE_KEY = 'smp_demo_db_v1';
+
+    function createInitialDemoDb() {
+      const nowIso = new Date().toISOString().replace('T', ' ').slice(0, 19);
+      return {
+        users: [
+          { id: 1, name: 'מנהל מערכת', role: 'admin', username: 'admin', password: 'admin123', active: 1 },
+          { id: 2, name: 'הרב דוד לוי', role: 'teacher', username: 'david', password: 'teacher123', active: 1 },
+          { id: 3, name: 'הרב משה כהן', role: 'teacher', username: 'moshe', password: 'teacher123', active: 1 },
+          { id: 4, name: 'נועם כהן', role: 'student', username: 'noam', password: '1234', active: 1 },
+          { id: 5, name: 'אורי לוי', role: 'student', username: 'uri', password: '1234', active: 1 },
+          { id: 6, name: 'איתי מזרחי', role: 'student', username: 'itai', password: '1234', active: 1 },
+          { id: 7, name: 'יונתן אברהם', role: 'student', username: 'yonatan', password: '1234', active: 1 },
+          { id: 8, name: 'דניאל פרץ', role: 'student', username: 'daniel', password: '1234', active: 1 },
+          { id: 9, name: 'אייל חדד', role: 'student', username: 'eyal', password: '1234', active: 1 },
+          { id: 10, name: 'עמית ביטון', role: 'student', username: 'amit', password: '1234', active: 1 },
+          { id: 11, name: 'שחר גבאי', role: 'student', username: 'shachar', password: '1234', active: 1 },
+          { id: 12, name: 'עידו שפירא', role: 'student', username: 'ido', password: '1234', active: 1 },
+          { id: 13, name: 'נדב כץ', role: 'student', username: 'nadav', password: '1234', active: 1 }
+        ],
+        classes: [
+          { id: 1, name: "ו'1", grade: 'ו', teacher_id: 2 },
+          { id: 2, name: "ו'2", grade: 'ו', teacher_id: 3 },
+          { id: 3, name: "ז'1", grade: 'ז', teacher_id: 2 }
+        ],
+        class_members: [
+          { student_id: 4, class_id: 1, year: '2026' },
+          { student_id: 5, class_id: 1, year: '2026' },
+          { student_id: 6, class_id: 1, year: '2026' },
+          { student_id: 7, class_id: 1, year: '2026' },
+          { student_id: 8, class_id: 2, year: '2026' },
+          { student_id: 9, class_id: 2, year: '2026' },
+          { student_id: 10, class_id: 2, year: '2026' },
+          { student_id: 11, class_id: 3, year: '2026' },
+          { student_id: 12, class_id: 3, year: '2026' },
+          { student_id: 13, class_id: 3, year: '2026' }
+        ],
+        criteria: [
+          { id: 1, name: 'תלבושת', kind: 'personal', add_value: 2, sub_value: 1, daily_limit: 1, active: 1 },
+          { id: 2, name: 'ציצית', kind: 'personal', add_value: 2, sub_value: 1, daily_limit: 1, active: 1 },
+          { id: 3, name: 'הגעה בזמן', kind: 'personal', add_value: 3, sub_value: 2, daily_limit: 1, active: 1 },
+          { id: 4, name: 'מבצע חל"ל', kind: 'personal', add_value: 5, sub_value: 0, daily_limit: 0, active: 1 },
+          { id: 5, name: 'התנהגות בדרך ארץ', kind: 'personal', add_value: 5, sub_value: 3, daily_limit: 0, active: 1 },
+          { id: 6, name: 'סדר וניקיון הכיתה', kind: 'class', add_value: 5, sub_value: 3, daily_limit: 1, active: 1 },
+          { id: 7, name: 'קירות נקיים', kind: 'class', add_value: 3, sub_value: 3, daily_limit: 0, active: 1 },
+          { id: 8, name: 'כיתה מקושטת', kind: 'class', add_value: 10, sub_value: 0, daily_limit: 0, active: 1 },
+          { id: 9, name: 'הרמת כיסאות בסוף היום', kind: 'class', add_value: 2, sub_value: 2, daily_limit: 1, active: 1 },
+          { id: 10, name: 'תורנים כיתתיים', kind: 'class', add_value: 3, sub_value: 2, daily_limit: 1, active: 1 },
+          { id: 11, name: 'כוורות מסודרות', kind: 'class', add_value: 3, sub_value: 2, daily_limit: 0, active: 1 }
+        ],
+        entries: [
+          { id: 1, target_type: 'student', target_id: 4, criterion_id: 3, delta: 3, teacher_id: 2, note: 'הגעה מוקדמת לתפילה', ts: nowIso, cancelled: 0 },
+          { id: 2, target_type: 'student', target_id: 4, criterion_id: 5, delta: 5, teacher_id: 2, note: 'עזרה לחבר בכיתה', ts: nowIso, cancelled: 0 },
+          { id: 3, target_type: 'student', target_id: 4, criterion_id: 1, delta: 2, teacher_id: 2, note: 'תלבושת מלאה', ts: nowIso, cancelled: 0 },
+          { id: 4, target_type: 'student', target_id: 5, criterion_id: 4, delta: 5, teacher_id: 2, note: 'הצטיינות במבצע חל"ל', ts: nowIso, cancelled: 0 },
+          { id: 5, target_type: 'student', target_id: 6, criterion_id: 3, delta: 3, teacher_id: 2, note: 'הגעה בזמן', ts: nowIso, cancelled: 0 },
+          { id: 6, target_type: 'student', target_id: 8, criterion_id: 5, delta: 5, teacher_id: 3, note: 'דרך ארץ', ts: nowIso, cancelled: 0 },
+          { id: 7, target_type: 'student', target_id: 9, criterion_id: 4, delta: 5, teacher_id: 3, note: 'מבצע חל"ל', ts: nowIso, cancelled: 0 },
+          { id: 8, target_type: 'student', target_id: 11, criterion_id: 5, delta: 5, teacher_id: 2, note: 'התנהגות למופת', ts: nowIso, cancelled: 0 },
+          { id: 9, target_type: 'class', target_id: 1, criterion_id: 6, delta: 5, teacher_id: 2, note: 'כיתה נקייה ומסודרת', ts: nowIso, cancelled: 0 },
+          { id: 10, target_type: 'class', target_id: 1, criterion_id: 8, delta: 10, teacher_id: 2, note: 'קישוט כיתה מצטיין', ts: nowIso, cancelled: 0 },
+          { id: 11, target_type: 'class', target_id: 2, criterion_id: 6, delta: 5, teacher_id: 3, note: 'סדר וניקיון', ts: nowIso, cancelled: 0 },
+          { id: 12, target_type: 'class', target_id: 3, criterion_id: 9, delta: 2, teacher_id: 2, note: 'הרמת כיסאות בסוף היום', ts: nowIso, cancelled: 0 }
+        ]
+      };
+    }
+
+    function getDemoDb() {
+      const raw = localStorage.getItem(DEMO_STORAGE_KEY);
+      if (raw) {
+        try { return JSON.parse(raw); } catch (_) {}
+      }
+      const db = createInitialDemoDb();
+      localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(db));
+      return db;
+    }
+
+    function saveDemoDb(db) {
+      localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(db));
+    }
+
+    function resetDemoStore() {
+      localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(createInitialDemoDb()));
+      toast('נתוני הדמו אופסו לברירת המחדל');
+      if (USER) loadApp();
+    }
+
+    function setModeUI(isDemo) {
+      USE_LOCAL_DEMO = isDemo;
+      const badge = document.getElementById('modeBadge');
+      const resetBtn = document.getElementById('resetDemoBtn');
+      if (badge) badge.textContent = isDemo ? '🌐 מצב דמו (Web)' : '🟢 שרת מחובר';
+      if (resetBtn) resetBtn.classList.toggle('hidden', !isDemo);
+    }
+
+    function calcStudentScore(db, sid) {
+      return db.entries
+        .filter(e => !e.cancelled && e.target_type === 'student' && e.target_id === sid)
+        .reduce((acc, e) => acc + e.delta, 0);
+    }
+
+    function calcClassScore(db, cid) {
+      const direct = db.entries
+        .filter(e => !e.cancelled && e.target_type === 'class' && e.target_id === cid)
+        .reduce((acc, e) => acc + e.delta, 0);
+      const members = db.class_members.filter(cm => cm.class_id === cid);
+      const avg = members.length
+        ? members.reduce((acc, m) => acc + calcStudentScore(db, m.student_id), 0) / members.length
+        : 0;
+      return direct + Math.trunc(avg * 0.5);
+    }
+
+    async function localApi(method, fullPath, body) {
+      const db = getDemoDb();
+      const urlObj = new URL(fullPath, 'http://localhost');
+      const path = urlObj.pathname;
+      const params = urlObj.searchParams;
+
+      if (path === '/api/login' && method === 'POST') {
+        const u = db.users.find(x => x.username === (body.username || '').trim() && x.active);
+        if (!u || u.password !== body.password) throw { error: 'שם משתמש או סיסמה שגויים' };
+        return { token: `demo:${u.id}:${u.role}`, user: { id: u.id, name: u.name, role: u.role } };
+      }
+      if (path === '/api/logout') return { ok: true };
+      if (path === '/api/me') {
+        if (!USER) throw { error: 'נדרשת התחברות' };
+        const u = db.users.find(x => x.id === USER.id && x.active);
+        if (!u) throw { error: 'משתמש לא נמצא' };
+        return u;
+      }
+      if (!USER) throw { error: 'נדרשת התחברות' };
+
+      if (path === '/api/dashboard' && method === 'GET') {
+        if (USER.role === 'student') {
+          const personal = calcStudentScore(db, USER.id);
+          const cm = db.class_members.find(x => x.student_id === USER.id);
+          if (!cm) return { personal };
+          const cl = db.classes.find(c => c.id === cm.class_id);
+          const ranked = db.classes
+            .map(c => ({ id: c.id, score: calcClassScore(db, c.id) }))
+            .sort((a, b) => b.score - a.score);
+          const rank = ranked.findIndex(r => r.id === cl.id) + 1;
+          return {
+            personal,
+            class_name: cl.name,
+            class_score: calcClassScore(db, cl.id),
+            class_rank: rank,
+            total_classes: db.classes.length
+          };
+        }
+        return {
+          total_students: db.users.filter(u => u.role === 'student' && u.active).length,
+          total_classes: db.classes.length,
+          recent: db.entries.filter(e => !e.cancelled).slice(-10).reverse()
+        };
+      }
+
+      if (path === '/api/classes' && method === 'GET') {
+        return db.classes.map(c => {
+          const t = db.users.find(u => u.id === c.teacher_id);
+          const count = db.class_members.filter(cm => cm.class_id === c.id).length;
+          return { ...c, teacher_name: t ? t.name : '-', student_count: count };
+        });
+      }
+      if (path === '/api/classes' && method === 'POST') {
+        if (!body.name) throw { error: 'שם כיתה חובה' };
+        const id = Math.max(0, ...db.classes.map(c => c.id)) + 1;
+        db.classes.push({ id, name: body.name, grade: body.grade || '', teacher_id: body.teacher_id || USER.id });
+        saveDemoDb(db);
+        return { id, name: body.name };
+      }
+      if (path.startsWith('/api/classes/') && method === 'DELETE') {
+        const cid = +path.split('/').pop();
+        db.class_members = db.class_members.filter(cm => cm.class_id !== cid);
+        db.classes = db.classes.filter(c => c.id !== cid);
+        saveDemoDb(db);
+        return { ok: true };
+      }
+
+      if (path === '/api/criteria' && method === 'GET') return db.criteria;
+      if (path === '/api/criteria' && method === 'POST') {
+        const id = Math.max(0, ...db.criteria.map(c => c.id)) + 1;
+        db.criteria.push({
+          id,
+          name: body.name,
+          kind: body.kind || 'personal',
+          add_value: +body.add_value || 1,
+          sub_value: +body.sub_value || 0,
+          daily_limit: +body.daily_limit || 0,
+          active: 1
+        });
+        saveDemoDb(db);
+        return { id };
+      }
+      if (path.startsWith('/api/criteria/') && method === 'PUT') {
+        const cid = +path.split('/').pop();
+        const cr = db.criteria.find(c => c.id === cid);
+        if (cr) Object.assign(cr, body);
+        saveDemoDb(db);
+        return { ok: true };
+      }
+
+      if (path === '/api/class-score' && method === 'GET') {
+        const cid = +params.get('id');
+        const members = db.class_members
+          .filter(cm => cm.class_id === cid)
+          .map(cm => db.users.find(u => u.id === cm.student_id && u.active))
+          .filter(Boolean)
+          .map(u => ({ id: u.id, name: u.name, score: calcStudentScore(db, u.id) }));
+        return { class_id: cid, score: calcClassScore(db, cid), members };
+      }
+
+      if (path === '/api/rankings/classes' && method === 'GET') {
+        const ranked = db.classes
+          .map(c => ({ id: c.id, name: c.name, grade: c.grade, score: calcClassScore(db, c.id) }))
+          .sort((a, b) => b.score - a.score);
+        ranked.forEach((r, i) => { r.rank = i + 1; });
+        return ranked;
+      }
+
+      if (path === '/api/rankings/students' && method === 'GET') {
+        const cid = params.get('class_id');
+        const students = cid
+          ? db.class_members.filter(cm => cm.class_id === +cid).map(cm => db.users.find(u => u.id === cm.student_id && u.active)).filter(Boolean)
+          : db.users.filter(u => u.role === 'student' && u.active);
+        const ranked = students
+          .map(s => ({ id: s.id, name: s.name, score: calcStudentScore(db, s.id) }))
+          .sort((a, b) => b.score - a.score);
+        ranked.forEach((r, i) => { r.rank = i + 1; });
+        return ranked;
+      }
+
+      if (path === '/api/entries' && method === 'POST') {
+        const crit = db.criteria.find(c => c.id === body.criterion_id && c.active);
+        if (!crit) throw { error: 'קריטריון לא נמצא' };
+        let delta = +body.delta;
+        delta = delta > 0 ? Math.min(delta, crit.add_value) : Math.max(delta, -(crit.sub_value || 1));
+        const nowIso = new Date().toISOString().replace('T', ' ').slice(0, 19);
+        const ids = [];
+        for (const tid of (body.target_ids || [body.target_id])) {
+          const id = Math.max(0, ...db.entries.map(e => e.id)) + 1;
+          db.entries.push({
+            id,
+            target_type: body.target_type,
+            target_id: +tid,
+            criterion_id: crit.id,
+            delta,
+            teacher_id: USER.id,
+            note: body.note || '',
+            ts: nowIso,
+            cancelled: 0
+          });
+          ids.push(id);
+        }
+        saveDemoDb(db);
+        return { ids, delta };
+      }
+
+      if (path.startsWith('/api/entries/') && method === 'DELETE') {
+        const eid = +path.split('/').pop();
+        const entry = db.entries.find(e => e.id === eid);
+        if (!entry) throw { error: 'רשומה לא נמצאה' };
+        entry.cancelled = 1;
+        saveDemoDb(db);
+        return { ok: true };
+      }
+
+      if (path === '/api/history' && method === 'GET') {
+        const limit = +(params.get('limit') || 50);
+        let list = [...db.entries];
+        if (USER.role === 'student') {
+          const myClasses = db.class_members.filter(cm => cm.student_id === USER.id).map(cm => cm.class_id);
+          list = list.filter(e =>
+            (e.target_type === 'student' && e.target_id === USER.id) ||
+            (e.target_type === 'class' && myClasses.includes(e.target_id))
+          );
+        }
+        return list.reverse().slice(0, limit).map(e => {
+          const cr = db.criteria.find(c => c.id === e.criterion_id);
+          const t = db.users.find(u => u.id === e.teacher_id);
+          return {
+            ...e,
+            criterion: cr ? cr.name : 'קריטריון',
+            teacher_name: t ? t.name : 'מורה'
+          };
+        });
+      }
+
+      if (path === '/api/users' && method === 'GET') {
+        return db.users.filter(u => u.active);
+      }
+      if (path === '/api/users' && method === 'POST') {
+        if (!body.name || !body.username) throw { error: 'שם ושם משתמש חובה' };
+        if (db.users.some(u => u.username === body.username)) throw { error: 'שם משתמש כבר קיים' };
+        const id = Math.max(0, ...db.users.map(u => u.id)) + 1;
+        db.users.push({
+          id,
+          name: body.name,
+          role: body.role || 'student',
+          username: body.username,
+          password: body.password || '1234',
+          active: 1
+        });
+        if ((body.role || 'student') === 'student' && db.classes.length > 0) {
+          db.class_members.push({ student_id: id, class_id: db.classes[0].id, year: '2026' });
+        }
+        saveDemoDb(db);
+        return { id, name: body.name, role: body.role, username: body.username };
+      }
+      if (path.startsWith('/api/users/') && method === 'DELETE') {
+        const uid = +path.split('/').pop();
+        const u = db.users.find(x => x.id === uid);
+        if (u) u.active = 0;
+        saveDemoDb(db);
+        return { ok: true };
+      }
+
+      throw { error: 'לא נמצא' };
+    }
+
+    function api(method, path, body) {
+      if (USE_LOCAL_DEMO) {
+        return localApi(method, path, body);
+      }
+      const h = { 'Content-Type': 'application/json' };
+      if (TOKEN) h['Authorization'] = 'Bearer ' + TOKEN;
+      return fetch(path, { method, headers: h, body: body ? JSON.stringify(body) : undefined })
+        .then(r => {
+          if (r.status === 404 || r.status === 405 || (r.headers.get('content-type') || '').indexOf('application/json') === -1) {
+            setModeUI(true);
+            return localApi(method, path, body);
+          }
+          return r.ok ? r.json() : r.json().then(e => { throw e; });
+        })
+        .catch(err => {
+          if (err && err.error) throw err;
+          setModeUI(true);
+          return localApi(method, path, body);
+        });
+    }
+
+    function quickDemoLogin(roleTab, username, password) {
+      setLoginRole(roleTab);
+      document.getElementById('loginUser').value = username;
+      document.getElementById('loginPass').value = password;
+      doLogin();
+    }
+
+    function showSplash() {
+      document.querySelectorAll('.app,.login-page').forEach(e => e.classList.add('hidden'));
+      document.getElementById('splash').classList.remove('hidden');
+    }
+    function hideSplash() { document.getElementById('splash').classList.add('hidden'); }
+    function showLogin() {
+      document.querySelectorAll('.app').forEach(e => e.classList.remove('active'));
+      document.getElementById('loginPage').classList.remove('hidden');
+      document.getElementById('splash').classList.add('hidden');
+    }
+    function showApp(role) {
+      document.getElementById('loginPage').classList.add('hidden');
+      document.getElementById('splash').classList.add('hidden');
+      document.getElementById('appStudent').classList.toggle('active', role === 'student');
+      document.getElementById('appTeacher').classList.toggle('active', role === 'teacher');
+      document.getElementById('appAdmin').classList.toggle('active', role === 'admin');
+    }
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 2500);
+    }
+
+    // ── Theme ──
+    (() => {
+      const saved = localStorage.getItem('points-theme');
+      if (saved) document.documentElement.setAttribute('data-theme', saved);
+    })();
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('points-theme', next);
+    }
+
+    // ── Login ──
+    function setLoginRole(role) {
+      loginRole = role;
+      document.getElementById('segStudent').classList.toggle('on', role === 'student');
+      document.getElementById('segTeacher').classList.toggle('on', role === 'teacher');
+    }
+
+    async function doLogin() {
+      const btn = document.getElementById('loginBtn');
+      const err = document.getElementById('loginErr');
+      err.classList.add('hidden');
+      btn.disabled = true;
+      btn.textContent = 'מתחבר...';
+      try {
+        const res = await api('POST', '/api/login', {
+          username: document.getElementById('loginUser').value.trim(),
+          password: document.getElementById('loginPass').value,
+        });
+        TOKEN = res.token;
+        USER = res.user;
+        if (loginRole === 'teacher' && USER.role !== 'teacher' && USER.role !== 'admin')
+          { throw { error: 'אינך מורה / מנהל' }; }
+        setupUser();
+        showApp(USER.role);
+        loadApp();
+      } catch (e) {
+        err.textContent = e.error || 'התחברות נכשלה';
+        err.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'כניסה';
+      }
+    }
+
+    async function doLogout() {
+      TOKEN = null; USER = null;
+      showLogin();
+      document.getElementById('loginPass').value = '';
+    }
+
+    // ── App setup ──
+    function setupUser() {
+      if (USER.role === 'student') {
+        document.getElementById('stuName').textContent = USER.name;
+      }
+    }
+
+    async function loadApp() {
+      if (USER.role === 'student') await loadStudent();
+      else if (USER.role === 'teacher') await loadTeacher();
+      else if (USER.role === 'admin') await loadAdmin();
+    }
+
+    // ── Student ──
+    async function loadStudent() {
+      try {
+        const dash = await api('GET', '/api/dashboard');
+        document.getElementById('stuScore').textContent = dash.personal || 0;
+        document.getElementById('stuGoal').textContent = 'המשך כך!';
+        if (dash.class_name) {
+          studentClassId = dash.class_score ? dash.class_score : null;
+          document.getElementById('stuClass').textContent = dash.class_name;
+          document.getElementById('stuClassRank').textContent = `${dash.class_rank} מתוך ${dash.total_classes}`;
+        }
+        const hist = await api('GET', '/api/history?limit=20');
+        renderStudentRecent(hist);
+      } catch (e) { toast('שגיאה בטעינה'); }
+    }
+
+    function renderStudentRecent(hist) {
+      const el = document.getElementById('stuRecent');
+      el.innerHTML = hist.length ? hist.slice(0, 8).map(h => `
+        <div class="ev${h.cancelled ? ' cancelled' : ''}">
+          <div>${h.criterion}<small>${new Date(h.ts).toLocaleString('he-IL')} · ${h.teacher_name}</small></div>
+          <span class="delta ${h.delta > 0 ? 'd-plus' : 'd-minus'}">${h.delta > 0 ? '+' + h.delta : h.delta}</span>
+        </div>`).join('') : '<span class="muted">אין פעולות עדיין</span>';
+    }
+
+    async function loadStudentClassView() {
+      try {
+        const rankings = await api('GET', '/api/rankings/classes');
+        const el = document.getElementById('stuClassMembers');
+        el.innerHTML = rankings.map(r => `
+          <div class="rk"><span class="rk-num">${r.rank}</span><span>${r.name}</span><div class="rk-bar" style="flex:1"><i style="width:${r.score > 0 ? Math.min(100, r.score / Math.max(...rankings.map(x => x.score || 1)) * 100) : 0}%"></i></div><span class="rk-val">${r.score}</span></div>
+        `).join('');
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    async function loadStudentRankView() {
+      try {
+        const rankings = await api('GET', '/api/rankings/classes');
+        const el = document.getElementById('stuClassRankings');
+        el.innerHTML = rankings.map(r => `
+          <div class="rk"><span class="rk-num">${r.rank}</span><span>${r.name}</span><div class="rk-bar" style="flex:1"><i style="width:${r.score > 0 ? Math.min(100, r.score / Math.max(...rankings.map(x => x.score || 1)) * 100) : 0}%"></i></div><span class="rk-val">${r.score}</span></div>
+        `).join('');
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    async function loadStudentHistView() {
+      try {
+        const hist = await api('GET', '/api/history?limit=100');
+        const el = document.getElementById('stuHistoryFull');
+        el.innerHTML = hist.length ? hist.map(h => `
+          <div class="ev${h.cancelled ? ' cancelled' : ''}">
+            <div>${h.criterion}<small>${new Date(h.ts).toLocaleString('he-IL')} · ${h.teacher_name}${h.note ? ' · ' + h.note : ''}</small></div>
+            <span class="delta ${h.delta > 0 ? 'd-plus' : 'd-minus'}">${h.delta > 0 ? '+' + h.delta : h.delta}</span>
+          </div>`).join('') : '<span class="muted">אין היסטוריה</span>';
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    function switchStudentView(view) {
+      ['home', 'class', 'rank', 'hist'].forEach((v, i) => {
+        document.getElementById('viewStudent' + v[0].toUpperCase() + v.slice(1)).classList.toggle('active', v === view);
+        document.querySelectorAll('#appStudent .tabbar button')[i].classList.toggle('on', v === view);
+      });
+      if (view === 'class') loadStudentClassView();
+      if (view === 'rank') loadStudentRankView();
+      if (view === 'hist') loadStudentHistView();
+    }
+
+    // ── Teacher ──
+    async function loadTeacher() {
+      await loadClasses();
+      await loadCriteria(true);
+    }
+
+    async function loadAdmin() {
+      await loadClasses();
+      await loadCriteria(false);
+      loadAdminUsers();
+    }
+
+    async function loadClasses() {
+      try {
+        const classes = await api('GET', '/api/classes');
+        window.allClasses = classes;
+        if (classes.length > 0 && !selectedClass) {
+          selectedClass = classes[0].id;
+          document.getElementById('teacherClassName').textContent = classes[0].name;
+          document.getElementById('adminClassName').textContent = classes[0].name;
+          await loadStudentsForClass();
+        }
+      } catch (e) { toast('שגיאה בטעינת כיתות'); }
+    }
+
+    async function loadStudentsForClass() {
+      if (!selectedClass) return;
+      try {
+        const res = await api('GET', '/api/class-score?id=' + selectedClass);
+        const members = res.members || [];
+        const el = (USER.role === 'admin') ? document.getElementById('adminStudentList') : document.getElementById('teacherStudentList');
+        const allBtn = el.parentElement.querySelector('span[style*="color:var(--brand)"]');
+        el.innerHTML = '<div class="row"><span class="label">' + (entryKind === 'personal' ? 'תלמידים' : 'הכיתה') + '</span><span style="color:var(--brand);font-weight:700;font-size:12px;cursor:pointer" onclick="toggleAllStudents()">בחר את כולם</span></div>';
+        if (entryKind === 'personal') {
+          members.forEach(m => {
+            el.innerHTML += `<div class="st" onclick="toggleStudent(${m.id}, this)" data-sid="${m.id}"><span class="box${selectedStudents.has(m.id) ? ' on' : ''}"></span><span>${m.name}</span><span class="muted" style="font-variant-numeric:tabular-nums">${m.score}</span></div>`;
+          });
+        } else {
+          el.innerHTML = `<div class="ev"><span>${document.getElementById('teacherClassName').textContent || 'הכיתה'}</span></div>`;
+        }
+      } catch (e) { toast('שגיאה בטעינת תלמידים'); }
+    }
+
+    function toggleStudent(sid, el) {
+      if (selectedStudents.has(sid)) selectedStudents.delete(sid);
+      else selectedStudents.add(sid);
+      if (el) el.querySelector('.box').classList.toggle('on');
+    }
+
+    function toggleAllStudents() {
+      const el = USER.role === 'admin' ? document.getElementById('adminStudentList') : document.getElementById('teacherStudentList');
+      const boxes = el.querySelectorAll('.st');
+      const allSelected = boxes.length && [...boxes].every(b => selectedStudents.has(+b.dataset.sid));
+      if (allSelected) { selectedStudents.clear(); } else {
+        boxes.forEach(b => selectedStudents.add(+b.dataset.sid));
+      }
+      boxes.forEach(b => b.querySelector('.box').classList.toggle('on', selectedStudents.has(+b.dataset.sid)));
+    }
+
+    async function loadCriteria(forTeacher) {
+      try {
+        const criteria = await api('GET', '/api/criteria');
+        window.allCriteria = criteria;
+        if (criteria.length > 0 && !selectedCriterion) {
+          selectedCriterion = criteria[0].id;
+        }
+        renderChips(forTeacher);
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    function renderChips(forTeacher) {
+      const el = forTeacher ? document.getElementById('teacherChips') : document.getElementById('adminChips');
+      if (!el) return;
+      const filtered = window.allCriteria.filter(c => c.active && c.kind === entryKind);
+      el.innerHTML = filtered.map(c => `<span class="chip${c.id === selectedCriterion ? ' on' : ''}" onclick="selectCriterion(${c.id})">${c.name}</span>`).join('');
+    }
+
+    function selectCriterion(cid) {
+      selectedCriterion = cid;
+      const forTeacher = USER.role === 'teacher';
+      renderChips(forTeacher);
+    }
+
+    function setEntryKind(kind) {
+      entryKind = kind;
+      document.getElementById('segPersonal').classList.toggle('on', kind === 'personal');
+      document.getElementById('segClass').classList.toggle('on', kind === 'class');
+      document.getElementById('admSegPersonal').classList.toggle('on', kind === 'personal');
+      document.getElementById('admSegClass').classList.toggle('on', kind === 'class');
+      const forTeacher = USER.role === 'teacher';
+      renderChips(forTeacher);
+      loadStudentsForClass();
+    }
+
+    function pickClass() {
+      const list = document.getElementById('classPickerList');
+      list.innerHTML = (window.allClasses || []).map(c => `<button class="${c.id === selectedClass ? 'on' : ''}" onclick="selectClass(${c.id})">${c.name} (${c.grade || ''}) · ${c.student_count} תלמידים</button>`).join('');
+      document.getElementById('classPicker').classList.remove('hidden');
+    }
+
+    function selectClass(cid) {
+      selectedClass = cid;
+      selectedStudents.clear();
+      const cl = window.allClasses.find(c => c.id === cid);
+      if (cl) {
+        document.getElementById('teacherClassName').textContent = cl.name;
+        document.getElementById('adminClassName').textContent = cl.name;
+      }
+      closeClassPicker();
+      loadStudentsForClass();
+    }
+
+    function closeClassPicker() {
+      document.getElementById('classPicker').classList.add('hidden');
+    }
+
+    function doQuick(delta) {
+      if (!selectedClass) return toast('בחר כיתה תחילה');
+      if (!selectedCriterion) return toast('בחר קריטריון');
+      doPoints(selectedCriterion, delta);
+    }
+
+    async function doAddPoints() {
+      if (!selectedCriterion) return toast('בחר קריטריון');
+      const crit = window.allCriteria.find(c => c.id === selectedCriterion);
+      if (!crit) return;
+      doPoints(selectedCriterion, crit.add_value || 1);
+    }
+
+    async function doSubPoints() {
+      if (!selectedCriterion) return toast('בחר קריטריון');
+      const crit = window.allCriteria.find(c => c.id === selectedCriterion);
+      if (!crit) return;
+      doPoints(selectedCriterion, -(crit.sub_value || 1));
+    }
+
+    async function doPoints(criterionId, delta) {
+      if (entryKind === 'personal' && selectedStudents.size === 0) return toast('בחר תלמידים');
+      try {
+        const body = {
+          target_type: entryKind === 'personal' ? 'student' : 'class',
+          target_ids: entryKind === 'personal' ? [...selectedStudents] : [selectedClass],
+          criterion_id: criterionId,
+          delta: delta,
+          note: '',
+        };
+        await api('POST', '/api/entries', body);
+        toast(delta > 0 ? `+${delta} נקודות!` : `${delta} נקודות`);
+        selectedStudents.clear();
+        await loadStudentsForClass();
+        if (USER.role === 'student') await loadStudent();
+      } catch (e) { toast(e.error || 'שגיאה'); }
+    }
+
+    // ── Rankings ──
+    function setRankView(view) {
+      rankView = view;
+      document.getElementById('segRankClass').classList.toggle('on', view === 'class');
+      document.getElementById('segRankStudent').classList.toggle('on', view === 'student');
+      document.getElementById('admSegRankClass').classList.toggle('on', view === 'class');
+      document.getElementById('admSegRankStudent').classList.toggle('on', view === 'student');
+      loadRankings();
+    }
+
+    async function loadRankings() {
+      const el = USER.role === 'admin' ? document.getElementById('adminRankings') : document.getElementById('teacherRankings');
+      try {
+        if (rankView === 'class') {
+          const rankings = await api('GET', '/api/rankings/classes');
+          const max = Math.max(...rankings.map(r => r.score || 1), 1);
+          el.innerHTML = rankings.map(r => `
+            <div class="rk"><span class="rk-num">${r.rank}</span><span>${r.name}</span><div class="rk-bar" style="flex:1"><i style="width:${r.score / max * 100}%"></i></div><span class="rk-val">${r.score}</span></div>
+          `).join('');
+        } else {
+          const rankings = await api('GET', '/api/rankings/students?class_id=' + (selectedClass || ''));
+          const max = Math.max(...rankings.map(r => r.score || 1), 1);
+          el.innerHTML = rankings.map(r => `
+            <div class="rk"><span class="rk-num">${r.rank}</span><span>${r.name}</span><div class="rk-bar" style="flex:1"><i style="width:${r.score / max * 100}%"></i></div><span class="rk-val">${r.score}</span></div>
+          `).join('');
+        }
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    // ── Teacher view switching ──
+    function switchTeacherView(view) {
+      ['score', 'rank', 'hist'].forEach((v, i) => {
+        document.getElementById('viewTeacher' + v[0].toUpperCase() + v.slice(1)).classList.toggle('active', v === view);
+        document.querySelectorAll('#appTeacher .tabbar button')[i].classList.toggle('on', v === view);
+      });
+      if (view === 'rank') loadRankings();
+      if (view === 'hist') loadHistory('teacherHist');
+    }
+
+    async function loadHistory(elId) {
+      const el = document.getElementById(elId);
+      try {
+        const hist = await api('GET', '/api/history?limit=100');
+        el.innerHTML = hist.length ? hist.map(h => `
+          <div class="ev${h.cancelled ? ' cancelled' : ''}">
+            <div>${h.criterion} · ${h.target_type === 'student' ? 'תלמיד' : 'כיתה'} #${h.target_id}
+              <small>${new Date(h.ts).toLocaleString('he-IL')} · ${h.teacher_name}${h.note ? ' · ' + h.note : ''}</small></div>
+            <div><span class="delta ${h.delta > 0 ? 'd-plus' : 'd-minus'}">${h.delta > 0 ? '+' + h.delta : h.delta}</span>
+              ${!h.cancelled ? '<button class="del" onclick="cancelEntry(' + h.id + ')">בטל</button>' : ''}</div>
+          </div>`).join('') : '<span class="muted">אין פעולות</span>';
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    async function cancelEntry(eid) {
+      if (!confirm('לבטל פעולה זו?')) return;
+      try {
+        await api('DELETE', '/api/entries/' + eid);
+        toast('בוטל');
+        loadHistory('teacherHist');
+      } catch (e) { toast(e.error || 'שגיאה'); }
+    }
+
+    // ── Admin ──
+    function switchAdminView(view) {
+      ['users', 'classes', 'criteria', 'score', 'rank', 'export'].forEach((v, i) => {
+        document.getElementById('viewAdmin' + v[0].toUpperCase() + v.slice(1)).classList.toggle('active', v === view);
+        document.querySelectorAll('#appAdmin .tabbar button')[i].classList.toggle('on', v === view);
+      });
+      if (view === 'users') loadAdminUsers();
+      if (view === 'classes') loadAdminClasses();
+      if (view === 'criteria') loadAdminCriteria();
+      if (view === 'rank') loadRankings();
+    }
+
+    async function loadAdminUsers() {
+      try {
+        const users = await api('GET', '/api/users');
+        const el = document.getElementById('adminUsers');
+        el.innerHTML = '<div style="display:grid;grid-template-columns:auto auto auto 40px;gap:8px;align-items:center;font-size:.9rem">' +
+          users.map(u => `<span>${u.name}</span><span class="muted">@${u.username}</span><span class="pill" style="font-size:.75rem;background:var(--brand-soft);color:var(--brand);padding:2px 8px;border-radius:99px">${u.role}</span>${u.role !== 'admin' ? '<button class="del" onclick="deleteUser(' + u.id + ')">✕</button>' : '<span></span>'}`).join('') +
+          '</div>';
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    function showUserModal() {
+      document.getElementById('genericModalInner').innerHTML = `
+        <h3>הוסף משתמש</h3>
+        <div class="form">
+          <label>שם</label><input id="uName" class="fld" placeholder="שם מלא">
+          <label>תפקיד</label><select id="uRole" class="fld"><option value="teacher">מורה</option><option value="student">תלמיד</option><option value="admin">מנהל</option></select>
+          <label>שם משתמש</label><input id="uUser" class="fld" placeholder="שם משתמש">
+          <label>סיסמה</label><input id="uPass" class="fld" type="password" placeholder="סיסמה">
+          <button class="btn" onclick="doCreateUser()">צור</button>
+          <button style="color:var(--muted)" onclick="closeModal()">ביטול</button>
+        </div>`;
+      document.getElementById('genericModal').classList.remove('hidden');
+    }
+
+    function closeModal() { document.getElementById('genericModal').classList.add('hidden'); }
+
+    async function doCreateUser() {
+      try {
+        await api('POST', '/api/users', {
+          name: document.getElementById('uName').value.trim(),
+          role: document.getElementById('uRole').value,
+          username: document.getElementById('uUser').value.trim(),
+          password: document.getElementById('uPass').value,
+        });
+        closeModal();
+        toast('נוצר');
+        loadAdminUsers();
+      } catch (e) { toast(e.error || 'שגיאה'); }
+    }
+
+    async function deleteUser(uid) {
+      if (!confirm('לבטל משתמש זה?')) return;
+      try { await api('DELETE', '/api/users/' + uid); toast('בוטל'); loadAdminUsers(); } catch (e) { toast('שגיאה'); }
+    }
+
+    async function loadAdminClasses() {
+      try {
+        const classes = await api('GET', '/api/classes');
+        const el = document.getElementById('adminClasses');
+        el.innerHTML = '<div style="display:grid;grid-template-columns:auto auto 40px;gap:8px;align-items:center;font-size:.9rem">' +
+          classes.map(c => `<span>${c.name}</span><span class="muted">${c.grade || ''} · ${c.student_count || 0} תלמידים · מורה: ${c.teacher_name || '-'}</span><button class="del" onclick="deleteClass(${c.id})">✕</button>`).join('') +
+          '</div>';
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    function showClassModal() {
+      document.getElementById('genericModalInner').innerHTML = `
+        <h3>הוסף כיתה</h3>
+        <div class="form">
+          <label>שם</label><input id="cName" class="fld" placeholder="ו'2">
+          <label>שכבה</label><input id="cGrade" class="fld" placeholder="ו">
+          <button class="btn" onclick="doCreateClass()">צור</button>
+          <button style="color:var(--muted)" onclick="closeModal()">ביטול</button>
+        </div>`;
+      document.getElementById('genericModal').classList.remove('hidden');
+    }
+
+    async function doCreateClass() {
+      try {
+        await api('POST', '/api/classes', {
+          name: document.getElementById('cName').value.trim(),
+          grade: document.getElementById('cGrade').value.trim(),
+        });
+        closeModal();
+        toast('נוצרה');
+        loadAdminClasses();
+        loadClasses();
+      } catch (e) { toast(e.error || 'שגיאה'); }
+    }
+
+    async function deleteClass(cid) {
+      if (!confirm('למחוק כיתה?')) return;
+      try { await api('DELETE', '/api/classes/' + cid); toast('נמחקה'); loadAdminClasses(); loadClasses(); } catch (e) { toast('שגיאה'); }
+    }
+
+    async function loadAdminCriteria() {
+      try {
+        const criteria = await api('GET', '/api/criteria');
+        const el = document.getElementById('adminCriteria');
+        el.innerHTML = '<div style="display:grid;grid-template-columns:auto 50px 50px 40px;gap:8px;align-items:center;font-size:.9rem">' +
+          criteria.map(c => `<span>${c.name}</span><span class="pill d-plus">+${c.add_value}</span><span class="pill d-minus">${c.sub_value ? '−' + c.sub_value : '—'}</span><button class="del" onclick="toggleCriterion(${c.id},${c.active})">${c.active ? '✕' : '✓'}</button>`).join('') +
+          '</div>';
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    function showCriterionModal() {
+      document.getElementById('genericModalInner').innerHTML = `
+        <h3>הוסף קריטריון</h3>
+        <div class="form">
+          <label>שם</label><input id="crName" class="fld" placeholder="שם">
+          <label>סוג</label><select id="crKind" class="fld"><option value="personal">אישי</option><option value="class">כיתתי</option></select>
+          <label>ערך הוספה</label><input id="crAdd" class="fld" type="number" value="1">
+          <label>ערך הורדה</label><input id="crSub" class="fld" type="number" value="1">
+          <label>מגבלה יומית</label><input id="crLimit" class="fld" type="number" value="1">
+          <button class="btn" onclick="doCreateCriterion()">צור</button>
+          <button style="color:var(--muted)" onclick="closeModal()">ביטול</button>
+        </div>`;
+      document.getElementById('genericModal').classList.remove('hidden');
+    }
+
+    async function doCreateCriterion() {
+      try {
+        await api('POST', '/api/criteria', {
+          name: document.getElementById('crName').value.trim(),
+          kind: document.getElementById('crKind').value,
+          add_value: +document.getElementById('crAdd').value,
+          sub_value: +document.getElementById('crSub').value,
+          daily_limit: +document.getElementById('crLimit').value,
+          active: 1,
+        });
+        closeModal(); toast('נוסף'); loadAdminCriteria(); loadCriteria(false);
+      } catch (e) { toast(e.error || 'שגיאה'); }
+    }
+
+    async function toggleCriterion(cid, active) {
+      try {
+        await api('PUT', '/api/criteria/' + cid, { active: active ? 0 : 1 });
+        toast(active ? 'הושבת' : 'הופעל');
+        loadAdminCriteria(); loadCriteria(false);
+      } catch (e) { toast('שגיאה'); }
+    }
+
+    async function doExport() {
+      try {
+        let blob;
+        if (USE_LOCAL_DEMO) {
+          const db = getDemoDb();
+          const lines = ['id,target_type,target_id,target,criterion,delta,teacher,note,ts,cancelled'];
+          for (const e of [...db.entries].reverse()) {
+            const target = e.target_type === 'student'
+              ? (db.users.find(u => u.id === e.target_id)?.name || '')
+              : (db.classes.find(c => c.id === e.target_id)?.name || '');
+            const crit = db.criteria.find(c => c.id === e.criterion_id)?.name || '';
+            const teacher = db.users.find(u => u.id === e.teacher_id)?.name || '';
+            lines.push(`${e.id},"${e.target_type}",${e.target_id},"${target}","${crit}",${e.delta},"${teacher}","${e.note || ''}","${e.ts}",${e.cancelled}`);
+          }
+          blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+        } else {
+          const res = await fetch('/api/export', { headers: { Authorization: 'Bearer ' + TOKEN } });
+          blob = await res.blob();
+        }
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'points_export.csv';
+        a.click();
+        toast('יוצא בהצלחה');
+      } catch (e) { toast('שגיאה בייצוא'); }
+    }
+
+    // ── Boot ──
+    async function boot() {
+      hideSplash();
+      if (location.protocol === 'file:' || location.hostname.endsWith('github.io')) {
+        setModeUI(true);
+      } else {
+        try {
+          const probe = await fetch('/api/me');
+          setModeUI(probe.status !== 401 && probe.status !== 200);
+        } catch (_) {
+          setModeUI(true);
+        }
+      }
+      // Support ?demo=student|teacher|admin deep-link from README
+      const urlParams = new URLSearchParams(location.search);
+      const demoRole = urlParams.get('demo');
+      if (demoRole === 'student') return quickDemoLogin('student', 'noam', '1234');
+      if (demoRole === 'teacher') return quickDemoLogin('teacher', 'david', 'teacher123');
+      if (demoRole === 'admin') return quickDemoLogin('teacher', 'admin', 'admin123');
+
+      // Check if already logged in via localStorage
+      const saved = localStorage.getItem('points-token');
+      const savedUser = localStorage.getItem('points-user');
+      if (saved && savedUser) {
+        TOKEN = saved;
+        USER = JSON.parse(savedUser);
+        try {
+          await api('GET', '/api/me');
+        } catch (_) {
+          localStorage.removeItem('points-token');
+          localStorage.removeItem('points-user');
+          TOKEN = null; USER = null;
+          showLogin();
+          return;
+        }
+        setupUser();
+        showApp(USER.role);
+        loadApp();
+        return;
+      }
+      showLogin();
+    }
+
+    // Override api to persist token
+    const _rawApi = api;
+    api = function(method, path, body) {
+      return _rawApi(method, path, body).then(r => {
+        if (TOKEN) { localStorage.setItem('points-token', TOKEN); localStorage.setItem('points-user', JSON.stringify(USER)); }
+        return r;
+      });
+    };
+
+    boot();
+
+  </script>
+</body>
+</html>

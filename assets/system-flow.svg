@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="100%" height="100%" role="img" aria-label="SchoolMeritPoints Architecture and Scoring Flow">
+  <defs>
+    <linearGradient id="headerBg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#14213d"/>
+      <stop offset="100%" stop-color="#1f4fa3"/>
+    </linearGradient>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#1f4fa3"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#1c8c5e"/>
+    </marker>
+    <marker id="arrowGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#d99b00"/>
+    </marker>
+    <filter id="softShadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#14213d" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas -->
+  <rect width="1100" height="540" rx="20" fill="#f5f7fb" stroke="#dde3ef" stroke-width="2"/>
+
+  <!-- Top Header -->
+  <rect x="20" y="18" width="1060" height="54" rx="14" fill="url(#headerBg)"/>
+  <text x="550" y="51" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="800" font-size="20" fill="#ffffff">
+    End-to-End Architecture, Dual Runtime Engine &amp; Fair Scoring Pipeline
+  </text>
+
+  <!-- COLUMN 1: 3 ROLES -->
+  <g transform="translate(32, 96)" filter="url(#softShadow)">
+    <rect width="230" height="412" rx="16" fill="#ffffff" stroke="#dde3ef" stroke-width="1.5"/>
+    <rect width="230" height="40" rx="16" fill="#e6eefc"/>
+    <text x="115" y="26" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1f4fa3">1. ROLE-BASED ACTORS</text>
+
+    <!-- Student -->
+    <rect x="16" y="58" width="198" height="98" rx="12" fill="#f8faff" stroke="#c5d7fa"/>
+    <text x="30" y="84" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">🎓 Student (תלמיד)</text>
+    <text x="30" y="106" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• Personal score &amp; goal bar</text>
+    <text x="30" y="124" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• Class rank &amp; leaderboard</text>
+    <text x="30" y="142" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• Isolated personal history</text>
+
+    <!-- Teacher -->
+    <rect x="16" y="172" width="198" height="108" rx="12" fill="#fffdf5" stroke="#f5d97e"/>
+    <text x="30" y="198" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">👨‍🏫 Teacher (מורה)</text>
+    <text x="30" y="220" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• Multi-student batch +/-</text>
+    <text x="30" y="238" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• Quick chips (+1,+2,+3,+5)</text>
+    <text x="30" y="256" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• 24h self-entry undo window</text>
+
+    <!-- Admin -->
+    <rect x="16" y="296" width="198" height="98" rx="12" fill="#f4fbf7" stroke="#a8e0c3"/>
+    <text x="30" y="322" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">🛡️ Admin (מנהל מערכת)</text>
+    <text x="30" y="344" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• Manage users &amp; classes</text>
+    <text x="30" y="362" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• Configure 11+ criteria</text>
+    <text x="30" y="380" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">• One-click UTF-8 CSV export</text>
+  </g>
+
+  <!-- COLUMN 2: PWA SPA + DUAL RUNTIME -->
+  <g transform="translate(310, 96)" filter="url(#softShadow)">
+    <rect width="260" height="412" rx="16" fill="#ffffff" stroke="#dde3ef" stroke-width="1.5"/>
+    <rect width="260" height="40" rx="16" fill="#e6eefc"/>
+    <text x="130" y="26" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1f4fa3">2. HYBRID PWA &amp; API LAYER</text>
+
+    <!-- index.html SPA -->
+    <rect x="18" y="58" width="224" height="82" rx="12" fill="#1f4fa3"/>
+    <text x="130" y="84" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#ffffff">index.html (Single-File PWA)</text>
+    <text x="130" y="106" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#d9e5ff">RTL Hebrew UI · Light/Dark Theme</text>
+    <text x="130" y="124" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#ffe066">Auto-Detects Runtime Mode</text>
+
+    <!-- Mode A: Python Server -->
+    <rect x="18" y="162" width="224" height="106" rx="12" fill="#f8faff" stroke="#1f4fa3" stroke-width="1.5"/>
+    <text x="130" y="186" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1f4fa3">🟢 Mode A: Python Server</text>
+    <text x="32" y="208" font-family="system-ui, sans-serif" font-size="12" fill="#14213d">• server.py (Python 3 stdlib)</text>
+    <text x="32" y="226" font-family="system-ui, sans-serif" font-size="12" fill="#14213d">• HMAC-SHA256 24h tokens</text>
+    <text x="32" y="244" font-family="system-ui, sans-serif" font-size="12" fill="#14213d">• SQLite WAL (points.db)</text>
+
+    <!-- Mode B: GitHub Pages Web Demo -->
+    <rect x="18" y="286" width="224" height="108" rx="12" fill="#fffdf5" stroke="#d99b00" stroke-width="1.5"/>
+    <text x="130" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#b37f00">🌐 Mode B: Web / GitHub Pages</text>
+    <text x="32" y="332" font-family="system-ui, sans-serif" font-size="12" fill="#14213d">• 100% Serverless in Browser</text>
+    <text x="32" y="350" font-family="system-ui, sans-serif" font-size="12" fill="#14213d">• LocalStorage DB Engine</text>
+    <text x="32" y="368" font-family="system-ui, sans-serif" font-size="12" fill="#14213d">• Pre-seeded Demo School Data</text>
+  </g>
+
+  <!-- COLUMN 3: SCORING & GUARDRAILS -->
+  <g transform="translate(618, 96)" filter="url(#softShadow)">
+    <rect width="450" height="412" rx="16" fill="#ffffff" stroke="#dde3ef" stroke-width="1.5"/>
+    <rect width="450" height="40" rx="16" fill="#e6eefc"/>
+    <text x="225" y="26" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1f4fa3">3. VALIDATION, NORMALIZED SCORING &amp; AUDIT</text>
+
+    <!-- Box 1: Entry Validation -->
+    <rect x="20" y="58" width="410" height="94" rx="12" fill="#f4fbf7" stroke="#1c8c5e" stroke-width="1.5"/>
+    <text x="36" y="82" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#1c8c5e">✔ Point Entry Guardrails (POST /api/entries)</text>
+    <text x="36" y="104" font-family="system-ui, sans-serif" font-size="12.5" fill="#14213d">1. Clamp delta to criterion max:  +delta ≤ add_value  |  −delta ≥ −sub_value</text>
+    <text x="36" y="124" font-family="system-ui, sans-serif" font-size="12.5" fill="#14213d">2. Enforce per-student daily limit (daily_limit) per criterion</text>
+    <text x="36" y="142" font-family="system-ui, sans-serif" font-size="12.5" fill="#14213d">3. Stamp teacher_id, UTC/local timestamp, and optional note</text>
+
+    <!-- Box 2: Fair Class Formula -->
+    <rect x="20" y="168" width="410" height="112" rx="12" fill="#fff5d1" stroke="#f2b705" stroke-width="1.5"/>
+    <text x="36" y="194" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">⚖️ Fair Normalized Class Score Formula</text>
+    <rect x="36" y="206" width="378" height="36" rx="8" fill="#ffffff" stroke="#f2b705"/>
+    <text x="225" y="229" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="800" font-size="13.5" fill="#1f4fa3">
+      ClassScore = Σ(ClassDirect) + ⌊ 0.5 × Avg(StudentPersonal) ⌋
+    </text>
+    <text x="36" y="264" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">Prevents large classes (35 students) from unfairly beating smaller classes (22 students).</text>
+
+    <!-- Box 3: Audit & Export -->
+    <rect x="20" y="296" width="410" height="98" rx="12" fill="#f8faff" stroke="#c5d7fa" stroke-width="1.5"/>
+    <text x="36" y="322" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#1f4fa3">📋 Immutable Audit Trail &amp; Export</text>
+    <text x="36" y="344" font-family="system-ui, sans-serif" font-size="12.5" fill="#14213d">• Soft cancellation (`cancelled = 1`) preserves full transparency</text>
+    <text x="36" y="364" font-family="system-ui, sans-serif" font-size="12.5" fill="#14213d">• Teachers can undo own entries within 24 hours; Admins anytime</text>
+    <text x="36" y="382" font-family="system-ui, sans-serif" font-size="12.5" fill="#14213d">• Instant Excel-compatible CSV export with UTF-8 BOM (`\uFEFF`)</text>
+  </g>
+
+  <!-- Connectors -->
+  <line x1="262" y1="205" x2="306" y2="205" stroke="#1f4fa3" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <line x1="262" y1="335" x2="306" y2="335" stroke="#d99b00" stroke-width="2.5" marker-end="url(#arrowGold)"/>
+  <line x1="570" y1="215" x2="614" y2="215" stroke="#1c8c5e" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <line x1="570" y1="340" x2="614" y2="340" stroke="#1f4fa3" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+</svg>
