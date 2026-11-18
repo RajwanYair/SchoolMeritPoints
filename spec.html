@@ -219,105 +219,105 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 
 <header class="top">
   <div style="display:flex;flex-direction:column;gap:12px">
-    <span class="label">מסמך אפיון · בסיס להזמנת עבודה</span>
-    <h1>מערכת נקודות זכות לבית הספר</h1>
-    <p class="muted">אפליקציית רשת (מותקנת בטלפון וזמינה גם במחשב) שסופרת נקודות זכות לכל תלמיד ולכל כיתה. המורים מוסיפים ומורידים נקודות, והתלמידים צופים בנתונים האישיים והכיתתיים.</p>
-    <div class="doc-meta"><span>גרסה 1.0 · טיוטה לדיון</span><span>16 בנובמבר 2026</span><span>מוגש לצורך קבלת הצעות מחיר</span></div>
+    <span class="label">🌟 מפרט מוצר וארכיטקטורה · קוד פתוח (MIT)</span>
+    <h1>⭐ מערכת נקודות זכות לבית הספר</h1>
+    <p class="muted">אפליקציית רשת חופשית בקוד פתוח (מותקנת בטלפון, בטאבלט ובמחשב) שסופרת נקודות זכות לכל תלמיד ולכל כיתה. המורים מעניקים ומורידים נקודות בשניות, התלמידים צופים בהתקדמות האישית והכיתתית, ומנהלי המערכת שולטים בהגדרות באופן עצמאי.</p>
+    <div class="doc-meta"><span>🚀 גרסה 1.0 · מהדורת קוד פתוח</span><span>📅 16 בנובמבר 2026</span><span>🌍 דו-לשוני (עב / EN) · 🌓 מצב כהה/בהיר</span></div>
   </div>
   <div class="badge-star" aria-hidden="true">★</div>
 </header>
 
 <div class="summary">
-  <div><b>2 סוגי כניסה</b><span>מורה ותלמיד</span></div>
-  <div><b>11 קריטריונים</b><span>5 אישיים, 6 כיתתיים</span></div>
-  <div><b>2 דרכי התחברות</b><span>סיסמה או סריקת ברקוד</span></div>
-  <div><b>6–8 שבועות</b><span>הערכה לגרסה ראשונה</span></div>
+  <div><b>👥 3 רמות הרשאה</b><span>תלמיד, מורה ומנהל</span></div>
+  <div><b>📋 11 קריטריונים</b><span>5 אישיים, 6 כיתתיים</span></div>
+  <div><b>🌐 ריצה כפולה</b><span>GitHub Pages + שרת Python</span></div>
+  <div><b>🧪 21 בדיקות אוטומטיות</b><span>אימות מלא ב-CI וב-Git</span></div>
 </div>
 
 <!-- 1 -->
 <section>
-  <h2><span class="sec">1</span>מטרת המערכת</h2>
-  <p>לחזק התנהגות חיובית בבית הספר בעזרת מערכת נקודות שקופה, הוגנת ומהירה לשימוש. המורה צריך לתת נקודות לכיתה שלמה בפחות מ-30 שניות. התלמיד צריך לראות מיד למה קיבל נקודות או למה ירדו לו, ואיפה הכיתה שלו עומדת לעומת שאר הכיתות.</p>
+  <h2><span class="sec">1</span>🎯 מטרת המערכת והיקפה</h2>
+  <p>לחזק התנהגות חיובית ועבודת צוות בבית הספר בעזרת מערכת נקודות שקופה, הוגנת ומהירה לשימוש. מורה יכול להעניק נקודות לכיתה שלמה בפחות מ-3 שניות. התלמיד רואה מיד על מה קיבל נקודות ואיפה הכיתה שלו מדורגת לעומת שאר הכיתות.</p>
+  <img src="./assets/user-journey.svg" alt="מסלול שימוש יומי בבית הספר" style="border-radius:14px;border:1px solid var(--line)"/>
   <div class="two">
-    <div class="role"><h3>מה המערכת עושה</h3>
-      <ul><li>ניהול ניקוד אישי לכל תלמיד</li><li>ניהול ניקוד כיתתי לכל כיתה</li><li>הוספה והורדה של נקודות, עם סיבה ותאריך</li><li>טבלאות דירוג בין תלמידים ובין כיתות</li><li>היסטוריה מלאה של כל פעולה, כולל מי ביצע אותה</li></ul></div>
-    <div class="role"><h3>מה לא כלול בגרסה הראשונה</h3>
-      <ul><li>ציונים, נוכחות רשמית או חיבור למערכת משרד החינוך</li><li>צ'אט או הודעות בין משתמשים</li><li>חנות פרסים ומימוש נקודות (מוצע לשלב 2)</li><li>אפליקציה להורים (מוצע לשלב 3)</li></ul></div>
+    <div class="role"><h3>✅ יכולות ליבה בגרסה 1.0</h3>
+      <ul><li>🌟 ניהול ניקוד אישי לכל תלמיד</li><li>🏫 ניהול ניקוד כיתתי מנורמל והוגן</li><li>⚡ הוספה והורדה מהירה של נקודות, עם סיבה וחותמת זמן</li><li>🏆 טבלאות דירוג חיות בין כיתות ובין תלמידים</li><li>📋 יומן פעולות מלא עם אפשרות ביטול עד 24 שעות וייצוא CSV</li></ul></div>
+    <div class="role"><h3>🗺️ יעדי המשך במפת הדרכים (Sprints 2–6)</h3>
+      <ul><li>📷 ספרינט 2: כרטיסי QR, סריקת מצלמה בשער וייבוא מאקסל</li><li>🗓️ ספרינט 3: ניהול תקופות (חודש/מחצית/שנה) ורצפת ניקוד 0</li><li>📺 ספרינט 4: מסך טלוויזיה למסדרון ותעודות הצטיינות להדפסה</li><li>🎁 ספרינט 5–6: חנות פרסים כיתתית ופורטל צפייה להורים</li></ul></div>
   </div>
 </section>
 
 <!-- 2 -->
 <section>
-  <h2><span class="sec">2</span>משתמשים והרשאות</h2>
+  <h2><span class="sec">2</span>👥 משתמשים והרשאות (3-Tier RBAC)</h2>
   <div class="two">
     <div class="role">
-      <div class="head"><div class="ico">מ</div><h3>מורה</h3></div>
+      <div class="head"><div class="ico">👨‍🏫</div><h3>מורה ומנהל מערכת</h3></div>
       <ul>
-        <li>נותן ומוריד נקודות לתלמיד יחיד, לקבוצת תלמידים או לכל הכיתה</li>
-        <li>נותן ומוריד נקודות כיתתיות</li>
-        <li>מוסיף הערה קצרה לכל פעולה (לא חובה)</li>
-        <li>מבטל פעולה שלו עצמו בטעות, עד 24 שעות אחרי</li>
-        <li>צופה בכל הכיתות, בדירוגים ובהיסטוריה</li>
-        <li>סורק כרטיס ברקוד של תלמיד כדי לתת לו נקודה במהירות (למשל בשער בבוקר)</li>
+        <li>⭐ מעניק ומוריד נקודות לתלמיד יחיד, לקבוצת תלמידים או לכל הכיתה</li>
+        <li>🏫 מעניק ומוריד נקודות כיתתיות בלחיצה</li>
+        <li>📝 מוסיף הערה קצרה לכל פעולה (רשות)</li>
+        <li>↩️ מבטל פעולה עצמית שנעשתה בטעות עד 24 שעות אחורה</li>
+        <li>📊 צופה בכל הכיתות, בדירוגים ובהיסטוריה המלאה</li>
+        <li>🛡️ <b>מנהל מערכת:</b> ניהול עצמאי של משתמשים, כיתות, קריטריונים וייצוא CSV</li>
       </ul>
     </div>
     <div class="role">
-      <div class="head"><div class="ico gold">ת</div><h3>תלמיד</h3></div>
+      <div class="head"><div class="ico gold">🎓</div><h3>תלמיד</h3></div>
       <ul>
-        <li>צופה בניקוד האישי שלו ובפירוט לפי קריטריון</li>
-        <li>צופה בניקוד הכיתה שלו ובמיקום שלה בין הכיתות</li>
-        <li>רואה היסטוריה: מתי, על מה וכמה נקודות</li>
-        <li>אינו רואה ניקוד אישי של תלמידים אחרים (מומלץ, ראו סעיף 8)</li>
-        <li>אינו יכול לשנות שום נתון</li>
+        <li>🌟 צופה בניקוד האישי שלו ובפירוט לפי קריטריון</li>
+        <li>🏆 צופה בניקוד הכיתה שלו ובמיקום שלה בין הכיתות</li>
+        <li>📋 רואה היסטוריה מלאה: מתי, על מה וכמה נקודות</li>
+        <li>🔒 פרטיות מוגנת: אינו רואה ניקוד אישי של תלמידים אחרים</li>
+        <li>🛡️ הרשאת קריאה בלבד — אינו יכול לשנות שום נתון</li>
       </ul>
     </div>
   </div>
-  <div class="note"><b>המלצה:</b> להוסיף תפקיד שלישי, <b>מנהל מערכת</b> (מנהל או רכז חברתי), שמגדיר כיתות, תלמידים ומורים, קובע את ערכי הנקודות, מדפיס כרטיסי ברקוד ומאפס תקופות. בלי תפקיד כזה כל שינוי יחייב פנייה לספק.</div>
+  <div class="note">💡 <b>ניהול עצמאי מלא בקוד פתוח:</b> תפקיד <b>מנהל המערכת</b> מובנה מראש באפליקציה ומאפשר לבית הספר להגדיר כיתות, תלמידים, מורים וקריטריונים באופן עצמאי לחלוטין ללא תלות בגורם חיצוני.</div>
 </section>
 
 <!-- 3 -->
 <section>
-  <h2><span class="sec">3</span>קריטריונים לנקודות</h2>
-  <p>הערכים בטבלה הם הצעה ראשונית. מנהל המערכת יוכל לשנות אותם, להוסיף קריטריונים ולהשבית קריטריונים בלי צורך בתכנות.</p>
+  <h2><span class="sec">3</span>⚖️ קריטריונים לנקודות ונוסחת חישוב</h2>
+  <p>11 הקריטריונים המובנים נטענים אוטומטית בהפעלה הראשונה. מנהל המערכת יכול לערוך אותם, להוסיף חדשים ולהפעיל או להשבית קריטריונים ישירות ממסך הניהול.</p>
   <div class="tbl"><table>
     <thead><tr><th>קריטריון</th><th>סוג</th><th>תדירות מוצעת</th><th>הוספה</th><th>הורדה</th></tr></thead>
     <tbody>
-      <tr><td>תלבושת</td><td><span class="pill p-brand">אישי</span></td><td>יומי</td><td class="num">+2</td><td class="num">−1</td></tr>
-      <tr><td>ציצית</td><td><span class="pill p-brand">אישי</span></td><td>יומי</td><td class="num">+2</td><td class="num">−1</td></tr>
-      <tr><td>הגעה בזמן</td><td><span class="pill p-brand">אישי</span></td><td>יומי</td><td class="num">+3</td><td class="num">−2</td></tr>
-      <tr><td>מבצע חל"ל</td><td><span class="pill p-brand">אישי</span></td><td>לפי מבצע</td><td class="num">+5</td><td class="num">—</td></tr>
-      <tr><td>התנהגות בדרך ארץ</td><td><span class="pill p-brand">אישי</span></td><td>חופשי</td><td class="num">+5</td><td class="num">−3</td></tr>
-      <tr><td>סדר וניקיון הכיתה</td><td><span class="pill p-gold">כיתתי</span></td><td>יומי</td><td class="num">+5</td><td class="num">−3</td></tr>
-      <tr><td>קירות נקיים</td><td><span class="pill p-gold">כיתתי</span></td><td>שבועי</td><td class="num">+3</td><td class="num">−3</td></tr>
-      <tr><td>כיתה מקושטת</td><td><span class="pill p-gold">כיתתי</span></td><td>חודשי</td><td class="num">+10</td><td class="num">—</td></tr>
-      <tr><td>הרמת כיסאות בסוף היום</td><td><span class="pill p-gold">כיתתי</span></td><td>יומי</td><td class="num">+2</td><td class="num">−2</td></tr>
-      <tr><td>תורנים כיתתיים</td><td><span class="pill p-gold">כיתתי</span></td><td>יומי</td><td class="num">+3</td><td class="num">−2</td></tr>
-      <tr><td>כוורות מסודרות</td><td><span class="pill p-gold">כיתתי</span></td><td>שבועי</td><td class="num">+3</td><td class="num">−2</td></tr>
+      <tr><td>👕 תלבושת</td><td><span class="pill p-brand">אישי</span></td><td>יומי</td><td class="num">+2</td><td class="num">−1</td></tr>
+      <tr><td>🧵 ציצית</td><td><span class="pill p-brand">אישי</span></td><td>יומי</td><td class="num">+2</td><td class="num">−1</td></tr>
+      <tr><td>⏰ הגעה בזמן</td><td><span class="pill p-brand">אישי</span></td><td>יומי</td><td class="num">+3</td><td class="num">−2</td></tr>
+      <tr><td>📚 מבצע חל"ל</td><td><span class="pill p-brand">אישי</span></td><td>לפי מבצע</td><td class="num">+5</td><td class="num">—</td></tr>
+      <tr><td>🤝 התנהגות בדרך ארץ</td><td><span class="pill p-brand">אישי</span></td><td>חופשי</td><td class="num">+5</td><td class="num">−3</td></tr>
+      <tr><td>🧹 סדר וניקיון הכיתה</td><td><span class="pill p-gold">כיתתי</span></td><td>יומי</td><td class="num">+5</td><td class="num">−3</td></tr>
+      <tr><td>✨ קירות נקיים</td><td><span class="pill p-gold">כיתתי</span></td><td>שבועי</td><td class="num">+3</td><td class="num">−3</td></tr>
+      <tr><td>🎨 כיתה מקושטת</td><td><span class="pill p-gold">כיתתי</span></td><td>חודשי</td><td class="num">+10</td><td class="num">—</td></tr>
+      <tr><td>🪑 הרמת כיסאות בסוף היום</td><td><span class="pill p-gold">כיתתי</span></td><td>יומי</td><td class="num">+2</td><td class="num">−2</td></tr>
+      <tr><td>📋 תורנים כיתתיים</td><td><span class="pill p-gold">כיתתי</span></td><td>יומי</td><td class="num">+3</td><td class="num">−2</td></tr>
+      <tr><td>🗄️ כוורות מסודרות</td><td><span class="pill p-gold">כיתתי</span></td><td>שבועי</td><td class="num">+3</td><td class="num">−2</td></tr>
     </tbody>
   </table></div>
-  <h3>כללי חישוב</h3>
+  <h3>🧮 כללי חישוב הוגנים</h3>
   <div class="checklist"><ul>
-    <li><b>ניקוד אישי</b> = סכום כל הנקודות שהתלמיד קיבל פחות מה שירד לו.</li>
-    <li><b>ניקוד כיתתי</b> = נקודות כיתתיות ישירות + <b>ממוצע</b> הניקוד האישי של תלמידי הכיתה. ממוצע ולא סכום, כדי שכיתה גדולה לא תקבל יתרון. משקל כל רכיב ייקבע בהגדרות.</li>
-    <li>אפשר להגביל קריטריון יומי לפעם אחת ביום לכל תלמיד, כדי למנוע כפילויות.</li>
-    <li>הניקוד מתנהל לפי <b>תקופות</b> (חודש, מחצית, שנה). בתחילת תקופה מתאפסת הטבלה וההיסטוריה נשמרת.</li>
-    <li>ניקוד לא יורד מתחת לאפס (ניתן לשינוי בהגדרות).</li>
+    <li>🌟 <b>ניקוד אישי</b> = סכום כל הנקודות שהתלמיד צבר פחות נקודות שהורדו (לא כולל רשומות שבוטלו).</li>
+    <li>⚖️ <b>ניקוד כיתתי מנורמל</b> = נקודות כיתתיות ישירות + <b>50% מממוצע</b> הניקוד האישי של תלמידי הכיתה. השימוש בממוצע מונע יתרון לא הוגן לכיתות גדולות.</li>
+    <li>🛡️ <b>מגבלה יומית:</b> ניתן להגביל קריטריון יומי לפעם אחת ביום לכל תלמיד למניעת כפילויות.</li>
+    <li>🗓️ <b>תקופות ניקוד:</b> תמיכה במחזורים (חודש, מחצית, שנה) עם שמירת היסטוריה מלאה.</li>
   </ul></div>
 </section>
 
 <!-- 4 -->
 <section>
-  <h2><span class="sec">4</span>מסלול הכניסה</h2>
+  <h2><span class="sec">4</span>🔐 מסלול הכניסה והאימות</h2>
   <div class="flow">
-    <div class="step">מסך פתיחה<small>ברוכים הבאים</small></div><span class="arr">←</span>
-    <div class="step">בחירה<small>מורה / תלמיד</small></div><span class="arr">←</span>
+    <div class="step">🌐 מסך פתיחה<small>ברוכים הבאים</small></div><span class="arr">←</span>
+    <div class="step">👥 בחירת תפקיד<small>מורה / תלמיד / דמו</small></div><span class="arr">←</span>
     <div class="split">
-      <div class="step">שם משתמש וסיסמה</div>
-      <div class="step">סריקת ברקוד<small>מצלמת הטלפון</small></div>
+      <div class="step">🔑 שם משתמש וסיסמה</div>
+      <div class="step">⚡ כניסה מהירה / 📷 QR</div>
     </div><span class="arr">←</span>
     <div class="split">
-      <div class="step">לוח מורה<small>מתן נקודות, דירוגים</small></div>
-      <div class="step">לוח תלמיד<small>ניקוד אישי וכיתתי</small></div>
+      <div class="step">👨‍🏫 לוח מורה / 🛡️ מנהל<small>מתן נקודות, דירוגים וניהול</small></div>
+      <div class="step">🎓 לוח תלמיד<small>ניקוד אישי וכיתתי</small></div>
     </div>
   </div>
   <div class="two">
@@ -448,226 +448,243 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 
 <!-- 6 design -->
 <section>
-  <h2><span class="sec">6</span>שפה עיצובית</h2>
+  <h2><span class="sec">6</span>🎨 שפה עיצובית ונגישות</h2>
   <div class="two">
-    <div class="role"><h3>עקרונות</h3><ul>
-      <li>עברית מלאה, כיוון מימין לשמאל בכל המסכים</li>
-      <li>כפתורים גדולים: מורה עומד במסדרון עם טלפון ביד אחת</li>
-      <li>ירוק תמיד מציין הוספה, אדום תמיד מציין הורדה</li>
-      <li>ניקוד מוצג כמספר גדול; פירוט מתחתיו</li>
-      <li>אנימציה קצרה של כוכב כשתלמיד מקבל נקודות</li>
-      <li>מצב כהה ומצב בהיר</li>
-      <li>נגישות לפי תקן ישראלי 5568 (רמה AA)</li>
+    <div class="role"><h3>✨ עקרונות ממשק</h3><ul>
+      <li>🌍 תמיכה דו-לשונית מלאה: עברית (RTL) ואנגלית (LTR) בלחיצת כפתור</li>
+      <li>📱 כפתורים גדולים ונוחים לשימוש ביד אחת במסדרון או על מסך מגע</li>
+      <li>🟢 ירוק תמיד מציין הוספה (+), 🔴 אדום תמיד מציין הורדה (−)</li>
+      <li>🔢 ניקוד מוצג כמספר גדול ובולט עם סרגל התקדמות ויזואלי</li>
+      <li>🌓 מצב כהה (Dark Mode) ומצב בהיר (Light Mode) מובנים</li>
+      <li>♿ נגישות מלאה בהתאם לתקן ישראלי 5568 / WCAG AA</li>
     </ul></div>
-    <div class="role"><h3>צבעים מוצעים</h3>
+    <div class="role"><h3>🎨 פלטת צבעים וטיפוגרפיה</h3>
       <div class="swatches">
-        <span class="sw"><i style="background:var(--brand)"></i>כחול בית ספר: מסגרת</span>
+        <span class="sw"><i style="background:var(--brand)"></i>כחול בית ספר: מסגרת וניווט</span>
         <span class="sw"><i style="background:var(--gold)"></i>זהב: נקודות וכוכבים</span>
-        <span class="sw"><i style="background:var(--plus)"></i>ירוק: הוספה</span>
-        <span class="sw"><i style="background:var(--minus)"></i>אדום: הורדה</span>
+        <span class="sw"><i style="background:var(--plus)"></i>ירוק: הענקת נקודות</span>
+        <span class="sw"><i style="background:var(--minus)"></i>אדום: הורדת נקודות</span>
       </div>
-      <p class="muted" style="font-size:.92rem">אם לבית הספר יש סמל וצבעים קבועים, הם יחליפו את הכחול. גופנים מוצעים: Secular One לכותרות ו-Assistant לטקסט, שניהם חינמיים ותומכים בעברית.</p>
+      <p class="muted" style="font-size:.92rem">גופנים פתוחים וחינמיים: Secular One לכותרות ו-Assistant לטקסט ולמספרים טבלאיים.</p>
     </div>
   </div>
 </section>
 
 <!-- 7 data -->
 <section>
-  <h2><span class="sec">7</span>מבנה נתונים</h2>
+  <h2><span class="sec">7</span>🗄️ מבנה נתונים וזרימת מידע (SVG + Mermaid)</h2>
+  <img src="./assets/system-flow.svg" alt="ארכיטקטורת המערכת וזרימת הנתונים" style="border-radius:14px;border:1px solid var(--line)"/>
   <div class="tbl"><table>
     <thead><tr><th>טבלה</th><th>שדות עיקריים</th><th>הערה</th></tr></thead>
     <tbody>
-      <tr><td><b>משתמשים</b></td><td>מזהה, שם, תפקיד (מורה/תלמיד/מנהל), שם משתמש, סיסמה מוצפנת, קוד ברקוד, פעיל/לא פעיל</td><td>אין צורך במספר זהות</td></tr>
-      <tr><td><b>כיתות</b></td><td>מזהה, שם (ו'2), שכבה, מחנך</td><td></td></tr>
-      <tr><td><b>שיוך תלמיד לכיתה</b></td><td>תלמיד, כיתה, שנת לימודים</td><td>מאפשר מעבר שנה בלי לאבד היסטוריה</td></tr>
-      <tr><td><b>קריטריונים</b></td><td>שם, סוג (אישי/כיתתי), ערך הוספה, ערך הורדה, הגבלה יומית, פעיל</td><td>נערך על ידי המנהל</td></tr>
-      <tr><td><b>פעולות ניקוד</b></td><td>מזהה, יעד (תלמיד או כיתה), קריטריון, שינוי (+/−), מורה מבצע, תאריך ושעה, הערה, בוטל</td><td>לב המערכת; לא נמחקת אף פעם, רק מסומנת כמבוטלת</td></tr>
-      <tr><td><b>תקופות</b></td><td>שם, תאריך התחלה, תאריך סיום</td><td>לטבלאות דירוג חודשיות/שנתיות</td></tr>
+      <tr><td>👤 <b>משתמשים (users)</b></td><td>מזהה, שם, תפקיד (מורה/תלמיד/מנהל), שם משתמש, סיסמה מגובבת, קוד ברקוד, פעיל</td><td>ללא מספר זהות או מידע רגיש</td></tr>
+      <tr><td>🏫 <b>כיתות (classes)</b></td><td>מזהה, שם (ו'1, ו'2), שכבה, מורה אחראי</td><td></td></tr>
+      <tr><td>👥 <b>שיוך לכיתה (class_members)</b></td><td>תלמיד, כיתה, שנת לימודים</td><td>מאפשר מעבר שנה בלי לאבד היסטוריה</td></tr>
+      <tr><td>📋 <b>קריטריונים (criteria)</b></td><td>שם, סוג (אישי/כיתתי), ערך הוספה, ערך הורדה, מגבלה יומית, פעיל</td><td>נערך באופן עצמאי על ידי המנהל</td></tr>
+      <tr><td>⭐ <b>פעולות ניקוד (entries)</b></td><td>מזהה, יעד (תלמיד/כיתה), קריטריון, שינוי (+/−), מורה מבצע, חותמת זמן, הערה, בוטל</td><td>יומן אירועים נצחי; ביטול מסמן cancelled=1</td></tr>
+      <tr><td>📅 <b>תקופות (periods)</b></td><td>שם, תאריך התחלה, תאריך סיום</td><td>לדירוגים חודשיים/שנתיים</td></tr>
     </tbody>
   </table></div>
-  <p class="muted">הניקוד אינו נשמר כמספר אחד שמתעדכן אלא מחושב מכל הפעולות. כך תמיד אפשר לדעת מאיפה הגיע כל ניקוד, ולבטל טעות בלי לפגוע בשאר.</p>
+  <div class="card" style="background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;overflow-x:auto">
+    <pre class="mermaid" style="margin:0;text-align:center">
+sequenceDiagram
+    autonumber
+    actor T as 👨‍🏫 מורה / מנהל
+    actor S as 🎓 תלמיד
+    participant UI as 📱 index.html (PWA)
+    participant API as ⚙️ שרת Python / LocalDemo
+    participant DB as 🗄️ SQLite / LocalStorage
+    T->>UI: בחירת כיתה + קריטריון + תלמידים (+3)
+    UI->>API: POST /api/entries
+    API->>DB: בדיקת מגבלה יומית ושמירת רשומה
+    DB-->>UI: +3 נקודות עודכנו!
+    S->>UI: צפייה בלוח תלמיד ודירוג כיתתי
+    UI->>API: GET /api/dashboard & /api/history
+    API-->>S: הצגת ניקוד אישי ומיקום הכיתה (#1)
+    </pre>
+  </div>
 </section>
 
 <!-- 8 privacy -->
 <section>
-  <h2><span class="sec">8</span>פרטיות ואבטחה</h2>
+  <h2><span class="sec">8</span>🛡️ פרטיות ואבטחת מידע</h2>
   <div class="checklist"><ul>
-    <li>המשתמשים קטינים: המערכת שומרת מינימום מידע (שם, כיתה, ניקוד). לא נשמרים מספר זהות, כתובת, טלפון או תמונה.</li>
-    <li>הספק יעמוד בדרישות חוק הגנת הפרטיות והתקנות לאבטחת מידע, ובהנחיות משרד החינוך לשימוש במערכות מידע בבתי ספר. בית הספר יבדוק זאת מול הפיקוח או היועץ המשפטי.</li>
-    <li>מומלץ להודיע להורים על המערכת ועל המידע שנאסף בה.</li>
-    <li>תלמיד רואה רק את הניקוד שלו ואת הניקוד הכיתתי. טבלת דירוג אישית פומבית עלולה לפגוע בתלמידים חלשים, ולכן היא כבויה כברירת מחדל ונתונה להחלטת בית הספר.</li>
-    <li>חיבור מוצפן (HTTPS), סיסמאות מוצפנות, גיבוי יומי אוטומטי, שרתים באירופה או בישראל.</li>
-    <li>יומן פעולות: כל שינוי ניקוד רשום עם שם המורה ושעה.</li>
-    <li>הנתונים שייכים לבית הספר, וניתן לייצא אותם לאקסל בכל עת.</li>
+    <li>🔒 <b>מינימום מידע אישי:</b> המערכת שומרת שם תצוגה, כיתה וניקוד בלבד. לא נשמרים מספרי זהות, כתובות, מספרי טלפון או תמונות.</li>
+    <li>🙈 <b>הפרדת הרשאות לתלמידים:</b> תלמיד רואה רק את הניקוד האישי שלו ואת הדירוג הכיתתי הכללי, ואינו יכול לגשת לניקוד של תלמידים אחרים (אכיפת HTTP 403).</li>
+    <li>🔑 <b>אבטחת סיסמאות וטוקנים:</b> סיסמאות מגובבות ב-SHA-256 עם מפתח סודי, וטוקני התחברות חתומים ב-HMAC-SHA256 לתוקף של 24 שעות.</li>
+    <li>📋 <b>שקיפות מלאה:</b> כל פעולת ניקוד מתועדת עם שם המורה וחותמת זמן, וניתנת לייצוא ל-CSV בכל עת.</li>
   </ul></div>
 </section>
 
 <!-- 9 tech -->
 <section>
-  <h2><span class="sec">9</span>אפשרויות טכנולוגיות</h2>
+  <h2><span class="sec">9</span>🏗️ ארכיטקטורת קוד פתוח ומצבי הרצה</h2>
   <div class="tbl"><table>
-    <thead><tr><th>אפשרות</th><th>מה זה</th><th>יתרונות</th><th>חסרונות</th></tr></thead>
+    <thead><tr><th>רכיב ארכיטקטוני</th><th>טכנולוגיה</th><th>יתרונות מרכזיים</th></tr></thead>
     <tbody>
-      <tr><td><b>אפליקציית רשת מתקדמת (PWA)</b> <span class="pill p-plus">מומלץ</span></td><td>אתר שנפתח בכל דפדפן ואפשר "להתקין" אותו על מסך הבית</td><td>קוד אחד לטלפון ולמחשב, בלי חנויות אפליקציות, עדכונים מיידיים, תומך במצלמה לסריקת ברקוד</td><td>מעט פחות "אפליקטיבי" מאפליקציה ייעודית</td></tr>
-      <tr><td><b>אפליקציה ייעודית</b></td><td>אפליקציה לאנדרואיד ול-iPhone + אתר ניהול</td><td>חוויה חלקה, התראות</td><td>יקר יותר, דורש אישור חנויות ותחזוקה של שתי גרסאות</td></tr>
-      <tr><td><b>כלי ללא קוד</b></td><td>בנייה על פלטפורמה מוכנה (כמו Glide או AppSheet)</td><td>זול ומהיר, מתאים לפיילוט</td><td>מוגבל בעיצוב ובעברית, תלות בפלטפורמה ובתשלום חודשי לכל משתמש</td></tr>
+      <tr><td>📱 <b>אפליקציית רשת מתקדמת (PWA)</b> <span class="pill p-plus">פעיל</span></td><td>HTML5 + CSS3 Grid + Vanilla ES2022</td><td>קוד אחד למחשב, לטאבלט ולנייד, התקנה על מסך הבית, אפס תלויות חיצוניות</td></tr>
+      <tr><td>🐍 <b>שרת בית-ספרי מקומי</b> <span class="pill p-brand">Mode A</span></td><td>Python 3 Standard Library + SQLite WAL</td><td>הרצה בפקודה אחת (`python3 server.py`), מסד נתונים מהיר בקובץ יחיד, בעלות מלאה על הנתונים</td></tr>
+      <tr><td>🌐 <b>מצב רשת עצמאי (GitHub Pages)</b> <span class="pill p-gold">Mode B</span></td><td>Client-Side LocalStorage Engine</td><td>פועל מכל דפדפן בעולם ללא התקנה, כולל נתוני דמו מובנים וכניסה בלחיצה אחת</td></tr>
     </tbody>
   </table></div>
-  <p class="muted">בכל האפשרויות יש לבקש מהספק לפרט עלות אחסון חודשית, עלות תחזוקה שנתית ומי מחזיק בקוד ובנתונים.</p>
 </section>
 
-<!-- 10 phases -->
+<!-- 10 roadmap -->
 <section>
-  <h2><span class="sec">10</span>שלבי פיתוח</h2>
+  <h2><span class="sec">10</span>🗺️ מפת דרכים ופיתוח לפי ספרינטים (Agile Sprints)</h2>
+  <p>כל משימות ההמשך נאספו לתוכנית ספרינטים מפורטת בקובץ <a href="./ROADMAP.md" style="color:var(--brand);font-weight:700">ROADMAP.md</a>:</p>
+  <img src="./assets/roadmap-sprints.svg" alt="מפת דרכים 6 ספרינטים" style="border-radius:14px;border:1px solid var(--line)"/>
   <div class="phases">
-    <div class="phase mvp"><span class="when">שלב 1 · 6–8 שבועות</span><h3>גרסה ראשונה</h3><ul>
-      <li>מסך פתיחה, כניסה בסיסמה ובברקוד</li>
-      <li>לוח תלמיד ולוח מורה</li>
-      <li>מתן והורדת נקודות אישיות וכיתתיות</li>
-      <li>דירוג כיתות והיסטוריה</li>
-      <li>ניהול כיתות, תלמידים וקריטריונים</li>
-      <li>טעינת תלמידים מקובץ אקסל</li>
-      <li>הדפסת כרטיסי ברקוד</li>
+    <div class="phase mvp"><span class="when">✅ ספרינט 1 · v1.0 (הושלם)</span><h3>🚀 ליבת המערכת ודו-לשוניות</h3><ul>
+      <li>כניסה לתלמיד, מורה ומנהל + כניסת דמו מהירה</li>
+      <li>מתן והורדת נקודות אישיות וכיתתיות + ביטול 24 שעות</li>
+      <li>דירוג כיתות מנורמל, ניהול מלא וייצוא CSV</li>
+      <li>ממשק רספונסיבי (מחשב/טאבלט/נייד), עברית/אנגלית ומצב כהה</li>
+      <li>21 בדיקות אוטומטיות ב-CI וב-Git pre-commit</li>
     </ul></div>
-    <div class="phase"><span class="when">שלב 2 · אחרי פיילוט של חודש</span><h3>הרחבות</h3><ul>
-      <li>חנות פרסים ומימוש נקודות</li>
-      <li>מסך תצוגה למסדרון (טלוויזיה) עם דירוג חי</li>
-      <li>תעודות הצטיינות אוטומטיות</li>
-      <li>דוחות למחנך ולמנהל</li>
+    <div class="phase"><span class="when">🔜 ספרינטים 2–3 · v1.1–v1.2</span><h3>📷 ברקוד QR, ייבוא ותקופות</h3><ul>
+      <li>הפקת כרטיסי QR לתלמידים וסריקת מצלמה מהירה בשער</li>
+      <li>אימות PIN בן 4 ספרות למורים ונעילה אחרי 5 ניסיונות</li>
+      <li>ייבוא רשימות תלמידים וכיתות מקובץ CSV / Excel</li>
+      <li>ניהול תקופות (חודש/מחצית/שנה) ורצפת ניקוד 0</li>
     </ul></div>
-    <div class="phase"><span class="when">שלב 3 · לפי צורך</span><h3>הורים ותקשורת</h3><ul>
-      <li>כניסת הורים לצפייה</li>
-      <li>הודעה שבועית אוטומטית להורים</li>
-      <li>התראות לתלמידים</li>
+    <div class="phase"><span class="when">📅 ספרינטים 4–6 · v1.3–v2.1</span><h3>🏆 מסך מסדרון, חנות פרסים והורים</h3><ul>
+      <li>מצב תצוגת טלוויזיה (Kiosk) למסדרון עם דירוג חי</li>
+      <li>הפקת תעודות הצטיינות אוטומטיות להדפסה</li>
+      <li>חנות פרסים ומימוש נקודות + דוחות אנליטיים</li>
+      <li>פורטל צפייה להורים וסיכום שבועי אוטומטי</li>
     </ul></div>
   </div>
 </section>
 
-<!-- 11 acceptance -->
+<!-- 11 quality gates -->
 <section>
-  <h2><span class="sec">11</span>תנאי קבלה לגרסה הראשונה</h2>
+  <h2><span class="sec">11</span>✅ שערי איכות ובדיקות אוטומטיות</h2>
   <div class="checklist"><ol>
-    <li>מורה נותן נקודה לכל כיתה של 30 תלמידים בפחות מ-30 שניות.</li>
-    <li>סריקת כרטיס ברקוד מכניסה תלמיד למערכת בפחות מ-3 שניות.</li>
-    <li>שינוי ניקוד מופיע אצל התלמיד תוך דקה, בלי לרענן ידנית.</li>
-    <li>המערכת עובדת בטלפון אנדרואיד, ב-iPhone ובמחשב (Chrome, Safari, Edge).</li>
-    <li>כל הממשק בעברית, בכיוון ימין לשמאל, בלי טקסט חתוך או הפוך.</li>
-    <li>תלמיד אינו יכול לראות ניקוד אישי של תלמיד אחר ואינו יכול לשנות נתונים.</li>
-    <li>מנהל מוסיף כיתה, תלמיד או קריטריון בלי עזרת הספק.</li>
-    <li>ייצוא כל הנתונים לאקסל.</li>
-    <li>מסירת מדריך קצר למורה ולמנהל, והדרכה של שעה לצוות.</li>
-    <li>3 חודשי אחריות לתיקון תקלות אחרי העלייה לאוויר.</li>
+    <li>⚡ מורה מעניק נקודות לכיתה שלמה בפחות מ-3 שניות.</li>
+    <li>💻 תצוגה מותאמת למחשב שולחני, לטאבלט ולטלפון נייד (Chrome, Safari, Edge, Firefox).</li>
+    <li>🌍 מעבר מיידי בין עברית (RTL) לאנגלית (LTR) ובין מצב בהיר למצב כהה.</li>
+    <li>🔒 אכיפת פרטיות מלאה: תלמיד אינו יכול לצפות בניקוד אישי של תלמיד אחר או לשנות נתונים.</li>
+    <li>🛠️ ניהול עצמאי מלא של כיתות, תלמידים וקריטריונים ממסך המנהל + ייצוא לאקסל (CSV).</li>
+    <li>🧪 כל שינוי קוד, תיעוד או הגדרות נבדק אוטומטית על ידי 21 בדיקות ב-<code>tests/</code>.</li>
   </ol></div>
 </section>
 
-<!-- 12 open -->
+<!-- 12 policy knobs -->
 <section>
-  <h2><span class="sec">12</span>שאלות להחלטת בית הספר</h2>
+  <h2><span class="sec">12</span>⚙️ הגדרות מדיניות גמישות לבית הספר</h2>
   <div class="checklist"><ul>
-    <li>כמה תלמידים, כיתות ומורים יש? (משפיע על מחיר האחסון)</li>
-    <li>האם לכל התלמידים יש טלפון, או שיש צורך בעמדת צפייה בבית הספר?</li>
-    <li>האם להציג לתלמידים דירוג אישי בתוך הכיתה, או רק את הניקוד שלהם?</li>
-    <li>האם ניתן להוריד נקודות על כל קריטריון, או רק על חלק מהם?</li>
-    <li>מה התקופה: חודשית, מחצית או שנתית? ומה הפרס בסופה?</li>
-    <li>מי יהיה מנהל המערכת בבית הספר?</li>
-    <li>האם המורים יוכלו לתת נקודות רק לכיתות שלהם, או לכל תלמיד בבית הספר?</li>
-    <li>מהו בדיוק "מבצע חל"ל" ואיך מתועד: נקודה חד-פעמית או רישום חוזר?</li>
+    <li>🏆 <b>חשיפת דירוג אישי:</b> כבוי לתלמידים כברירת מחדל לשמירה על אווירה חיובית; זמין למורים ולמנהלים.</li>
+    <li>📉 <b>קריטריונים חיוביים בלבד מול דו-כיווניים:</b> כל קריטריון ניתן להגדרה כהוספה בלבד (כגון קישוט כיתה) או הוספה והורדה.</li>
+    <li>🗓️ <b>מחזוריות דירוג:</b> בחירה בין סיכום חודשי, מחציתי או שנתי תוך שמירת היסטוריית הפעולות.</li>
+    <li>🏫 <b>היקף הרשאת מורה:</b> מתן נקודות לכל תלמידי בית הספר או מיקוד בכיתת החינוך.</li>
   </ul></div>
 </section>
 
-<footer>מסמך זה הוא הצעת אפיון ראשונית. הערכים, לוחות הזמנים והמוקאפים נועדו לשמש בסיס לשיחה עם ספקים ואינם מחייבים.</footer>
+<footer>⭐ מסמך מפרט וארכיטקטורה בקוד פתוח (MIT) עבור SchoolMeritPoints · <a href="./ROADMAP.md" style="color:var(--brand)">למפת הדרכים המלאה (ROADMAP.md)</a></footer>
 </div>
 
 <!-- ENGLISH SPECIFICATION VIEW -->
 <div id="wrapEn" class="wrap hidden" dir="ltr">
   <header class="top">
     <div style="display:flex;flex-direction:column;gap:12px">
-      <span class="label">PRODUCT &amp; ARCHITECTURE SPECIFICATION · VERSION 1.0</span>
-      <h1>SchoolMeritPoints — Smart School Merit System</h1>
-      <p class="muted">A mobile-first, desktop-ready Progressive Web App (PWA) that tracks personal and classroom merit points. Teachers award or deduct points in seconds, students track their progress and class leaderboard, and administrators manage classes, users, and criteria.</p>
-      <div class="doc-meta"><span>Version 1.0</span><span>November 16, 2026</span><span>PC · Tablet · Mobile · Bilingual (EN / HE) · Dark/Light Mode</span></div>
+      <span class="label">🌟 OPEN-SOURCE PRODUCT &amp; ARCHITECTURE SPECIFICATION · MIT LICENSE</span>
+      <h1>⭐ SchoolMeritPoints — Smart School Merit System</h1>
+      <p class="muted">A 100% free, open-source Progressive Web App (PWA) for PC, tablet, and mobile that tracks personal and classroom merit points. Teachers award or deduct points in seconds, students track their progress and class leaderboard, and administrators manage classes, users, and criteria autonomously.</p>
+      <div class="doc-meta"><span>🚀 Version 1.0 · Open-Source Release</span><span>📅 November 16, 2026</span><span>💻 PC · Tablet · Mobile · 🌍 Bilingual (EN / HE) · 🌓 Dark/Light</span></div>
     </div>
     <div class="badge-star" aria-hidden="true">★</div>
   </header>
 
   <div class="summary">
-    <div><b>3 Access Tiers</b><span>Student, Teacher &amp; Admin</span></div>
-    <div><b>11 Built-in Criteria</b><span>5 Personal, 6 Classroom</span></div>
-    <div><b>Dual Runtime</b><span>GitHub Pages + Python/SQLite</span></div>
-    <div><b>Multi-Device</b><span>PC, Tablet &amp; Mobile PWA</span></div>
+    <div><b>👥 3 Access Tiers</b><span>Student, Teacher &amp; Admin</span></div>
+    <div><b>📋 11 Built-in Criteria</b><span>5 Personal, 6 Classroom</span></div>
+    <div><b>🌐 Dual Runtime</b><span>GitHub Pages + Python/SQLite</span></div>
+    <div><b>🧪 21 Automated Tests</b><span>Pre-commit &amp; CI Verified</span></div>
   </div>
 
   <section>
-    <h2><span class="sec">1</span>System Goal &amp; Scope</h2>
+    <h2><span class="sec">1</span>🎯 System Vision &amp; Scope</h2>
     <p>Reinforce positive conduct across the school through a transparent, fair, and fast merit point system. Teachers can award points to an entire class in under 3 seconds; students immediately see why points were earned or deducted and where their class ranks.</p>
+    <img src="./assets/user-journey.svg" alt="Daily School Merit Journey" style="border-radius:14px;border:1px solid var(--line)"/>
     <div class="two">
-      <div class="role"><h3>Included in v1.0</h3>
+      <div class="role"><h3>✅ Included in v1.0 (Live Today)</h3>
         <ul>
-          <li>Personal merit score tracking for every student</li>
-          <li>Normalized classroom merit score tracking (direct class points + 50% of student average)</li>
-          <li>Batch point award/deduction with criterion, teacher attribution, and timestamp</li>
-          <li>Live class &amp; student leaderboards with visual progress bars</li>
-          <li>Full audit trail with 24-hour teacher self-undo window &amp; Excel UTF-8 CSV export</li>
+          <li>🌟 Personal merit score tracking for every student</li>
+          <li>⚖️ Normalized classroom merit score tracking (direct class points + 50% of student average)</li>
+          <li>⚡ Batch point award/deduction with criterion, teacher attribution, and timestamp</li>
+          <li>🏆 Live class &amp; student leaderboards with visual progress bars</li>
+          <li>📋 Full audit trail with 24-hour teacher self-undo window &amp; Excel UTF-8 CSV export</li>
         </ul>
       </div>
-      <div class="role"><h3>Planned for Future Phases</h3>
+      <div class="role"><h3>🗺️ Upcoming Sprints (Sprints 2–6 Roadmap)</h3>
         <ul>
-          <li>Phase 2: Prize store &amp; point redemption catalog</li>
-          <li>Phase 2: Hallway TV live leaderboard display mode</li>
-          <li>Phase 2: Automated printable merit certificates</li>
-          <li>Phase 3: Parent read-only portal &amp; weekly digest notifications</li>
+          <li>📷 Sprint 2: Printable QR badges, camera scanner &amp; CSV/Excel bulk import</li>
+          <li>🗓️ Sprint 3: Academic periods (monthly/semester/yearly) &amp; score floor knobs</li>
+          <li>📺 Sprint 4: Hallway TV live leaderboard kiosk &amp; printable excellence certificates</li>
+          <li>🎁 Sprint 5–6: Merit prize store, analytics charts &amp; read-only parent digest portal</li>
         </ul>
       </div>
     </div>
   </section>
 
   <section>
-    <h2><span class="sec">2</span>Roles &amp; Permissions (3-Tier RBAC)</h2>
+    <h2><span class="sec">2</span>👥 Roles &amp; Permissions (3-Tier RBAC)</h2>
     <div class="two">
       <div class="role">
-        <div class="head"><div class="ico">T</div><h3>Teacher &amp; Administrator</h3></div>
+        <div class="head"><div class="ico">👨‍🏫</div><h3>Teacher &amp; Administrator</h3></div>
         <ul>
-          <li>Award or deduct points for a single student, multi-selected students, or an entire class</li>
-          <li>Use quick-action chips (+1, +2, +3, +5, −1, −2, −3) or criterion defaults</li>
-          <li>Undo own accidental entries within 24 hours (Admins can undo any entry anytime)</li>
-          <li>Admin: Full CRUD for Users, Classes, and Merit Criteria + one-click CSV export</li>
+          <li>⭐ Award or deduct points for a single student, multi-selected students, or an entire class</li>
+          <li>⚡ Use quick-action chips (+1, +2, +3, +5, −1, −2, −3) or criterion defaults</li>
+          <li>↩️ Undo own accidental entries within 24 hours (Admins can undo any entry anytime)</li>
+          <li>🛡️ Admin: Self-service CRUD for Users, Classes, and Merit Criteria + one-click CSV export</li>
         </ul>
       </div>
       <div class="role">
-        <div class="head"><div class="ico gold">S</div><h3>Student</h3></div>
+        <div class="head"><div class="ico gold">🎓</div><h3>Student</h3></div>
         <ul>
-          <li>View own personal merit score, goal progress bar, and criterion breakdown</li>
-          <li>View own classroom score and standing on the school-wide class leaderboard</li>
-          <li>Inspect chronological personal &amp; classroom activity history</li>
-          <li>Strict privacy: cannot view other students' personal scores or modify any data</li>
+          <li>🌟 View own personal merit score, goal progress bar, and criterion breakdown</li>
+          <li>🏆 View own classroom score and standing on the school-wide class leaderboard</li>
+          <li>📋 Inspect chronological personal &amp; classroom activity history</li>
+          <li>🔒 Strict privacy: cannot view other students' personal scores or modify any data</li>
         </ul>
       </div>
     </div>
   </section>
 
   <section>
-    <h2><span class="sec">3</span>Built-in Merit Criteria (11 Default Rules)</h2>
+    <h2><span class="sec">3</span>⚖️ Built-in Merit Criteria (11 Default Rules)</h2>
     <div class="tbl"><table>
       <thead><tr><th>Criterion (EN)</th><th>Hebrew Name</th><th>Scope</th><th>Frequency</th><th>Award</th><th>Deduct</th></tr></thead>
       <tbody>
-        <tr><td>School Uniform</td><td>תלבושת</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−1</td></tr>
-        <tr><td>Tzitzit</td><td>ציצית</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−1</td></tr>
-        <tr><td>On-Time Arrival</td><td>הגעה בזמן</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+3</td><td class="num">−2</td></tr>
-        <tr><td>Special Study Initiative</td><td>מבצע חל"ל</td><td><span class="pill p-brand">Personal</span></td><td>Per campaign</td><td class="num">+5</td><td class="num">—</td></tr>
-        <tr><td>Exemplary Behavior</td><td>התנהגות בדרך ארץ</td><td><span class="pill p-brand">Personal</span></td><td>Unlimited</td><td class="num">+5</td><td class="num">−3</td></tr>
-        <tr><td>Classroom Cleanliness</td><td>סדר וניקיון הכיתה</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+5</td><td class="num">−3</td></tr>
-        <tr><td>Clean Classroom Walls</td><td>קירות נקיים</td><td><span class="pill p-gold">Classroom</span></td><td>Weekly</td><td class="num">+3</td><td class="num">−3</td></tr>
-        <tr><td>Decorated Classroom</td><td>כיתה מקושטת</td><td><span class="pill p-gold">Classroom</span></td><td>Monthly</td><td class="num">+10</td><td class="num">—</td></tr>
-        <tr><td>Chairs Raised at EOD</td><td>הרמת כיסאות בסוף היום</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−2</td></tr>
-        <tr><td>Classroom Duty Monitors</td><td>תורנים כיתתיים</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+3</td><td class="num">−2</td></tr>
-        <tr><td>Organized Cubbies</td><td>כוורות מסודרות</td><td><span class="pill p-gold">Classroom</span></td><td>Weekly</td><td class="num">+3</td><td class="num">−2</td></tr>
+        <tr><td>👕 School Uniform</td><td>תלבושת</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−1</td></tr>
+        <tr><td>🧵 Tzitzit</td><td>ציצית</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−1</td></tr>
+        <tr><td>⏰ On-Time Arrival</td><td>הגעה בזמן</td><td><span class="pill p-brand">Personal</span></td><td>Daily (1/day)</td><td class="num">+3</td><td class="num">−2</td></tr>
+        <tr><td>📚 Special Study Initiative</td><td>מבצע חל"ל</td><td><span class="pill p-brand">Personal</span></td><td>Per campaign</td><td class="num">+5</td><td class="num">—</td></tr>
+        <tr><td>🤝 Exemplary Behavior</td><td>התנהגות בדרך ארץ</td><td><span class="pill p-brand">Personal</span></td><td>Unlimited</td><td class="num">+5</td><td class="num">−3</td></tr>
+        <tr><td>🧹 Classroom Cleanliness</td><td>סדר וניקיון הכיתה</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+5</td><td class="num">−3</td></tr>
+        <tr><td>✨ Clean Classroom Walls</td><td>קירות נקיים</td><td><span class="pill p-gold">Classroom</span></td><td>Weekly</td><td class="num">+3</td><td class="num">−3</td></tr>
+        <tr><td>🎨 Decorated Classroom</td><td>כיתה מקושטת</td><td><span class="pill p-gold">Classroom</span></td><td>Monthly</td><td class="num">+10</td><td class="num">—</td></tr>
+        <tr><td>🪑 Chairs Raised at EOD</td><td>הרמת כיסאות בסוף היום</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+2</td><td class="num">−2</td></tr>
+        <tr><td>📋 Classroom Duty Monitors</td><td>תורנים כיתתיים</td><td><span class="pill p-gold">Classroom</span></td><td>Daily (1/day)</td><td class="num">+3</td><td class="num">−2</td></tr>
+        <tr><td>🗄️ Organized Cubbies</td><td>כוורות מסודרות</td><td><span class="pill p-gold">Classroom</span></td><td>Weekly</td><td class="num">+3</td><td class="num">−2</td></tr>
       </tbody>
     </table></div>
   </section>
 
-  <footer>SchoolMeritPoints Specification — Switch between English and Hebrew or toggle Dark/Light mode anytime using the top bar.</footer>
+  <section>
+    <h2><span class="sec">4</span>🏗️ System Architecture &amp; Agile Roadmap</h2>
+    <img src="./assets/system-flow.svg" alt="System Architecture and Scoring Flow" style="border-radius:14px;border:1px solid var(--line)"/>
+    <img src="./assets/roadmap-sprints.svg" alt="6-Sprint Agile Roadmap" style="border-radius:14px;border:1px solid var(--line)"/>
+  </section>
+
+  <footer>⭐ SchoolMeritPoints Open-Source Specification (MIT) — Switch between English and Hebrew or toggle Dark/Light mode anytime using the top bar.</footer>
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
 <script>
   'use strict';
   let specLang = 'he';

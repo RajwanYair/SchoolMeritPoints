@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 520" width="100%" height="100%" role="img" aria-label="SchoolMeritPoints 6-Sprint Open-Source Development Roadmap">
+  <defs>
+    <linearGradient id="rmHead" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f2557"/>
+      <stop offset="100%" stop-color="#1f4fa3"/>
+    </linearGradient>
+    <filter id="rmShadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#14213d" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1160" height="520" rx="22" fill="#f5f7fb" stroke="#dde3ef" stroke-width="2"/>
+
+  <!-- Header -->
+  <rect x="20" y="18" width="1120" height="56" rx="14" fill="url(#rmHead)"/>
+  <text x="580" y="53" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="800" font-size="21" fill="#ffffff">
+    🗺️ SchoolMeritPoints — Agile Sprint Roadmap (Open-Source Community Edition)
+  </text>
+
+  <!-- Row 1: Sprints 1, 2, 3 -->
+  <!-- Sprint 1 -->
+  <g transform="translate(24, 94)" filter="url(#rmShadow)">
+    <rect width="356" height="190" rx="16" fill="#ffffff" stroke="#1c8c5e" stroke-width="2"/>
+    <rect width="356" height="40" rx="16" fill="#dcf3e8"/>
+    <text x="18" y="26" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1c8c5e">✅ SPRINT 1 · v1.0 (COMPLETED)</text>
+    <text x="338" y="26" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="12" fill="#1c8c5e">SMP-101..106</text>
+    <text x="18" y="66" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">🚀 Core PWA, RBAC &amp; Dual Runtime</text>
+    <text x="18" y="92" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🎓👨‍🏫🛡️ 3-Tier RBAC (Student, Teacher, Admin)</text>
+    <text x="18" y="114" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• ⚖️ 11 Criteria + Fair Normalized Class Score</text>
+    <text x="18" y="136" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🌐 Bilingual (EN/HE) + 🌓 Dark/Light + PC/Mobile</text>
+    <text x="18" y="158" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🧪 21-Test Automated Suite + GitHub Pages Live</text>
+  </g>
+
+  <!-- Sprint 2 -->
+  <g transform="translate(402, 94)" filter="url(#rmShadow)">
+    <rect width="356" height="190" rx="16" fill="#ffffff" stroke="#1f4fa3" stroke-width="2"/>
+    <rect width="356" height="40" rx="16" fill="#e6eefc"/>
+    <text x="18" y="26" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1f4fa3">📷 SPRINT 2 · v1.1 (NEXT UP)</text>
+    <text x="338" y="26" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="12" fill="#1f4fa3">SMP-201..205</text>
+    <text x="18" y="66" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">🔐 QR Cards, Camera Scan &amp; Roster Import</text>
+    <text x="18" y="92" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🏷️ Printable Student/Teacher QR Badge Sheet</text>
+    <text x="18" y="114" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 📸 Morning Gate Camera QR Scan (&lt;3s login/award)</text>
+    <text x="18" y="136" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🔢 Teacher 4-Digit PIN Verification + 5-Try Lockout</text>
+    <text x="18" y="158" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 📥 Bulk Student &amp; Class CSV/Excel Roster Import</text>
+  </g>
+
+  <!-- Sprint 3 -->
+  <g transform="translate(780, 94)" filter="url(#rmShadow)">
+    <rect width="356" height="190" rx="16" fill="#ffffff" stroke="#f2b705" stroke-width="2"/>
+    <rect width="356" height="40" rx="16" fill="#fff5d1"/>
+    <text x="18" y="26" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#b37f00">⚙️ SPRINT 3 · v1.2 (PLANNED)</text>
+    <text x="338" y="26" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="12" fill="#b37f00">SMP-301..304</text>
+    <text x="18" y="66" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">📅 Academic Periods &amp; Policy Knobs</text>
+    <text x="18" y="92" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🗓️ Period Management (Monthly / Semester / Year)</text>
+    <text x="18" y="114" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🔄 Period Rollover (Reset Leaderboard, Keep Audit)</text>
+    <text x="18" y="136" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🛡️ Non-Negative Score Floor (`min_score = 0`) Knob</text>
+    <text x="18" y="158" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🏫 Optional Teacher Homeroom-Only Scope Toggle</text>
+  </g>
+
+  <!-- Row 2: Sprints 4, 5, 6 -->
+  <!-- Sprint 4 -->
+  <g transform="translate(24, 306)" filter="url(#rmShadow)">
+    <rect width="356" height="190" rx="16" fill="#ffffff" stroke="#c5d7fa" stroke-width="2"/>
+    <rect width="356" height="40" rx="16" fill="#e6eefc"/>
+    <text x="18" y="26" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1f4fa3">📺 SPRINT 4 · v1.3 (PLANNED)</text>
+    <text x="338" y="26" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="12" fill="#1f4fa3">SMP-401..404</text>
+    <text x="18" y="66" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">🏆 Hallway TV Kiosk &amp; Certificates</text>
+    <text x="18" y="92" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🖥️ Full-Screen Hallway TV Live Leaderboard Mode</text>
+    <text x="18" y="114" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 📜 Auto-Generated Printable Excellence Certificates</text>
+    <text x="18" y="136" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• ✨ Star-Burst Animation on Student Point Award</text>
+    <text x="18" y="158" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🔔 Live Polling / SSE Auto-Refresh (&lt;60s sync)</text>
+  </g>
+
+  <!-- Sprint 5 -->
+  <g transform="translate(402, 306)" filter="url(#rmShadow)">
+    <rect width="356" height="190" rx="16" fill="#ffffff" stroke="#c5d7fa" stroke-width="2"/>
+    <rect width="356" height="40" rx="16" fill="#e6eefc"/>
+    <text x="18" y="26" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1f4fa3">🎁 SPRINT 5 · v2.0 (PLANNED)</text>
+    <text x="338" y="26" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="12" fill="#1f4fa3">SMP-501..504</text>
+    <text x="18" y="66" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">🛍️ Merit Prize Store &amp; Analytics</text>
+    <text x="18" y="92" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🎁 School Prize Catalog &amp; Point Redemption Flow</text>
+    <text x="18" y="114" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 💳 Separate Spendable Balance vs. Lifetime Score</text>
+    <text x="18" y="136" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 📊 Principal &amp; Homeroom Analytics Charts</text>
+    <text x="18" y="158" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🏅 Campaign Tracker (Special Study / Chesed)</text>
+  </g>
+
+  <!-- Sprint 6 -->
+  <g transform="translate(780, 306)" filter="url(#rmShadow)">
+    <rect width="356" height="190" rx="16" fill="#ffffff" stroke="#c5d7fa" stroke-width="2"/>
+    <rect width="356" height="40" rx="16" fill="#e6eefc"/>
+    <text x="18" y="26" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#1f4fa3">👨‍👩‍👧 SPRINT 6 · v2.1 (PLANNED)</text>
+    <text x="338" y="26" text-anchor="end" font-family="system-ui, sans-serif" font-weight="800" font-size="12" fill="#1f4fa3">SMP-601..604</text>
+    <text x="18" y="66" font-family="system-ui, sans-serif" font-weight="800" font-size="15" fill="#14213d">💌 Parent View &amp; Weekly Digests</text>
+    <text x="18" y="92" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 👀 Read-Only Parent Link / Token Access</text>
+    <text x="18" y="114" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 📬 Automated Weekly Positive Digest Summary</text>
+    <text x="18" y="136" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• 🔔 Web Push Notifications for Student Milestones</text>
+    <text x="18" y="158" font-family="system-ui, sans-serif" font-size="12.5" fill="#5b6782">• ♿ Full WCAG / IS 5568 AA Accessibility Audit</text>
+  </g>
+</svg>

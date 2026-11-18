@@ -36,6 +36,8 @@ class TestDocsAndConfigs(unittest.TestCase):
             ROOT_DIR / "assets" / "hero-banner.svg",
             ROOT_DIR / "assets" / "system-flow.svg",
             ROOT_DIR / "assets" / "ui-preview.svg",
+            ROOT_DIR / "assets" / "user-journey.svg",
+            ROOT_DIR / "assets" / "roadmap-sprints.svg",
         ]
         for svg_path in expected_svgs:
             self.assertTrue(svg_path.is_file(), f"Missing SVG file: {svg_path}")
@@ -86,8 +88,8 @@ class TestDocsAndConfigs(unittest.TestCase):
             self.assertIn(ep, index_html, f"Endpoint {ep} missing from index.html client/demo router")
 
     def test_04_companion_docs_and_git_ci_configs(self):
-        """Verify spec.md, CONTRIBUTING.md, SECURITY.md, LICENSE, .gitignore, .nojekyll, and GitHub workflows."""
-        for doc_name in ("spec.md", "CONTRIBUTING.md", "SECURITY.md", "LICENSE", ".gitignore", ".nojekyll"):
+        """Verify spec.md, ROADMAP.md, CONTRIBUTING.md, SECURITY.md, LICENSE, .gitignore, .nojekyll, and GitHub workflows."""
+        for doc_name in ("spec.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "LICENSE", ".gitignore", ".nojekyll"):
             p = ROOT_DIR / doc_name
             self.assertTrue(p.is_file(), f"Missing required repository file: {doc_name}")
             if doc_name != ".nojekyll":

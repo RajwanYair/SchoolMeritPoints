@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 320" width="100%" height="100%" role="img" aria-label="SchoolMeritPoints Daily School User Journey">
+  <defs>
+    <linearGradient id="ujGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1f4fa3"/>
+      <stop offset="100%" stop-color="#1c8c5e"/>
+    </linearGradient>
+    <filter id="ujShadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#14213d" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1100" height="320" rx="20" fill="#f5f7fb" stroke="#dde3ef" stroke-width="2"/>
+
+  <rect x="20" y="16" width="1060" height="46" rx="12" fill="url(#ujGrad)"/>
+  <text x="550" y="45" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="18" fill="#ffffff">
+    🌟 Daily School Merit Journey — From Morning Gate to Classroom Leaderboard
+  </text>
+
+  <!-- Connecting Line -->
+  <line x1="120" y1="175" x2="980" y2="175" stroke="#1f4fa3" stroke-width="4" stroke-dasharray="8 6"/>
+
+  <!-- Step 1 -->
+  <g transform="translate(30, 84)" filter="url(#ujShadow)">
+    <rect width="230" height="196" rx="16" fill="#ffffff" stroke="#dde3ef" stroke-width="1.5"/>
+    <circle cx="115" cy="40" r="24" fill="#fff5d1" stroke="#f2b705" stroke-width="2"/>
+    <text x="115" y="48" text-anchor="middle" font-size="22">🌅</text>
+    <text x="115" y="88" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#14213d">1. Morning Arrival (08:00)</text>
+    <text x="115" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">Teacher selects class or scans</text>
+    <text x="115" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">QR badge; awards +3 Punctuality</text>
+    <text x="115" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">&amp; +2 Uniform in 3 seconds.</text>
+    <rect x="55" y="162" width="120" height="22" rx="11" fill="#dcf3e8"/>
+    <text x="115" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="11" fill="#1c8c5e">+5 Personal Points</text>
+  </g>
+
+  <!-- Step 2 -->
+  <g transform="translate(296, 84)" filter="url(#ujShadow)">
+    <rect width="230" height="196" rx="16" fill="#ffffff" stroke="#dde3ef" stroke-width="1.5"/>
+    <circle cx="115" cy="40" r="24" fill="#e6eefc" stroke="#1f4fa3" stroke-width="2"/>
+    <text x="115" y="48" text-anchor="middle" font-size="22">🏫</text>
+    <text x="115" y="88" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#14213d">2. Classroom Check (13:30)</text>
+    <text x="115" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">Homeroom teacher awards class</text>
+    <text x="115" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">points for Cleanliness (+5) &amp;</text>
+    <text x="115" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">Chairs Raised (+2) at EOD.</text>
+    <rect x="55" y="162" width="120" height="22" rx="11" fill="#e6eefc"/>
+    <text x="115" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="11" fill="#1f4fa3">+7 Class Points</text>
+  </g>
+
+  <!-- Step 3 -->
+  <g transform="translate(562, 84)" filter="url(#ujShadow)">
+    <rect width="230" height="196" rx="16" fill="#ffffff" stroke="#dde3ef" stroke-width="1.5"/>
+    <circle cx="115" cy="40" r="24" fill="#dcf3e8" stroke="#1c8c5e" stroke-width="2"/>
+    <text x="115" y="48" text-anchor="middle" font-size="22">📱</text>
+    <text x="115" y="88" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#14213d">3. Student Portal View</text>
+    <text x="115" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">Student checks personal score,</text>
+    <text x="115" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">progress bar toward certificate,</text>
+    <text x="115" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">&amp; normalized class rank (#1).</text>
+    <rect x="45" y="162" width="140" height="22" rx="11" fill="#fff5d1"/>
+    <text x="115" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="11" fill="#b37f00">🔒 Privacy Protected</text>
+  </g>
+
+  <!-- Step 4 -->
+  <g transform="translate(828, 84)" filter="url(#ujShadow)">
+    <rect width="242" height="196" rx="16" fill="#ffffff" stroke="#dde3ef" stroke-width="1.5"/>
+    <circle cx="121" cy="40" r="24" fill="#fff5d1" stroke="#f2b705" stroke-width="2"/>
+    <text x="121" y="48" text-anchor="middle" font-size="22">🏆</text>
+    <text x="121" y="88" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="14" fill="#14213d">4. Recognition &amp; Export</text>
+    <text x="121" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">Admin exports UTF-8 CSV report,</text>
+    <text x="121" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">celebrates top classes, and</text>
+    <text x="121" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#5b6782">rolls over to the next period.</text>
+    <rect x="51" y="162" width="140" height="22" rx="11" fill="#dcf3e8"/>
+    <text x="121" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="11" fill="#1c8c5e">📥 1-Click CSV Export</text>
+  </g>
+</svg>

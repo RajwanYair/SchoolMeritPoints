@@ -1,273 +1,279 @@
-# School Merit Points — Specification
+<div align="center">
 
-**Version 1.0 (Draft) · November 16, 2026**
+<img src="assets/hero-banner.svg" alt="SchoolMeritPoints — Open-Source Specification" width="100%"/>
 
-> This document describes what the system does and how it works. It's written for someone new to the project — whether you're a developer, designer, or school staff member wondering what this thing is.
+# ⭐ SchoolMeritPoints — Product & Architecture Specification
 
----
+**Open-Source Community Release · MIT License · Bilingual (EN / HE) · PC, Tablet & Mobile PWA**
 
-## Table of Contents
+> 🌍 **Open-Source Mission**: SchoolMeritPoints is a 100% free, open-source Progressive Web App (PWA) for schools. There are no subscriptions, no per-user licenses, and no external package dependencies. Schools and contributors can run it directly from GitHub Pages or host it on any local Python 3 + SQLite machine.
 
-1. [What is this?](#1-what-is-this)
-2. [Who uses it?](#2-who-uses-it)
-3. [How the merit system works](#3-how-the-merit-system-works)
-4. [Logging in](#4-logging-in)
-5. [What the screens look like](#5-what-the-screens-look-like)
-6. [Visual style](#6-visual-style)
-7. [How data is stored](#7-how-data-is-stored)
-8. [Privacy and security](#8-privacy-and-security)
-9. [Technology options](#9-technology-options)
-10. [Development roadmap](#10-development-roadmap)
-11. [Acceptance checklist](#11-acceptance-checklist)
-12. [Open questions for the school](#12-open-questions-for-the-school)
+[🚀 **Launch Live App (`index.html`)**](https://rajwanyair.github.io/SchoolMeritPoints/index.html) ·
+[🎨 **Interactive Visual Spec (`spec.html`)**](https://rajwanyair.github.io/SchoolMeritPoints/spec.html) ·
+[🗺️ **Agile Sprint Roadmap (`ROADMAP.md`)**](ROADMAP.md) ·
+[📖 **Repository README (`README.md`)**](README.md)
+
+</div>
 
 ---
 
-## 1. What is this?
+## 📑 Table of Contents
 
-A **web app** that tracks merit points for students and classrooms. Teachers award or deduct points for behavior and classroom activities. Students see their personal score, their class score, and how their class ranks compared to others.
-
-The core idea: positive reinforcement, quickly. A teacher should be able to give points to an entire class in under 30 seconds.
-
-### ✅ Included in v1
-
-- Personal points per student (earn and lose)
-- Class-wide points
-- Reason + timestamp recorded for every action
-- Leaderboards: students within a class, and classes across the school
-- Full history of who did what and when
-
-### ❌ Not in v1 (maybe later)
-
-- Grades, official attendance, or government system integration
-- Chat / messaging between users
-- Points store / redeeming points for prizes (Phase 2)
-- Parent app (Phase 3)
+1. [🎯 System Vision & Scope](#1--system-vision--scope)
+2. [👥 User Roles & RBAC Permissions](#2--user-roles--rbac-permissions)
+3. [⚖️ Merit Criteria & Normalized Scoring Math](#3-️-merit-criteria--normalized-scoring-math)
+4. [🔐 Authentication & Access Flows](#4--authentication--access-flows)
+5. [📱 Visual Screens & Multi-Device Layout](#5--visual-screens--multi-device-layout)
+6. [🎨 Design System, Accessibility & Themes](#6--design-system-accessibility--themes)
+7. [🗄️ Data Model & Event-Sourced Ledger](#7-️-data-model--event-sourced-ledger)
+8. [🛡️ Student Privacy & Security Guardrails](#8-️-student-privacy--security-guardrails)
+9. [🏗️ Open-Source Architecture & Runtime Modes](#9-️-open-source-architecture--runtime-modes)
+10. [🗺️ Agile Development Sprints & Roadmap Summary](#10-️-agile-development-sprints--roadmap-summary)
+11. [✅ Quality Gates & Automated Verification](#11--quality-gates--automated-verification)
+12. [⚙️ Configurable School Policy Knobs](#12-️-configurable-school-policy-knobs)
 
 ---
 
-## 2. Who uses it?
+## 1. 🎯 System Vision & Scope
 
-### Teacher
+**SchoolMeritPoints** reinforces positive student conduct and classroom teamwork through a transparent, fair, and lightning-fast merit tracking system. A teacher standing in a hallway can award points to an entire class in **under 3 seconds**, and students immediately see why points were awarded and how their classroom ranks.
 
-- Adds or removes points for: a single student, a group, or an entire class
-- Adds a short note to any action (optional)
-- Can undo their own mistake within 24 hours
-- Views all classes, rankings, and history
-- Scans a student QR/barcode to award a point instantly (e.g., at the gate in the morning)
+<div align="center">
+  <img src="assets/user-journey.svg" alt="Daily School Merit Journey" width="100%"/>
+</div>
 
-### Student
+### ✅ Core Capabilities (v1.0 — Implemented)
 
-- Sees their personal score, broken down by category
-- Sees their class score and where it ranks among other classes
-- Sees history: when, why, and how many points
-- Does **not** see other students' personal scores (recommended — see §8)
-- Cannot change any data
+- 🌟 **Personal Merit Tracking**: Award or deduct points per student with criterion and teacher attribution.
+- 🏫 **Normalized Classroom Merit Tracking**: Award direct classroom points combined with 50% of the class's average personal score.
+- 🏆 **Live Leaderboards**: Real-time class rankings and teacher-visible student rankings with visual progress bars.
+- 📋 **Immutable Audit Log & 24h Undo**: Every action is timestamped; teachers can undo their own mistakes within 24 hours.
+- 🌍 **Bilingual & Multi-Device**: Full Hebrew (`RTL`) and English (`LTR`) switching, Light/Dark themes, and responsive layouts for PC (`≥1024px`), Tablet (`768px–1023px`), and Mobile (`<768px`).
+- 📥 **One-Click CSV Export**: Instant UTF-8 BOM CSV export compatible with Microsoft Excel and LibreOffice.
 
-> **Recommendation:** Add a third role — **Admin** (principal or social coordinator) — who manages classes, students, teachers, point values, prints QR cards, and resets periods. Without this role, every change requires contacting the vendor.
+### 🔭 Out of Scope (Non-Goals)
 
----
-
-## 3. How the merit system works
-
-### Categories
-
-The table below is a starting proposal. The admin can change values, add categories, or disable them without coding.
-
-| Category | Type | Frequency | Add | Deduct |
-|---|---|---|---|---|
-| School uniform | Personal | Daily | +2 | −1 |
-| Tzitzit | Personal | Daily | +2 | −1 |
-| Punctuality | Personal | Daily | +3 | −2 |
-| Special assignment | Personal | Per campaign | +5 | — |
-| Respectful conduct | Personal | As needed | +5 | −3 |
-| Classroom tidiness | Class | Daily | +5 | −3 |
-| Clean walls | Class | Weekly | +3 | −3 |
-| Decorated classroom | Class | Monthly | +10 | — |
-| Chairs up at end of day | Class | Daily | +2 | −2 |
-| Class duty roster | Class | Daily | +3 | −2 |
-| Organized cubbies | Class | Weekly | +3 | −2 |
-
-### How scores are calculated
-
-- **Personal score** = sum of all points earned minus points lost
-- **Class score** = direct class points + **average** of personal scores of students in that class (average, not sum — so bigger classes don't get an unfair advantage)
-- Daily categories can be limited to once per student per day
-- Scores run in **periods** (monthly, semester, yearly). At period start, the leaderboard resets but history is preserved
-- Scores never drop below zero (configurable)
+- ❌ Academic exam grading or official government attendance reporting.
+- ❌ Student-to-student chat or social messaging.
 
 ---
 
-## 4. Logging in
+## 2. 👥 User Roles & RBAC Permissions
 
-**Flow:** Welcome screen → Choose Teacher/Student → Username+password *or* Scan QR code → Dashboard
+```mermaid
+flowchart TB
+    subgraph Actors["👥 School Community Roles"]
+        S["🎓 Student (תלמיד)"]
+        T["👨‍🏫 Teacher (מורה)"]
+        A["🛡️ Admin (מנהל מערכת)"]
+    end
 
-### Password login
+    subgraph Capabilities["🔒 Role-Based Capabilities"]
+        S1["📊 View Own Score & Goal Bar"]
+        S2["🏆 View Class Rank & Class Leaderboard"]
+        S3["📋 View Own & Classroom History"]
 
-- Username = student ID number or a name set by admin
-- Initial password issued by admin; must be changed on first login
-- "Remember me" option on personal devices
-- Temporary lockout after 5 wrong attempts
-- Password reset handled by admin (students may not have email)
+        T1["⚡ Batch Award / Deduct Points (+1..+10)"]
+        T2["↩️ Undo Own Entries (< 24 Hours)"]
+        T3["📈 View Student & Class Leaderboards"]
+        T4["📥 Export Audit Log to UTF-8 CSV"]
 
-### QR code login
+        A1["👤 Manage Users (Admin / Teacher / Student)"]
+        A2["🏫 Manage Classes & Student Enrollment"]
+        A3["📋 Configure & Toggle Merit Criteria"]
+        A4["🛡️ Undo Any Entry Anytime"]
+    end
 
-- Every student and teacher has a personal printed QR card
-- The code contains a random ID — no name, no ID number
-- Lost cards are revoked with one click; new ones printed instantly
-- Teachers: QR code + 4-digit PIN (because teachers have write access)
-- The same card also lets teachers scan a student to award a point quickly
+    S --> S1 & S2 & S3
+    T --> T1 & T2 & T3 & T4
+    A --> T1 & T3 & T4 & A1 & A2 & A3 & A4
+```
 
----
-
-## 5. What the screens look like
-
-> Visual mockups with CSS styling are in **`spec.html`** (the Hebrew visual reference). Here's a text summary:
-
-### Welcome / Login
-- Gold star logo at top
-- Student / Teacher tab toggle
-- Username + password fields
-- "Login" button + "Scan QR code" alternative
-- "Forgot password? Ask your homeroom teacher" link
-
-### Student dashboard
-- Greeting: "Hello, [Name] · [Class]"
-- Large card: monthly score with progress bar
-- Mini cards: class score, class ranking position
-- Recent activity feed with date, teacher, and ± amount
-- Bottom tabs: Home · My Class · Rankings · History
-
-### Teacher — Awarding points
-- Class dropdown picker
-- Personal / Class tab
-- Category selector (chip buttons)
-- Student list with checkboxes showing current score
-- "Select all" shortcut
-- Green Add / Red Deduct action buttons
-- Bottom tabs: Award · Scan · Rankings · History
-
-### Desktop — Class rankings
-- Top nav: Class Rankings · Students · Settings
-- Leaderboard table: rank, class name, bar, score
-- Side panel: live activity feed
+| Role | Emoji | Key Responsibilities & Permissions |
+| :--- | :---: | :--- |
+| **Student (`student`)** | 🎓 | Views personal score, progress bar, class score, class rank, and personal/class history. Cannot view other students' personal scores or modify any data. |
+| **Teacher (`teacher`)** | 👨‍🏫 | Awards or deducts points for single students, multi-selected student batches, or entire classes; views class & student leaderboards; undoes own entries within 24 hours; exports CSV. |
+| **Admin (`admin`)** | 🛡️ | Full self-service control over users, classes, rosters, and merit criteria values/limits without code changes; can undo any entry at any time. |
 
 ---
 
-## 6. Visual style
+## 3. ⚖️ Merit Criteria & Normalized Scoring Math
 
-### Principles
+### 📋 Built-in Merit Categories (11 Default Rules)
 
-- Full Hebrew, right-to-left on every screen
-- Large buttons: designed for one-handed phone use in a hallway
-- Green = add, Red = deduct (always)
-- Big prominent score numbers; details below
-- Brief star animation when a student earns points
-- Light + dark mode
-- Accessibility: Israeli Standard 5568 (Level AA)
+Administrators can edit point values, daily limits, or add new criteria directly from the Admin UI:
 
-### Proposed colors
+| # | Emoji | Criterion (EN) | Hebrew Name | Scope | Frequency / Limit | Award (`+`) | Deduct (`−`) |
+| :-: | :-: | :--- | :--- | :---: | :---: | :---: | :---: |
+| 1 | 👕 | **School Uniform** | תלבושת | `personal` | Daily (`1/day`) | `+2` | `−1` |
+| 2 | 🧵 | **Tzitzit** | ציצית | `personal` | Daily (`1/day`) | `+2` | `−1` |
+| 3 | ⏰ | **On-Time Arrival** | הגעה בזמן | `personal` | Daily (`1/day`) | `+3` | `−2` |
+| 4 | 📚 | **Special Study Initiative** | מבצע חל"ל | `personal` | Per campaign (`∞`) | `+5` | — |
+| 5 | 🤝 | **Exemplary Behavior** | התנהגות בדרך ארץ | `personal` | Unlimited (`∞`) | `+5` | `−3` |
+| 6 | 🧹 | **Classroom Cleanliness** | סדר וניקיון הכיתה | `class` | Daily (`1/day`) | `+5` | `−3` |
+| 7 | ✨ | **Clean Classroom Walls** | קירות נקיים | `class` | Weekly (`∞`) | `+3` | `−3` |
+| 8 | 🎨 | **Decorated Classroom** | כיתה מקושטת | `class` | Monthly (`∞`) | `+10` | — |
+| 9 | 🪑 | **Chairs Raised at EOD** | הרמת כיסאות בסוף היום | `class` | Daily (`1/day`) | `+2` | `−2` |
+| 10 | 📋 | **Classroom Duty Monitors** | תורנים כיתתיים | `class` | Daily (`1/day`) | `+3` | `−2` |
+| 11 | 🗄️ | **Organized Cubbies** | כוורות מסודרות | `class` | Weekly (`∞`) | `+3` | `−2` |
 
-| Role | Color |
-|---|---|
-| School identity (frame, buttons, headings) | Blue |
-| Points and stars | Gold |
-| Adding points | Green |
-| Deducting points | Red |
+### 🧮 Mathematical Scoring Model
 
-If the school has official branding, it replaces the blue. Suggested fonts: **Secular One** (headings), **Assistant** (body) — both free and support Hebrew.
+- **Personal Score**:
+  $$\text{StudentScore}(s) = \sum_{e \in \text{Entries}(s),\, \neg e.\text{cancelled}} \Delta_e$$
+- **Fair Normalized Class Score** (prevents large classes from outscoring smaller classes solely due to headcount):
+  $$\text{ClassScore}(c) = \sum_{e \in \text{Direct}(c)} \Delta_e \;+\; \left\lfloor 0.5 \times \frac{1}{|S_c|} \sum_{s \in S_c} \text{StudentScore}(s) \right\rfloor$$
 
----
-
-## 7. How data is stored
-
-| Table | Key fields | Notes |
-|---|---|---|
-| **Users** | ID, name, role, username, hashed password, QR code, active | No national ID needed |
-| **Classes** | ID, name (e.g. "6-2"), grade, homeroom teacher | |
-| **Enrollment** | Student, class, school year | Year transitions don't lose history |
-| **Categories** | Name, type (personal/class), add value, deduct value, daily limit, active | Admin-editable |
-| **Point actions** | ID, target, category, change (±), teacher, timestamp, note, cancelled | Never deleted; only flagged as cancelled |
-| **Periods** | Name, start date, end date | For monthly/yearly leaderboards |
-
-> Scores are always recalculated from the action log — never stored as a single number. This means every point is traceable and mistakes can be undone cleanly.
+```mermaid
+flowchart LR
+    P["🎓 Student Personal Entries\nΣ Δ_personal"] --> Avg["➗ Class Member Average\nAvg = Σ StudentScore / N"]
+    Avg --> Weight["⚖️ 50% Weight\n⌊ 0.5 × Avg ⌋"]
+    D["🏫 Direct Class Entries\nΣ Δ_class"] --> Total["🏆 Final Normalized Class Score\nDirect + ⌊ 0.5 × Avg ⌋"]
+    Weight --> Total
+```
 
 ---
 
-## 8. Privacy and security
+## 4. 🔐 Authentication & Access Flows
 
-- Users are minors. The system stores only: name, class, score. No ID numbers, addresses, phones, or photos.
-- Vendor must comply with Israeli privacy law and Ministry of Education data guidelines. The school should verify with their legal advisor.
-- Parents should be notified about the system and what data is collected.
-- Students see only their own score + their class score. Public personal rankings are **disabled by default** — the school decides.
-- HTTPS, hashed passwords, daily automated backups, servers in Europe/Israel.
-- Every point change is logged with teacher name and timestamp.
-- Data belongs to the school. Full Excel export available anytime.
+```mermaid
+stateDiagram-v2
+    [*] --> WelcomeScreen: 🌐 Open index.html
+    WelcomeScreen --> RoleSelect: Choose 🎓 Student or 👨‍🏫 Teacher/Admin
+    RoleSelect --> PasswordAuth: 🔑 Username + Password
+    RoleSelect --> DemoQuickAuth: ⚡ 1-Click Live Demo
+    RoleSelect --> QRBadgeScan: 📷 QR Badge Scan (Sprint 2)
+    PasswordAuth --> StudentPortal: role == student
+    PasswordAuth --> TeacherPortal: role == teacher
+    PasswordAuth --> AdminConsole: role == admin
+    DemoQuickAuth --> StudentPortal: ?demo=student
+    DemoQuickAuth --> TeacherPortal: ?demo=teacher
+    DemoQuickAuth --> AdminConsole: ?demo=admin
+```
 
----
-
-## 9. Technology options
-
-| Option | What it is | Pros | Cons |
-|---|---|---|---|
-| **PWA** ⭐ Recommended | A website installable on the home screen | One codebase, no app stores, instant updates, camera access | Slightly less "app-like" than native |
-| **Native app** | Separate Android + iPhone + admin site | Smooth UX, notifications | More expensive, two codebases, app store approval |
-| **No-code** | Glide / AppSheet / similar | Fast pilot | Limited design & Hebrew, platform lock-in, per-user fees |
-
-Always ask the vendor: monthly hosting cost, annual maintenance, who owns the code and data.
-
----
-
-## 10. Development roadmap
-
-### Phase 1 — MVP (6–8 weeks)
-- Welcome + login (password & QR)
-- Student dashboard + Teacher dashboard
-- Award/deduct personal & class points
-- Class rankings + history
-- Manage classes, students, categories
-- Excel import for students
-- Print QR cards
-
-### Phase 2 — Extensions (after 1-month pilot)
-- Points store / redeem for prizes
-- Hallway TV live rankings display
-- Auto-generated excellence certificates
-- Reports for homeroom teachers and principal
-
-### Phase 3 — Parents (as needed)
-- Parent view-only login
-- Weekly automated parent updates
-- Student notifications
+- 🔑 **Password Sign-In**: Salted `SHA-256` password verification issuing a signed 24-hour `HMAC-SHA256` session token.
+- ⚡ **Instant Demo Sign-In**: Pre-seeded one-click role buttons (`noam`, `david`, `admin`) and URL deep-links (`?demo=student|teacher|admin`).
+- 📷 **QR Badge & PIN Sign-In (Sprint 2 — `SMP-201..203`)**: Printable random-UUID QR cards for students and teachers, with a 4-digit PIN gate for teachers and 5-attempt lockout protection.
 
 ---
 
-## 11. Acceptance checklist
+## 5. 📱 Visual Screens & Multi-Device Layout
 
-1. Teacher awards a point to 30 students in under 30 seconds.
-2. QR scan logs in a student within 3 seconds.
-3. Point change appears on student screen within 1 minute, no manual refresh.
-4. Works on Android, iPhone, and desktop (Chrome, Safari, Edge).
-5. Full Hebrew RTL UI, no clipped or reversed text.
-6. Student cannot see another student's personal score or change data.
-7. Admin adds a class/student/category without vendor help.
-8. Full Excel export.
-9. Teacher + admin guide and 1-hour staff training.
-10. 3 months bug-fix warranty after go-live.
+<div align="center">
+  <img src="assets/ui-preview.svg" alt="SchoolMeritPoints Mobile Screens Preview" width="100%"/>
+</div>
 
----
-
-## 12. Open questions for the school
-
-- How many students, classes, and teachers? (affects hosting cost)
-- Do all students have phones, or is a school viewing station needed?
-- Should students see in-class personal rankings, or just their own score?
-- Can points be deducted for every category, or only some?
-- Monthly, semester, or yearly period? What's the prize?
-- Who will be the system admin at the school?
-- Can teachers award points to any student, or only their own classes?
-- What exactly is a "special assignment" and how is it tracked?
+| Screen / Portal | Mobile (`< 768px`) | Tablet (`768px–1023px`) | PC / Desktop (`≥ 1024px`) |
+| :--- | :--- | :--- | :--- |
+| 🔐 **Welcome & Sign-In** | Full-height vertical stack with 1-click demo bar | Elevated `480px` card with shadow | Centered card + top language/theme bar |
+| 🎓 **Student Portal** | Hero score card + 2 mini cards + recent feed + bottom tabs | Centered `820px` view | 2-column grid (Hero card alongside Class stats) + side rail |
+| 👨‍🏫 **Teacher Portal** | Class selector + criteria chips + quick `+/-` bar + student checklist | Centered modal class picker | Left/Right vertical navigation sidebar + wide workspace |
+| 🛡️ **Admin Console** | Scrollable user/class/criteria cards + modal forms + CSV export | Wide tables + centered modals | Full 6-section sidebar console + instant CSV download |
 
 ---
 
-*Draft specification. Values, timelines, and mockups are a starting point for vendor discussions and are not binding.*
+## 6. 🎨 Design System, Accessibility & Themes
+
+- 🌍 **Bilingual Directionality**: Automatic `dir="rtl"` for Hebrew (`עב`) and `dir="ltr"` for English (`EN`) using CSS logical properties (`border-inline-end`, `margin-inline-start`, `text-align: start`).
+- 🌓 **Light & Dark Themes**: High-contrast semantic tokens (`--brand`, `--gold`, `--plus`, `--minus`, `--bg`, `--paper`) with automatic OS `prefers-color-scheme` detection and manual `🌓` toggle.
+- 🔤 **Typography**: **Secular One** for expressive display headings and **Assistant** for crisp Hebrew/English body text and tabular numbers (`font-variant-numeric: tabular-nums`).
+- ♿ **Accessibility**: Large touch targets (`≥ 44px`), semantic color + sign pairing (`+` green, `−` red), and keyboard-navigable controls aligned with WCAG 2.1 / IS 5568 AA.
+
+---
+
+## 7. 🗄️ Data Model & Event-Sourced Ledger
+
+<div align="center">
+  <img src="assets/system-flow.svg" alt="System Architecture and Data Pipeline" width="100%"/>
+</div>
+
+| Table | Primary Key | Key Columns | Purpose |
+| :--- | :---: | :--- | :--- |
+| 👤 **`users`** | `id` | `name`, `role`, `username`, `password`, `barcode`, `active`, `pin` | Stores students, teachers, and admins (no national ID numbers stored). |
+| 🏫 **`classes`** | `id` | `name`, `grade`, `teacher_id` | Classroom definitions and homeroom teacher assignment. |
+| 👥 **`class_members`** | `(student_id, class_id, year)` | `student_id`, `class_id`, `year` | Maps students to classes per school year without losing history. |
+| 📋 **`criteria`** | `id` | `name`, `kind`, `add_value`, `sub_value`, `daily_limit`, `active` | Admin-configurable personal and classroom merit categories. |
+| ⭐ **`entries`** | `id` | `target_type`, `target_id`, `criterion_id`, `delta`, `teacher_id`, `note`, `ts`, `cancelled` | Append-only event ledger; undone entries set `cancelled = 1`. |
+| 📅 **`periods`** | `id` | `name`, `start_date`, `end_date` | Academic scoring periods (monthly, semester, yearly). |
+
+---
+
+## 8. 🛡️ Student Privacy & Security Guardrails
+
+- 🔒 **Zero Sensitive PII**: Stores only display name, classroom, and merit events—never national ID numbers, home addresses, phone numbers, or photos.
+- 🙈 **Student Score Isolation**: Students can only query their own personal score (`/api/student-score` enforces `403 Forbidden` if a student requests another student's ID) and the school-wide class leaderboard.
+- 🔑 **Cryptographic Session Tokens**: Passwords are salted and hashed with `SHA-256`; sessions use `HMAC-SHA256` signatures with a strict 24-hour expiration window.
+- 🧾 **Complete Auditability**: Every point addition, deduction, and cancellation records the acting teacher and timestamp, and can be exported to CSV at any time.
+
+---
+
+## 9. 🏗️ Open-Source Architecture & Runtime Modes
+
+```mermaid
+flowchart TB
+    subgraph Client["🌐 Browser / Installed PWA (index.html)"]
+        UI["🎨 Responsive UI (PC / Tablet / Mobile)\n🌍 Bilingual EN/HE · 🌓 Dark/Light"]
+        Router["🔀 Hybrid API Router (api() / localApi())"]
+        UI --> Router
+    end
+
+    subgraph ModeA["🟢 Mode A: Self-Hosted School Server"]
+        Py["🐍 server.py (Python 3 stdlib HTTP)"]
+        SQLite[("🗄️ SQLite WAL Database\npoints.db")]
+        Py --> SQLite
+    end
+
+    subgraph ModeB["🌐 Mode B: Serverless Web / GitHub Pages"]
+        LS[("💾 Browser LocalStorage DB\nsmp_demo_db_v1")]
+    end
+
+    Router -- "/api/* reachable" --> Py
+    Router -- "Static host / GitHub Pages" --> LS
+```
+
+| Runtime Mode | How It Works | Best For |
+| :--- | :--- | :--- |
+| 🟢 **Mode A: Local / School Python Server** | `python3 server.py --port 8080` serves `index.html` and persists all multi-user data in SQLite WAL (`points.db`). | Production school deployment on any Linux, Windows, macOS, or Raspberry Pi machine. |
+| 🌐 **Mode B: Serverless Web (GitHub Pages)** | `index.html` automatically activates `localApi` backed by `localStorage` with pre-seeded demo classes, teachers, and students. | Instant online demos, testing from any device anywhere on the web, and zero-install evaluation. |
+
+---
+
+## 10. 🗺️ Agile Development Sprints & Roadmap Summary
+
+All future features from this specification have been organized into actionable open-source sprints in **[`ROADMAP.md`](ROADMAP.md)**:
+
+<div align="center">
+  <img src="assets/roadmap-sprints.svg" alt="SchoolMeritPoints 6-Sprint Agile Roadmap" width="100%"/>
+</div>
+
+| Sprint | Target Release | Status | Theme & Key Deliverables |
+| :---: | :---: | :---: | :--- |
+| **Sprint 1** | `v1.0` | ✅ **Completed** | Core PWA, 3-Tier RBAC, 11 Criteria, Fair Class Ranking, Bilingual EN/HE, Dark/Light Mode, 21 Automated Tests |
+| **Sprint 2** | `v1.1` | 🔜 **Next Up** | Printable QR Badges, Camera QR Scanner (`<3s`), Teacher 4-Digit PIN, 5-Attempt Lockout, Bulk CSV/Excel Student Import |
+| **Sprint 3** | `v1.2` | 📅 **Planned** | Academic Periods UI & Rollover API, Non-Negative Score Floor (`min_score=0`), Teacher Homeroom Scope Option |
+| **Sprint 4** | `v1.3` | 📅 **Planned** | Hallway TV Live Leaderboard Kiosk Mode, Printable Excellence Certificates, Star-Burst Award Animation, Live Sync |
+| **Sprint 5** | `v2.0` | 📅 **Planned** | Merit Prize Store & Redemption Ledger, Principal & Homeroom Analytics Dashboard, Special Campaign Tracker |
+| **Sprint 6** | `v2.1` | 📅 **Planned** | Read-Only Parent Portal Links, Automated Weekly Progress Digests, Student Milestone Badges & Accessibility Audit |
+
+👉 **See [`ROADMAP.md`](ROADMAP.md) for the full task breakdown (`SMP-101` through `SMP-604`), user stories, and sprint acceptance criteria.**
+
+---
+
+## 11. ✅ Quality Gates & Automated Verification
+
+1. ⚡ **3-Second Classroom Scoring**: A teacher can select a class, choose a criterion, select all students, and award points in under 3 seconds.
+2. 💻 **Cross-Platform & Multi-Device**: Verified on Mobile (`<768px`), Tablet (`768px–1023px`), and PC (`≥1024px`) across modern browsers.
+3. 🌍 **Bilingual & Bidirectional**: Complete parity between Hebrew (`RTL`) and English (`LTR`) across all UI strings and seeded records.
+4. 🔒 **RBAC & Privacy Enforcement**: Students are strictly blocked (`403 Forbidden`) from viewing other students' personal scores or mutating state.
+5. 🧪 **Mandatory Automated Test Suite**: Every method, API endpoint, frontend function, i18n key, SVG diagram, and documentation link is checked by `python3 -m unittest discover -s tests -v` via `.githooks/pre-commit` and GitHub Actions CI.
+
+---
+
+## 12. ⚙️ Configurable School Policy Knobs
+
+Schools deploying **SchoolMeritPoints** can tailor the following educational policy settings (implemented in Admin Console & Sprint 3):
+
+- 🏆 **In-Class Student Leaderboard Visibility**: Disabled for students by default to protect lower-scoring students; visible to teachers and admins.
+- 📉 **Deduction Policy per Criterion**: Any criterion can be configured as award-only (`sub_value = 0`, e.g., *Decorated Classroom*) or bidirectional (`+add` / `−sub`).
+- 🗓️ **Scoring Period Cadence**: Monthly, semester, or annual leaderboard cycles with full historical archive preservation.
+- 🏫 **Teacher Scoring Scope**: Open school-wide teacher scoring (any teacher can award points to any class/student) vs. homeroom-restricted scoring.
