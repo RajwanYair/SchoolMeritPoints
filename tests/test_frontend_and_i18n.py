@@ -241,6 +241,38 @@ class TestFrontendAndI18n(unittest.TestCase):
         self.assertIn("CRITERION_ICONS", self.index_html)
         self.assertIn("toc-strip", self.spec_html)
 
+    def test_07_social_preview_and_open_graph_metadata(self):
+        """Verify shared links produce a preview card via Open Graph and Twitter Card meta tags."""
+        # Basic SEO descriptors
+        self.assertRegex(self.index_html, r'<meta\s+name="description"\s+content="[^"]*SchoolMeritPoints[^"]*"')
+        self.assertIn('<meta name="author" content="Yair Rajwan">', self.index_html)
+
+        # Open Graph required tags
+        og_required = [
+            ('property', 'og:type', 'website'),
+            ('property', 'og:url', 'https://rajwanyair.github.io/SchoolMeritPoints/'),
+            ('property', 'og:title', 'SchoolMeritPoints'),
+            ('property', 'og:description', 'merit-point'),
+            ('property', 'og:image', 'https://rajwanyair.github.io/SchoolMeritPoints/assets/social-preview.svg'),
+            ('property', 'og:image:width', '1200'),
+            ('property', 'og:image:height', '630'),
+        ]
+        for attr, key, expected in og_required:
+            pattern = rf'<meta\s+{attr}="{re.escape(key)}"\s+content="[^"]*{re.escape(expected)}[^"]*">'
+            self.assertRegex(self.index_html, pattern, f"Missing/broken OG tag: {key}")
+
+        # Twitter / X Card tags
+        self.assertRegex(self.index_html, r'<meta\s+name="twitter:card"\s+content="summary_large_image">')
+        self.assertRegex(self.index_html, r'<meta\s+name="twitter:image"[^>]*content="https://rajwanyair\.github\.io/SchoolMeritPoints/assets/social-preview\.svg">')
+
+        # The social preview asset must exist
+        preview_path = ROOT_DIR / "assets" / "social-preview.svg"
+        self.assertTrue(preview_path.exists(), "assets/social-preview.svg must exist for link previews")
+        self.assertIn('viewBox="0 0 1200 630"', preview_path.read_text(encoding="utf-8"))
+
+        # Canonical URL
+        self.assertIn('<link rel="canonical" href="https://rajwanyair.github.io/SchoolMeritPoints/">', self.index_html)
+
 
 if __name__ == "__main__":
     unittest.main()

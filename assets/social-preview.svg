@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="SchoolMeritPoints social preview">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f2557"/>
+      <stop offset="55%" stop-color="#1f4fa3"/>
+      <stop offset="100%" stop-color="#15397a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="100%" stop-color="#f2b705"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative accents -->
+  <circle cx="1050" cy="110" r="260" fill="#ffffff" fill-opacity="0.04"/>
+  <circle cx="160" cy="550" r="200" fill="#f2b705" fill-opacity="0.06"/>
+
+  <!-- Star emblem -->
+  <circle cx="124" cy="124" r="74" fill="url(#gold)" stroke="#ffffff" stroke-width="5"/>
+  <text x="124" y="154" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="900" font-size="80" fill="#14213d">★</text>
+
+  <!-- Headline -->
+  <text x="226" y="120" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="900" font-size="70" fill="#ffffff">SchoolMeritPoints</text>
+  <text x="226" y="172" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="700" font-size="28" fill="#f2b705">נקודות זכות חכמות לבתי ספר · Smart merit points for schools</text>
+
+  <!-- Description block -->
+  <text x="70" y="270" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif" font-weight="600" font-size="26" fill="#d9e5ff">Open-source PWA for teachers, students and admins</text>
+  <text x="70" y="312" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif" font-weight="400" font-size="22" fill="#a8c2f0">Classroom scoring · Normalized rankings · Hallway TV kiosk · Hebrew + English</text>
+  <text x="70" y="354" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif" font-weight="400" font-size="22" fill="#a8c2f0">Dark/Light modes · Zero dependencies · Runs on GitHub Pages or Python/SQLite</text>
+
+  <!-- Feature pills -->
+  <g transform="translate(70, 410)" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="700" font-size="19">
+    <rect x="0" y="0" width="180" height="48" rx="24" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.28"/>
+    <text x="90" y="32" text-anchor="middle" fill="#ffffff">⚡ 3-Tap Scoring</text>
+
+    <rect x="198" y="0" width="200" height="48" rx="24" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.28"/>
+    <text x="298" y="32" text-anchor="middle" fill="#ffffff">⚖️ Fair Rankings</text>
+
+    <rect x="416" y="0" width="175" height="48" rx="24" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.28"/>
+    <text x="503" y="32" text-anchor="middle" fill="#ffffff">🔒 3-Tier Roles</text>
+
+    <rect x="609" y="0" width="195" height="48" rx="24" fill="#f2b705" fill-opacity="0.22" stroke="#f2b705" stroke-opacity="0.6"/>
+    <text x="706" y="32" text-anchor="middle" fill="#ffe066">🌐 Live Demo</text>
+  </g>
+
+  <!-- Footer URL -->
+  <text x="70" y="580" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-weight="700" font-size="20" fill="#7ea6f0">https://rajwanyair.github.io/SchoolMeritPoints/</text>
+</svg>
