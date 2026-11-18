@@ -71,6 +71,14 @@ class TestFrontendAndI18n(unittest.TestCase):
             "viewAdminExport",
             "classPicker",
             "genericModal",
+            "kioskOverlay",
+            "kioskPodium",
+            "kioskList",
+            "burstWrap",
+            "stuTierBadge",
+            "stuProgFill",
+            "entryNoteTeacher",
+            "entryNoteAdmin",
             "toast",
         }
         for rid in required_ids:
@@ -91,6 +99,9 @@ class TestFrontendAndI18n(unittest.TestCase):
             "quickDemoLogin",
             "t",
             "trData",
+            "getCriterionIcon",
+            "computeStudentMilestone",
+            "triggerStarBurst",
             "applyI18n",
             "toggleLang",
             "showSplash",
@@ -110,11 +121,14 @@ class TestFrontendAndI18n(unittest.TestCase):
             "loadStudentClassView",
             "loadStudentRankView",
             "loadStudentHistView",
+            "setHistoryFilter",
             "switchStudentView",
             "loadTeacher",
             "loadAdmin",
             "loadClasses",
             "loadStudentsForClass",
+            "renderStudentRows",
+            "filterStudentsList",
             "toggleStudent",
             "toggleAllStudents",
             "loadCriteria",
@@ -132,6 +146,8 @@ class TestFrontendAndI18n(unittest.TestCase):
             "loadRankings",
             "switchTeacherView",
             "loadHistory",
+            "openKioskMode",
+            "closeKioskMode",
             "cancelEntry",
             "switchAdminView",
             "loadAdminUsers",
@@ -208,11 +224,22 @@ class TestFrontendAndI18n(unittest.TestCase):
         inspector.feed(self.spec_html)
         self.assertIn("wrapHe", inspector.ids)
         self.assertIn("wrapEn", inspector.ids)
+        self.assertIn("specScrollBar", inspector.ids)
+        self.assertIn("launchKioskBtn", inspector.ids)
         self.assertEqual(inspector.dirs.get("wrapHe"), "rtl")
         self.assertEqual(inspector.dirs.get("wrapEn"), "ltr")
 
         for fn in ("applySpecLang", "toggleSpecLang", "toggleSpecTheme"):
             self.assertRegex(self.spec_html, rf"\bfunction\s+{fn}\s*\(")
+
+    def test_06_ux_ui_accessibility_and_web_design_guidelines(self):
+        """Verify focus-visible rings, prefers-reduced-motion, aria-live regions, and CRITERION_ICONS."""
+        self.assertIn(":focus-visible", self.index_html)
+        self.assertIn("prefers-reduced-motion: reduce", self.index_html)
+        self.assertIn('aria-live="polite"', self.index_html)
+        self.assertIn('name="theme-color"', self.index_html)
+        self.assertIn("CRITERION_ICONS", self.index_html)
+        self.assertIn("toc-strip", self.spec_html)
 
 
 if __name__ == "__main__":

@@ -55,6 +55,13 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17p
 }
 .ctrl-btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
 .ctrl-btn:hover{opacity:.92}
+.ctrl-btn:focus-visible,a:focus-visible{outline:2.5px solid var(--gold);outline-offset:2px}
+.scroll-prog{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;background:transparent}
+.scroll-prog i{display:block;height:100%;width:0%;background:var(--gold);transition:width 0.1s linear}
+.toc-strip{display:flex;flex-wrap:wrap;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.toc-pill{font-size:.82rem;font-weight:700;color:var(--brand);background:var(--brand-soft);padding:5px 11px;border-radius:999px;text-decoration:none;transition:transform 0.12s,background-color 0.12s}
+.toc-pill:hover{transform:translateY(-1px);background:var(--brand);color:#fff}
+section[id]{scroll-margin-top:76px}
 .wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:36px 80px;display:flex;flex-direction:column;gap:52px}
 .wrap[dir="rtl"]{direction:rtl}
 .wrap[dir="ltr"]{direction:ltr}
@@ -206,12 +213,14 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
+<div class="scroll-prog" aria-hidden="true"><i id="specScrollBar"></i></div>
 <div class="spec-topbar">
   <a class="brand-link" href="./index.html">★ <span id="specTopTitle">SchoolMeritPoints · מסמך אפיון</span></a>
   <div class="actions">
     <a class="ctrl-btn primary" href="./index.html" id="launchAppBtn">🚀 פתח אפליקציה</a>
-    <button class="ctrl-btn" onclick="toggleSpecLang()">🌐 <span id="specLangLabel">EN</span></button>
-    <button class="ctrl-btn" onclick="toggleSpecTheme()" title="Dark / Light Mode">🌓</button>
+    <a class="ctrl-btn" href="./index.html?kiosk=1" id="launchKioskBtn">📺 מסך חי</a>
+    <button class="ctrl-btn" onclick="toggleSpecLang()" aria-label="Switch Specification Language">🌐 <span id="specLangLabel">EN</span></button>
+    <button class="ctrl-btn" onclick="toggleSpecTheme()" title="Dark / Light Mode" aria-label="Toggle Dark or Light Theme">🌓</button>
   </div>
 </div>
 
@@ -227,15 +236,24 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
   <div class="badge-star" aria-hidden="true">★</div>
 </header>
 
+<nav class="toc-strip" aria-label="ניווט מהיר בפרקי האפיון">
+  <a class="toc-pill" href="#he-s1">1. 🎯 מטרה</a>
+  <a class="toc-pill" href="#he-s2">2. 👥 הרשאות</a>
+  <a class="toc-pill" href="#he-s3">3. ⚖️ קריטריונים</a>
+  <a class="toc-pill" href="#he-s5">5. 📱 מסכים ומוקאפים</a>
+  <a class="toc-pill" href="#he-s7">7. 🗄️ מבנה נתונים</a>
+  <a class="toc-pill" href="#he-s10">10. 🗺️ מפת דרכים</a>
+</nav>
+
 <div class="summary">
   <div><b>👥 3 רמות הרשאה</b><span>תלמיד, מורה ומנהל</span></div>
   <div><b>📋 11 קריטריונים</b><span>5 אישיים, 6 כיתתיים</span></div>
   <div><b>🌐 ריצה כפולה</b><span>GitHub Pages + שרת Python</span></div>
-  <div><b>🧪 21 בדיקות אוטומטיות</b><span>אימות מלא ב-CI וב-Git</span></div>
+  <div><b>🧪 בדיקות אוטומטיות</b><span>אימות מלא ב-CI וב-Git</span></div>
 </div>
 
 <!-- 1 -->
-<section>
+<section id="he-s1">
   <h2><span class="sec">1</span>🎯 מטרת המערכת והיקפה</h2>
   <p>לחזק התנהגות חיובית ועבודת צוות בבית הספר בעזרת מערכת נקודות שקופה, הוגנת ומהירה לשימוש. מורה יכול להעניק נקודות לכיתה שלמה בפחות מ-3 שניות. התלמיד רואה מיד על מה קיבל נקודות ואיפה הכיתה שלו מדורגת לעומת שאר הכיתות.</p>
   <img src="./assets/user-journey.svg" alt="מסלול שימוש יומי בבית הספר" style="border-radius:14px;border:1px solid var(--line)"/>
@@ -248,7 +266,7 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 </section>
 
 <!-- 2 -->
-<section>
+<section id="he-s2">
   <h2><span class="sec">2</span>👥 משתמשים והרשאות (3-Tier RBAC)</h2>
   <div class="two">
     <div class="role">
@@ -277,7 +295,7 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 </section>
 
 <!-- 3 -->
-<section>
+<section id="he-s3">
   <h2><span class="sec">3</span>⚖️ קריטריונים לנקודות ונוסחת חישוב</h2>
   <p>11 הקריטריונים המובנים נטענים אוטומטית בהפעלה הראשונה. מנהל המערכת יכול לערוך אותם, להוסיף חדשים ולהפעיל או להשבית קריטריונים ישירות ממסך הניהול.</p>
   <div class="tbl"><table>
@@ -339,8 +357,8 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 </section>
 
 <!-- 5 mockups -->
-<section>
-  <h2><span class="sec">5</span>מתווה ויזואלי: מסכים עיקריים</h2>
+<section id="he-s5">
+  <h2><span class="sec">5</span>📱 מתווה ויזואלי: מסכים עיקריים</h2>
   <p>המוקאפים מציגים את המבנה ואת סדר העדיפויות בכל מסך. העיצוב הסופי יותאם לסמל ולצבעי בית הספר.</p>
 
   <div class="board">
@@ -471,7 +489,7 @@ footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);paddi
 </section>
 
 <!-- 7 data -->
-<section>
+<section id="he-s7">
   <h2><span class="sec">7</span>🗄️ מבנה נתונים וזרימת מידע (SVG + Mermaid)</h2>
   <img src="./assets/system-flow.svg" alt="ארכיטקטורת המערכת וזרימת הנתונים" style="border-radius:14px;border:1px solid var(--line)"/>
   <div class="tbl"><table>
@@ -530,7 +548,7 @@ sequenceDiagram
 </section>
 
 <!-- 10 roadmap -->
-<section>
+<section id="he-s10">
   <h2><span class="sec">10</span>🗺️ מפת דרכים ופיתוח לפי ספרינטים (Agile Sprints)</h2>
   <p>כל משימות ההמשך נאספו לתוכנית ספרינטים מפורטת בקובץ <a href="./ROADMAP.md" style="color:var(--brand);font-weight:700">ROADMAP.md</a>:</p>
   <img src="./assets/roadmap-sprints.svg" alt="מפת דרכים 6 ספרינטים" style="border-radius:14px;border:1px solid var(--line)"/>
@@ -596,14 +614,21 @@ sequenceDiagram
     <div class="badge-star" aria-hidden="true">★</div>
   </header>
 
+  <nav class="toc-strip" aria-label="Quick Section Navigation">
+    <a class="toc-pill" href="#en-s1">1. 🎯 Vision &amp; Scope</a>
+    <a class="toc-pill" href="#en-s2">2. 👥 Roles &amp; RBAC</a>
+    <a class="toc-pill" href="#en-s3">3. ⚖️ Merit Criteria</a>
+    <a class="toc-pill" href="#en-s4">4. 🏗️ Architecture &amp; Roadmap</a>
+  </nav>
+
   <div class="summary">
     <div><b>👥 3 Access Tiers</b><span>Student, Teacher &amp; Admin</span></div>
     <div><b>📋 11 Built-in Criteria</b><span>5 Personal, 6 Classroom</span></div>
     <div><b>🌐 Dual Runtime</b><span>GitHub Pages + Python/SQLite</span></div>
-    <div><b>🧪 21 Automated Tests</b><span>Pre-commit &amp; CI Verified</span></div>
+    <div><b>🧪 Automated Tests</b><span>Pre-commit &amp; CI Verified</span></div>
   </div>
 
-  <section>
+  <section id="en-s1">
     <h2><span class="sec">1</span>🎯 System Vision &amp; Scope</h2>
     <p>Reinforce positive conduct across the school through a transparent, fair, and fast merit point system. Teachers can award points to an entire class in under 3 seconds; students immediately see why points were earned or deducted and where their class ranks.</p>
     <img src="./assets/user-journey.svg" alt="Daily School Merit Journey" style="border-radius:14px;border:1px solid var(--line)"/>
@@ -628,7 +653,7 @@ sequenceDiagram
     </div>
   </section>
 
-  <section>
+  <section id="en-s2">
     <h2><span class="sec">2</span>👥 Roles &amp; Permissions (3-Tier RBAC)</h2>
     <div class="two">
       <div class="role">
@@ -652,7 +677,7 @@ sequenceDiagram
     </div>
   </section>
 
-  <section>
+  <section id="en-s3">
     <h2><span class="sec">3</span>⚖️ Built-in Merit Criteria (11 Default Rules)</h2>
     <div class="tbl"><table>
       <thead><tr><th>Criterion (EN)</th><th>Hebrew Name</th><th>Scope</th><th>Frequency</th><th>Award</th><th>Deduct</th></tr></thead>
@@ -672,7 +697,7 @@ sequenceDiagram
     </table></div>
   </section>
 
-  <section>
+  <section id="en-s4">
     <h2><span class="sec">4</span>🏗️ System Architecture &amp; Agile Roadmap</h2>
     <img src="./assets/system-flow.svg" alt="System Architecture and Scoring Flow" style="border-radius:14px;border:1px solid var(--line)"/>
     <img src="./assets/roadmap-sprints.svg" alt="6-Sprint Agile Roadmap" style="border-radius:14px;border:1px solid var(--line)"/>
@@ -713,7 +738,17 @@ sequenceDiagram
     document.getElementById('launchAppBtn').textContent = isEn
       ? '🚀 Launch Live App'
       : '🚀 פתח אפליקציה';
+    const kb = document.getElementById('launchKioskBtn');
+    if (kb) kb.textContent = isEn ? '📺 Live TV Kiosk' : '📺 מסך חי';
   }
+
+  window.addEventListener('scroll', () => {
+    const bar = document.getElementById('specScrollBar');
+    if (!bar) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 0;
+    bar.style.width = pct + '%';
+  }, { passive: true });
 
   function toggleSpecLang() {
     specLang = specLang === 'he' ? 'en' : 'he';

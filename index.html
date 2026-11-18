@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" id="metaThemeColor" content="#1f4fa3">
   <title>נקודות זכות — SchoolMeritPoints</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
@@ -11,12 +12,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Secular+One&display=swap">
   <style>
     :root {
-      --bg: #f5f7fb;
+      color-scheme: light;
+      --bg: #f4f7fc;
       --paper: #ffffff;
       --ink: #14213d;
       --muted: #5b6782;
       --line: #dde3ef;
       --brand: #1f4fa3;
+      --brand-deep: #15397a;
       --brand-soft: #e6eefc;
       --gold: #f2b705;
       --gold-soft: #fff5d1;
@@ -24,21 +27,42 @@
       --plus-soft: #dcf3e8;
       --minus: #c8452f;
       --minus-soft: #fbe3de;
+      --shadow-sm: 0 2px 8px rgba(20, 33, 61, 0.06);
+      --shadow-md: 0 12px 32px -12px rgba(20, 33, 61, 0.16);
       --display: "Secular One", "Assistant", system-ui, sans-serif;
       --body: "Assistant", system-ui, "Segoe UI", Arial, sans-serif;
     }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #0d1426; --paper: #151f38; --ink: #e8edf8; --muted: #9aa7c4; --line: #27345a;
+        --brand: #7ea6f0; --brand-deep: #243b6b; --brand-soft: #1d2c52; --gold: #f6c93b; --gold-soft: #3a3214;
+        --plus: #4ccf95; --plus-soft: #16382b; --minus: #f08a76; --minus-soft: #40211b;
+        --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.28);
+        --shadow-md: 0 16px 38px -12px rgba(0, 0, 0, 0.45);
+      }
+    }
     [data-theme="dark"] {
+      color-scheme: dark;
       --bg: #0d1426; --paper: #151f38; --ink: #e8edf8; --muted: #9aa7c4; --line: #27345a;
-      --brand: #7ea6f0; --brand-soft: #1d2c52; --gold: #f6c93b; --gold-soft: #3a3214;
+      --brand: #7ea6f0; --brand-deep: #243b6b; --brand-soft: #1d2c52; --gold: #f6c93b; --gold-soft: #3a3214;
       --plus: #4ccf95; --plus-soft: #16382b; --minus: #f08a76; --minus-soft: #40211b;
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.28);
+      --shadow-md: 0 16px 38px -12px rgba(0, 0, 0, 0.45);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg); color: var(--ink); font-family: var(--body);
       font-size: 16px; line-height: 1.5; -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
-    button { font-family: inherit; cursor: pointer; border: none; background: none; }
-    input, select { font-family: inherit; }
+    h1, h2, h3 { text-wrap: balance; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; touch-action: manipulation; }
+    input, select { font-family: inherit; background-color: var(--paper); color: var(--ink); }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+      outline: 2.5px solid var(--gold);
+      outline-offset: 2px;
+    }
     .hidden { display: none !important; }
 
     /* Splash */
@@ -53,26 +77,36 @@
     /* Login */
     .login-page {
       max-width: 400px; margin: 0 auto; padding: 24px 20px;
-      display: flex; flex-direction: column; gap: 20px; min-height: 100dvh;
+      display: flex; flex-direction: column; gap: 18px; min-height: 100dvh;
     }
     .login-hero {
-      background: var(--brand); color: #fff; border-radius: 20px;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 100%);
+      color: #fff; border-radius: 22px;
       padding: 28px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      box-shadow: var(--shadow-md); position: relative; overflow: hidden;
     }
-    .login-hero h1 { font-family: var(--display); font-weight: 400; font-size: 1.8rem; }
-    .login-hero p { opacity: 0.85; font-size: 0.95rem; }
-    .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg); border-radius: 12px; padding: 4px; font-weight: 700; text-align: center; }
-    .seg span { padding: 10px 8px; border-radius: 10px; color: var(--muted); cursor: pointer; transition: all 0.2s; }
-    .seg span.on { background: var(--paper); color: var(--brand); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
-    .fld { border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; color: var(--ink); background: var(--paper); font-size: 1rem; width: 100%; }
+    .login-hero .hero-emblem {
+      width: 52px; height: 52px; border-radius: 50%; background: var(--gold); color: #14213d;
+      display: grid; place-items: center; font-size: 1.65rem; font-family: var(--display);
+      box-shadow: 0 0 0 5px rgba(242, 183, 5, 0.25); margin-bottom: 2px;
+    }
+    .login-hero h1 { font-family: var(--display); font-weight: 400; font-size: 1.85rem; }
+    .login-hero p { opacity: 0.9; font-size: 0.95rem; }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg); border-radius: 12px; padding: 4px; font-weight: 700; text-align: center; border: 1px solid var(--line); }
+    .seg span { padding: 10px 8px; border-radius: 9px; color: var(--muted); cursor: pointer; transition: background-color 0.2s, color 0.2s, box-shadow 0.2s; user-select: none; }
+    .seg span.on { background: var(--paper); color: var(--brand); box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+    .fld { border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; color: var(--ink); background: var(--paper); font-size: 1rem; width: 100%; transition: border-color 0.15s, box-shadow 0.15s; }
     .fld:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
     .fld::placeholder { color: var(--muted); }
     .btn {
       background: var(--brand); color: #fff; border-radius: 12px; padding: 14px;
-      font-weight: 800; font-size: 1.05rem; text-align: center; transition: opacity 0.2s;
+      font-weight: 800; font-size: 1.05rem; text-align: center; transition: opacity 0.15s, transform 0.15s;
+      box-shadow: var(--shadow-sm);
     }
+    .btn:hover:not(:disabled) { opacity: 0.94; transform: translateY(-1px); }
+    .btn:active:not(:disabled) { transform: translateY(0); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn.ghost { background: transparent; color: var(--brand); border: 2px dashed var(--brand); }
+    .btn.ghost { background: transparent; color: var(--brand); border: 2px dashed var(--brand); box-shadow: none; }
     .err { background: var(--minus-soft); color: var(--minus); border-radius: 10px; padding: 10px 14px; font-weight: 600; font-size: 0.9rem; }
 
     /* App layout */
@@ -108,51 +142,94 @@
     .view.active { display: flex; }
 
     /* Cards */
-    .card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
-    .card.hero { background: var(--brand); color: #fff; border: none; }
-    .card.hero .big { font-family: var(--display); font-size: 2.5rem; line-height: 1; color: var(--gold); }
-    .card.hero .sub { opacity: 0.85; font-size: 0.92rem; }
-    .prog { height: 8px; border-radius: 9px; background: rgba(255,255,255,.25); overflow: hidden; margin: 4px 0; }
-    .prog i { display: block; height: 100%; background: var(--gold); border-radius: 9px; }
-    .row { display: flex; justify-content: space-between; align-items: center; }
-    .mini2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .mini { background: var(--bg); border-radius: 12px; padding: 12px; }
-    .mini b { display: block; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
-    .mini span { font-size: 0.8rem; color: var(--muted); }
-    .label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; color: var(--muted); }
+    .card { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow-sm); }
+    .card.hero {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 100%);
+      color: #fff; border: none; box-shadow: var(--shadow-md); position: relative; overflow: hidden;
+    }
+    .card.hero .big { font-family: var(--display); font-size: 2.75rem; line-height: 1; color: var(--gold); font-variant-numeric: tabular-nums; }
+    .card.hero .sub { opacity: 0.9; font-size: 0.92rem; }
+    .tier-badge {
+      display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+      background: rgba(255, 255, 255, 0.16); color: #fff; padding: 4px 12px;
+      border-radius: 999px; font-size: 0.8rem; font-weight: 800; backdrop-filter: blur(4px);
+    }
+    .prog { height: 9px; border-radius: 9px; background: rgba(255,255,255,.22); overflow: hidden; margin: 4px 0; }
+    .prog i { display: block; height: 100%; background: var(--gold); border-radius: 9px; transition: width 0.4s ease; }
+    .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .mini2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .mini { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 14px; box-shadow: var(--shadow-sm); }
+    .mini b { display: block; font-size: 1.35rem; font-variant-numeric: tabular-nums; color: var(--brand); margin-top: 2px; }
+    .mini span { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+    .label { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.03em; color: var(--muted); }
 
-    /* History list */
-    .ev { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); gap: 8px; }
+    /* History list & filters */
+    .hist-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+    .hist-pill {
+      padding: 5px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 700;
+      background: var(--paper); border: 1px solid var(--line); color: var(--muted);
+      transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .hist-pill.on { background: var(--brand-soft); color: var(--brand); border-color: var(--brand); }
+    .ev { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); gap: 10px; }
     .ev:last-child { border-bottom: 0; }
-    .ev small { display: block; color: var(--muted); font-size: 11px; }
-    .delta { font-weight: 800; font-variant-numeric: tabular-nums; padding: 2px 10px; border-radius: 8px; white-space: nowrap; }
+    .ev small { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+    .delta { font-weight: 800; font-variant-numeric: tabular-nums; padding: 3px 10px; border-radius: 8px; white-space: nowrap; }
     .d-plus { color: var(--plus); background: var(--plus-soft); }
     .d-minus { color: var(--minus); background: var(--minus-soft); }
     .cancelled { text-decoration: line-through; opacity: 0.5; }
 
-    /* Rankings */
-    .rk { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); }
-    .rk-num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 0.9rem; background: var(--bg); color: var(--muted); flex: none; }
-    .rk:nth-child(1) .rk-num, .rk:nth-child(2) .rk-num, .rk:nth-child(3) .rk-num { background: var(--gold); color: var(--ink); }
-    .rk-bar { flex: 1; height: 8px; border-radius: 9px; background: var(--brand-soft); overflow: hidden; }
-    .rk-bar i { display: block; height: 100%; background: var(--brand); border-radius: 9px; }
-    .rk-val { font-variant-numeric: tabular-nums; font-weight: 700; }
+    /* Rankings & Podium */
+    .rk { display: flex; align-items: center; gap: 10px; padding: 10px 6px; border-bottom: 1px solid var(--line); border-radius: 10px; transition: background-color 0.15s; }
+    .rk:last-child { border-bottom: 0; }
+    .rk:hover { background: var(--bg); }
+    .rk-num { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 0.9rem; background: var(--bg); color: var(--muted); flex: none; font-variant-numeric: tabular-nums; }
+    .rk:nth-child(1) .rk-num { background: var(--gold); color: #14213d; box-shadow: 0 0 0 3px var(--gold-soft); }
+    .rk:nth-child(2) .rk-num { background: #cbd5e1; color: #1e293b; }
+    .rk:nth-child(3) .rk-num { background: #e2a76f; color: #1e293b; }
+    .rk-bar { flex: 1; height: 9px; border-radius: 9px; background: var(--brand-soft); overflow: hidden; }
+    .rk-bar i { display: block; height: 100%; background: var(--brand); border-radius: 9px; transition: width 0.4s ease; }
+    .rk-val { font-variant-numeric: tabular-nums; font-weight: 800; min-width: 36px; text-align: end; }
 
     /* Score entry (teacher) */
-    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
-      border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px;
-      font-size: 13px; font-weight: 700; background: var(--paper); transition: all 0.15s;
+      border: 1.5px solid var(--line); border-radius: 999px; padding: 8px 14px;
+      font-size: 13.5px; font-weight: 700; background: var(--paper);
+      transition: background-color 0.15s, border-color 0.15s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;
     }
-    .chip.on { background: var(--gold-soft); border-color: var(--gold); color: var(--ink); }
-    .st { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
-    .box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--line); flex: none; cursor: pointer; transition: all 0.15s; }
+    .chip:hover { border-color: var(--brand); }
+    .chip .c-val { font-size: 11px; opacity: 0.78; font-variant-numeric: tabular-nums; }
+    .chip.on { background: var(--gold-soft); border-color: var(--gold); color: #14213d; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    [data-theme="dark"] .chip.on { color: var(--ink); }
+    .search-wrap { position: relative; margin: 4px 0; }
+    .search-fld {
+      width: 100%; border: 1.5px solid var(--line); border-radius: 10px; padding: 8px 12px;
+      font-size: 0.9rem; background: var(--bg); color: var(--ink);
+    }
+    .search-fld:focus { outline: none; border-color: var(--brand); background: var(--paper); }
+    .st { display: flex; align-items: center; gap: 10px; padding: 9px 6px; border-bottom: 1px solid var(--line); cursor: pointer; border-radius: 8px; transition: background-color 0.12s; user-select: none; }
+    .st:last-child { border-bottom: 0; }
+    .st:hover { background: var(--bg); }
+    .st.selected-row { background: var(--brand-soft); }
+    .box { width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--line); flex: none; cursor: pointer; transition: background-color 0.15s, border-color 0.15s; display: grid; place-items: center; }
     .box.on { background: var(--brand); border-color: var(--brand); }
-    .box.on::after { content: "✓"; color: #fff; font-size: 12px; display: block; text-align: center; line-height: 18px; }
-    .pm2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .pm2 button { border-radius: 12px; padding: 14px; font-weight: 800; font-size: 1rem; text-align: center; }
-    .pm2 .add { background: var(--plus-soft); color: var(--plus); }
-    .pm2 .sub { background: var(--minus-soft); color: var(--minus); }
+    .box.on::after { content: "✓"; color: #fff; font-size: 13px; font-weight: 800; line-height: 1; }
+    .sel-badge {
+      background: var(--brand); color: #fff; font-size: 0.75rem; font-weight: 800;
+      padding: 2px 9px; border-radius: 999px; font-variant-numeric: tabular-nums;
+    }
+    .note-fld {
+      border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 14px;
+      font-size: 0.92rem; width: 100%; background: var(--paper); color: var(--ink);
+    }
+    .note-fld:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
+    .pm2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pm2 button { border-radius: 12px; padding: 14px; font-weight: 800; font-size: 1rem; text-align: center; transition: transform 0.12s, opacity 0.12s; }
+    .pm2 button:hover { transform: translateY(-1px); opacity: 0.95; }
+    .pm2 .add { background: var(--plus); color: #fff; box-shadow: 0 6px 16px -6px var(--plus); }
+    .pm2 .sub { background: var(--minus-soft); color: var(--minus); border: 1.5px solid var(--minus); }
 
     /* Class select dropdown */
     .sel { display: flex; justify-content: space-between; align-items: center; background: var(--bg); border-radius: 12px; padding: 10px 14px; font-weight: 700; cursor: pointer; border: 1.5px solid var(--line); }
@@ -165,24 +242,83 @@
     select.fld { padding: 10px 12px; }
 
     /* Class picker popup */
-    .popup { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 20; display: flex; align-items: flex-end; }
-    .popup-inner { background: var(--paper); border-radius: 18px 18px 0 0; padding: 20px; width: 100%; max-height: 70vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-    .popup-inner button { padding: 12px; border-radius: 10px; font-weight: 600; }
+    .popup { position: fixed; inset: 0; background: rgba(10,16,32,.48); z-index: 20; display: flex; align-items: flex-end; overscroll-behavior: contain; backdrop-filter: blur(2px); }
+    .popup-inner { background: var(--paper); border-radius: 18px 18px 0 0; padding: 20px; width: 100%; max-height: 70vh; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 8px; }
+    .popup-inner button { padding: 12px; border-radius: 10px; font-weight: 600; transition: background-color 0.15s; }
     .popup-inner button:hover { background: var(--brand-soft); }
     .popup-inner button.on { background: var(--brand); color: #fff; }
 
     /* Toast */
     .toast {
-      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 30;
-      background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 12px;
-      font-weight: 700; font-size: 0.9rem; animation: toast-in 0.3s ease;
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 50;
+      background: var(--ink); color: var(--paper); padding: 11px 22px; border-radius: 999px;
+      font-weight: 800; font-size: 0.92rem; animation: toast-in 0.25s ease;
+      box-shadow: var(--shadow-md);
     }
     @keyframes toast-in { from { opacity: 0; transform: translateX(-50%) translateY(10px); } }
 
+    /* Star-Burst Celebration Overlay */
+    .burst-wrap {
+      position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden;
+    }
+    .burst-star {
+      position: absolute; left: 50%; top: 55%; font-size: 1.6rem;
+      animation: star-fly 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes star-fly {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(0.4); }
+      70% { opacity: 1; }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.25) rotate(var(--rot)); }
+    }
+
+    /* Hallway TV Kiosk Mode */
+    .kiosk-overlay {
+      position: fixed; inset: 0; z-index: 45; background: linear-gradient(155deg, #0b132b 0%, #1c2541 100%);
+      color: #f8fafc; padding: 28px 36px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px;
+    }
+    .kiosk-head {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.14); padding-bottom: 18px;
+    }
+    .kiosk-head h1 { font-family: var(--display); font-size: clamp(1.6rem, 3.5vw, 2.6rem); color: var(--gold); display: flex; align-items: center; gap: 12px; }
+    .kiosk-podium {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px;
+    }
+    .kiosk-card {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 10px;
+      backdrop-filter: blur(8px);
+    }
+    .kiosk-card.first {
+      background: linear-gradient(135deg, rgba(242, 183, 5, 0.24), rgba(255, 255, 255, 0.08));
+      border-color: var(--gold); box-shadow: 0 0 32px rgba(242, 183, 5, 0.18);
+    }
+    .kiosk-card .k-rank { font-size: 2rem; }
+    .kiosk-card .k-name { font-family: var(--display); font-size: 1.6rem; }
+    .kiosk-card .k-score { font-family: var(--display); font-size: 2.5rem; color: var(--gold); font-variant-numeric: tabular-nums; }
+    .kiosk-list {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px; padding: 18px 24px; display: flex; flex-direction: column; gap: 12px;
+    }
+    .kiosk-row {
+      display: flex; align-items: center; gap: 16px; padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 1.15rem;
+    }
+    .kiosk-row:last-child { border-bottom: 0; }
+
     /* Modal */
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 20; display: flex; align-items: center; justify-content: center; }
-    .modal-inner { background: var(--paper); border-radius: 18px; padding: 20px; max-width: 420px; width: 90%; max-height: 80vh; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+    .modal { position: fixed; inset: 0; background: rgba(10,16,32,.48); z-index: 20; display: flex; align-items: center; justify-content: center; overscroll-behavior: contain; backdrop-filter: blur(2px); }
+    .modal-inner { background: var(--paper); border-radius: 18px; padding: 22px; max-width: 420px; width: 90%; max-height: 80vh; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-md); }
     .modal-inner h3 { font-family: var(--display); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
 
     /* Quick action: +/- floating buttons for teacher */
     .quick-bar { display: flex; gap: 8px; justify-content: center; padding: 4px 0; }
@@ -327,23 +463,25 @@
     <div class="login-toolbar">
       <a class="spec-link" href="./spec.html" data-i18n="specLink">📄 מסמך אפיון</a>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="lang-btn" onclick="toggleLang()" title="Switch Language / החלף שפה">🌐 <span class="lang-label">EN</span></button>
-        <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Dark / Light Mode">🌓</button>
+        <button class="lang-btn" onclick="openKioskMode()" title="Hallway TV Kiosk / מסך מסדרון" aria-label="Hallway TV Kiosk"><span aria-hidden="true">📺</span> <span data-i18n="kioskBtn">מסך חי</span></button>
+        <button class="lang-btn" onclick="toggleLang()" title="Switch Language / החלף שפה" aria-label="Switch Language"><span aria-hidden="true">🌐</span> <span class="lang-label">EN</span></button>
+        <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Dark / Light Mode" aria-label="Toggle Dark or Light Theme"><span aria-hidden="true">🌓</span></button>
       </div>
     </div>
     <div class="login-hero">
+      <div class="hero-emblem" aria-hidden="true">★</div>
       <h1 data-i18n="appTitle">נקודות זכות</h1>
       <p data-i18n="appSubtitle">מערכת הנקודות של בית הספר</p>
     </div>
-    <div class="seg">
-      <span id="segStudent" class="on" onclick="setLoginRole('student')" data-i18n="roleStudent">תלמיד</span>
-      <span id="segTeacher" onclick="setLoginRole('teacher')" data-i18n="roleTeacher">מורה</span>
+    <div class="seg" role="tablist">
+      <span id="segStudent" class="on" role="tab" tabindex="0" onclick="setLoginRole('student')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setLoginRole('student')}" data-i18n="roleStudent">תלמיד</span>
+      <span id="segTeacher" role="tab" tabindex="0" onclick="setLoginRole('teacher')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setLoginRole('teacher')}" data-i18n="roleTeacher">מורה</span>
     </div>
-    <input id="loginUser" class="fld" placeholder="שם משתמש" data-i18n-ph="phUsername" autocomplete="username" inputmode="text">
-    <input id="loginPass" class="fld" type="password" placeholder="סיסמה" data-i18n-ph="phPassword" autocomplete="current-password">
-    <div id="loginPinWrap" class="hidden"><input id="loginPin" class="fld" type="password" placeholder="קוד PIN (4 ספרות)" data-i18n-ph="phPin" inputmode="numeric" maxlength="4" pattern="[0-9]*"></div>
+    <input id="loginUser" name="username" class="fld" placeholder="שם משתמש…" data-i18n-ph="phUsername" aria-label="Username" autocomplete="username" spellcheck="false" inputmode="text" onkeydown="if(event.key==='Enter')doLogin()">
+    <input id="loginPass" name="password" class="fld" type="password" placeholder="סיסמה…" data-i18n-ph="phPassword" aria-label="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <div id="loginPinWrap" class="hidden"><input id="loginPin" name="pin" class="fld" type="password" placeholder="קוד PIN (4 ספרות)…" data-i18n-ph="phPin" aria-label="4-Digit PIN" inputmode="numeric" maxlength="4" pattern="[0-9]*"></div>
     <button class="btn" id="loginBtn" onclick="doLogin()" data-i18n="loginBtn">כניסה</button>
-    <div id="loginErr" class="err hidden"></div>
+    <div id="loginErr" class="err hidden" role="alert" aria-live="polite"></div>
     <div class="demo-box">
       <div class="demo-title">
         <span data-i18n="quickDemoTitle">⚡ כניסה מהירה להדגמה חיה</span>
@@ -372,13 +510,16 @@
 
   <!-- APP: STUDENT -->
   <div id="appStudent" class="app">
-    <div class="topbar"><h2><span data-i18n="hello">שלום,</span> <span id="stuName">תלמיד</span></h2><div class="actions"><button class="lang-btn" onclick="toggleLang()">🌐 <span class="lang-label">EN</span></button><button class="icon-btn theme-toggle" onclick="toggleTheme()">🌓</button><button class="icon-btn danger" onclick="doLogout()">✕</button></div></div>
+    <div class="topbar"><h2><span data-i18n="hello">שלום,</span> <span id="stuName">תלמיד</span></h2><div class="actions"><button class="lang-btn" onclick="openKioskMode()" aria-label="Hallway TV Kiosk"><span aria-hidden="true">📺</span> <span data-i18n="kioskBtn">מסך חי</span></button><button class="lang-btn" onclick="toggleLang()" aria-label="Switch Language"><span aria-hidden="true">🌐</span> <span class="lang-label">EN</span></button><button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme"><span aria-hidden="true">🌓</span></button><button class="icon-btn danger" onclick="doLogout()" aria-label="Sign Out">✕</button></div></div>
     <div class="main">
       <div id="viewStudentHome" class="view active">
         <div class="card hero">
-          <span class="sub" data-i18n="myPoints">הנקודות שלי</span>
+          <div class="row">
+            <span class="sub" data-i18n="myPoints">הנקודות שלי</span>
+            <span id="stuTierBadge" class="tier-badge">🌟 תלמיד מצטיין</span>
+          </div>
           <span class="big" id="stuScore">0</span>
-          <div class="prog"><i style="width:70%"></i></div>
+          <div class="prog"><i id="stuProgFill" style="width:70%"></i></div>
           <span id="stuGoal" class="sub"></span>
         </div>
         <div class="mini2">
@@ -395,26 +536,31 @@
         <div class="card" id="stuClassRankings"></div>
       </div>
       <div id="viewStudentHist" class="view">
+        <div class="hist-filters">
+          <button class="hist-pill on" data-hf="all" onclick="setHistoryFilter('all')" data-i18n="filterAll">הכול</button>
+          <button class="hist-pill" data-hf="plus" onclick="setHistoryFilter('plus')" data-i18n="filterPlus">זכות (+)</button>
+          <button class="hist-pill" data-hf="minus" onclick="setHistoryFilter('minus')" data-i18n="filterMinus">חובה (−)</button>
+        </div>
         <div class="card" id="stuHistoryFull"></div>
       </div>
     </div>
     <div class="tabbar">
-      <button class="on" onclick="switchStudentView('home')"><span class="ico">🏠</span><span data-i18n="tabHome">בית</span></button>
-      <button onclick="switchStudentView('class')"><span class="ico">👥</span><span data-i18n="tabMyClass">הכיתה</span></button>
-      <button onclick="switchStudentView('rank')"><span class="ico">🏆</span><span data-i18n="tabRankings">דירוג</span></button>
-      <button onclick="switchStudentView('hist')"><span class="ico">📋</span><span data-i18n="tabHistory">היסטוריה</span></button>
+      <button class="on" onclick="switchStudentView('home')"><span class="ico" aria-hidden="true">🏠</span><span data-i18n="tabHome">בית</span></button>
+      <button onclick="switchStudentView('class')"><span class="ico" aria-hidden="true">👥</span><span data-i18n="tabMyClass">הכיתה</span></button>
+      <button onclick="switchStudentView('rank')"><span class="ico" aria-hidden="true">🏆</span><span data-i18n="tabRankings">דירוג</span></button>
+      <button onclick="switchStudentView('hist')"><span class="ico" aria-hidden="true">📋</span><span data-i18n="tabHistory">היסטוריה</span></button>
     </div>
   </div>
 
   <!-- APP: TEACHER -->
   <div id="appTeacher" class="app">
-    <div class="topbar"><h2 data-i18n="teacherTitle">מורה</h2><div class="actions"><button class="lang-btn" onclick="toggleLang()">🌐 <span class="lang-label">EN</span></button><button class="icon-btn theme-toggle" onclick="toggleTheme()">🌓</button><button class="icon-btn danger" onclick="doLogout()">✕</button></div></div>
+    <div class="topbar"><h2 data-i18n="teacherTitle">לוח מורה</h2><div class="actions"><button class="lang-btn" onclick="openKioskMode()" aria-label="Hallway TV Kiosk"><span aria-hidden="true">📺</span> <span data-i18n="kioskBtn">מסך חי</span></button><button class="lang-btn" onclick="toggleLang()" aria-label="Switch Language"><span aria-hidden="true">🌐</span> <span class="lang-label">EN</span></button><button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme"><span aria-hidden="true">🌓</span></button><button class="icon-btn danger" onclick="doLogout()" aria-label="Sign Out">✕</button></div></div>
     <div class="main">
       <div id="viewTeacherScore" class="view active">
-        <div class="sel" onclick="pickClass()"><span id="teacherClassName" data-i18n="pickClassBtn">בחר כיתה</span><span class="muted">▾</span></div>
+        <div class="sel" tabindex="0" role="button" onclick="pickClass()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickClass()}"><span id="teacherClassName" data-i18n="pickClassBtn">בחר כיתה</span><span class="muted">▾</span></div>
         <div class="seg">
-          <span id="segPersonal" class="on" onclick="setEntryKind('personal')" data-i18n="kindPersonal">אישי</span>
-          <span id="segClass" onclick="setEntryKind('class')" data-i18n="kindClass">כיתתי</span>
+          <span id="segPersonal" class="on" tabindex="0" role="button" onclick="setEntryKind('personal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setEntryKind('personal')}" data-i18n="kindPersonal">אישי</span>
+          <span id="segClass" tabindex="0" role="button" onclick="setEntryKind('class')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setEntryKind('class')}" data-i18n="kindClass">כיתתי</span>
         </div>
         <span class="label" data-i18n="forWhat">על מה?</span>
         <div class="chips" id="teacherChips"></div>
@@ -429,32 +575,41 @@
         </div>
         <span class="label" id="teacherTargetLabel" data-i18n="whoLabel">מי?</span>
         <div id="teacherStudentList" class="card"></div>
+        <input id="entryNoteTeacher" class="note-fld" placeholder="הערה אופציונלית (למשל: עזרה לחבר)…" data-i18n-ph="phEntryNote" aria-label="Optional Note" autocomplete="off">
         <div class="pm2">
           <button class="add" id="teacherAddBtn" onclick="doAddPoints()" data-i18n="awardPointsBtn">✔ הענק נקודות</button>
           <button class="sub" id="teacherSubBtn" onclick="doSubPoints()" data-i18n="deductPointsBtn">✔ הורד נקודות</button>
         </div>
       </div>
       <div id="viewTeacherRank" class="view">
-        <div class="seg">
-          <span id="segRankClass" class="on" onclick="setRankView('class')" data-i18n="classesTab">כיתות</span>
-          <span id="segRankStudent" onclick="setRankView('student')" data-i18n="studentsTab">תלמידים</span>
+        <div class="row">
+          <div class="seg" style="flex:1">
+            <span id="segRankClass" class="on" onclick="setRankView('class')" data-i18n="classesTab">כיתות</span>
+            <span id="segRankStudent" onclick="setRankView('student')" data-i18n="studentsTab">תלמידים</span>
+          </div>
+          <button class="lang-btn" onclick="openKioskMode()"><span aria-hidden="true">📺</span> <span data-i18n="kioskBtn">מסך חי</span></button>
         </div>
         <div class="card" id="teacherRankings"></div>
       </div>
       <div id="viewTeacherHist" class="view">
+        <div class="hist-filters">
+          <button class="hist-pill on" data-hf="all" onclick="setHistoryFilter('all')" data-i18n="filterAll">הכול</button>
+          <button class="hist-pill" data-hf="plus" onclick="setHistoryFilter('plus')" data-i18n="filterPlus">זכות (+)</button>
+          <button class="hist-pill" data-hf="minus" onclick="setHistoryFilter('minus')" data-i18n="filterMinus">חובה (−)</button>
+        </div>
         <div class="card" id="teacherHist"></div>
       </div>
     </div>
     <div class="tabbar">
-      <button class="on" onclick="switchTeacherView('score')"><span class="ico">⭐</span><span data-i18n="tabAward">מתן נקודות</span></button>
-      <button onclick="switchTeacherView('rank')"><span class="ico">🏆</span><span data-i18n="tabRankings">דירוג</span></button>
-      <button onclick="switchTeacherView('hist')"><span class="ico">📋</span><span data-i18n="tabHistory">היסטוריה</span></button>
+      <button class="on" onclick="switchTeacherView('score')"><span class="ico" aria-hidden="true">⭐</span><span data-i18n="tabAward">מתן נקודות</span></button>
+      <button onclick="switchTeacherView('rank')"><span class="ico" aria-hidden="true">🏆</span><span data-i18n="tabRankings">דירוג</span></button>
+      <button onclick="switchTeacherView('hist')"><span class="ico" aria-hidden="true">📋</span><span data-i18n="tabHistory">היסטוריה</span></button>
     </div>
   </div>
 
   <!-- APP: ADMIN -->
   <div id="appAdmin" class="app">
-    <div class="topbar"><h2 data-i18n="adminTitle">ניהול מערכת</h2><div class="actions"><button class="lang-btn" onclick="toggleLang()">🌐 <span class="lang-label">EN</span></button><button class="icon-btn theme-toggle" onclick="toggleTheme()">🌓</button><button class="icon-btn danger" onclick="doLogout()">✕</button></div></div>
+    <div class="topbar"><h2 data-i18n="adminTitle">ניהול מערכת</h2><div class="actions"><button class="lang-btn" onclick="openKioskMode()" aria-label="Hallway TV Kiosk"><span aria-hidden="true">📺</span> <span data-i18n="kioskBtn">מסך חי</span></button><button class="lang-btn" onclick="toggleLang()" aria-label="Switch Language"><span aria-hidden="true">🌐</span> <span class="lang-label">EN</span></button><button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme"><span aria-hidden="true">🌓</span></button><button class="icon-btn danger" onclick="doLogout()" aria-label="Sign Out">✕</button></div></div>
     <div class="main">
       <div id="viewAdminUsers" class="view active">
         <div class="row"><span class="label" data-i18n="usersTab">משתמשים</span><button class="btn" style="padding:6px 14px;font-size:.85rem" onclick="showUserModal()" data-i18n="addBtn">+ הוסף</button></div>
@@ -470,7 +625,7 @@
       </div>
       <div id="viewAdminScore" class="view">
         <!-- teacher score view embedded for admin -->
-        <div class="sel" onclick="pickClass()"><span id="adminClassName" data-i18n="pickClassBtn">בחר כיתה</span><span class="muted">▾</span></div>
+        <div class="sel" tabindex="0" role="button" onclick="pickClass()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickClass()}"><span id="adminClassName" data-i18n="pickClassBtn">בחר כיתה</span><span class="muted">▾</span></div>
         <div class="seg">
           <span id="admSegPersonal" class="on" onclick="setEntryKind('personal')" data-i18n="kindPersonal">אישי</span>
           <span id="admSegClass" onclick="setEntryKind('class')" data-i18n="kindClass">כיתתי</span>
@@ -488,15 +643,19 @@
         </div>
         <span class="label" id="adminTargetLabel" data-i18n="whoLabel">מי?</span>
         <div id="adminStudentList" class="card"></div>
+        <input id="entryNoteAdmin" class="note-fld" placeholder="הערה אופציונלית (למשל: עזרה לחבר)…" data-i18n-ph="phEntryNote" aria-label="Optional Note" autocomplete="off">
         <div class="pm2">
           <button class="add" id="adminAddBtn" onclick="doAddPoints()" data-i18n="awardPointsBtn">✔ הענק נקודות</button>
           <button class="sub" id="adminSubBtn" onclick="doSubPoints()" data-i18n="deductPointsBtn">✔ הורד נקודות</button>
         </div>
       </div>
       <div id="viewAdminRank" class="view">
-        <div class="seg">
-          <span id="admSegRankClass" class="on" onclick="setRankView('class')" data-i18n="classesTab">כיתות</span>
-          <span id="admSegRankStudent" onclick="setRankView('student')" data-i18n="studentsTab">תלמידים</span>
+        <div class="row">
+          <div class="seg" style="flex:1">
+            <span id="admSegRankClass" class="on" onclick="setRankView('class')" data-i18n="classesTab">כיתות</span>
+            <span id="admSegRankStudent" onclick="setRankView('student')" data-i18n="studentsTab">תלמידים</span>
+          </div>
+          <button class="lang-btn" onclick="openKioskMode()"><span aria-hidden="true">📺</span> <span data-i18n="kioskBtn">מסך חי</span></button>
         </div>
         <div class="card" id="adminRankings"></div>
       </div>
@@ -505,28 +664,44 @@
       </div>
     </div>
     <div class="tabbar">
-      <button class="on" onclick="switchAdminView('users')"><span class="ico">👥</span><span data-i18n="usersTab">משתמשים</span></button>
-      <button onclick="switchAdminView('classes')"><span class="ico">🏫</span><span data-i18n="classesTab">כיתות</span></button>
-      <button onclick="switchAdminView('criteria')"><span class="ico">📋</span><span data-i18n="criteriaTab">קריטריונים</span></button>
-      <button onclick="switchAdminView('score')"><span class="ico">⭐</span><span data-i18n="tabScore">ניקוד</span></button>
-      <button onclick="switchAdminView('rank')"><span class="ico">🏆</span><span data-i18n="tabRankings">דירוג</span></button>
-      <button onclick="switchAdminView('export')"><span class="ico">📥</span><span data-i18n="tabExport">ייצוא</span></button>
+      <button class="on" onclick="switchAdminView('users')"><span class="ico" aria-hidden="true">👥</span><span data-i18n="usersTab">משתמשים</span></button>
+      <button onclick="switchAdminView('classes')"><span class="ico" aria-hidden="true">🏫</span><span data-i18n="classesTab">כיתות</span></button>
+      <button onclick="switchAdminView('criteria')"><span class="ico" aria-hidden="true">📋</span><span data-i18n="criteriaTab">קריטריונים</span></button>
+      <button onclick="switchAdminView('score')"><span class="ico" aria-hidden="true">⭐</span><span data-i18n="tabScore">ניקוד</span></button>
+      <button onclick="switchAdminView('rank')"><span class="ico" aria-hidden="true">🏆</span><span data-i18n="tabRankings">דירוג</span></button>
+      <button onclick="switchAdminView('export')"><span class="ico" aria-hidden="true">📥</span><span data-i18n="tabExport">ייצוא</span></button>
     </div>
   </div>
 
   <!-- CLASS PICKER POPUP -->
-  <div id="classPicker" class="popup hidden">
-    <div class="popup-inner">
+  <div id="classPicker" class="popup hidden" onclick="if(event.target===this)closeClassPicker()">
+    <div class="popup-inner" role="dialog" aria-modal="true">
       <div class="row"><h3 data-i18n="pickClassBtn">בחר כיתה</h3><button style="color:var(--minus);font-weight:700" onclick="closeClassPicker()" data-i18n="closeBtn">סגור</button></div>
       <div id="classPickerList"></div>
     </div>
   </div>
 
   <!-- MODALS -->
-  <div id="genericModal" class="modal hidden"><div class="modal-inner" id="genericModalInner"></div></div>
+  <div id="genericModal" class="modal hidden" onclick="if(event.target===this)closeModal()"><div class="modal-inner" id="genericModalInner" role="dialog" aria-modal="true"></div></div>
+
+  <!-- HALLWAY TV KIOSK OVERLAY -->
+  <div id="kioskOverlay" class="kiosk-overlay hidden" role="dialog" aria-modal="true">
+    <div class="kiosk-head">
+      <h1><span aria-hidden="true">🏆</span> <span data-i18n="kioskTitle">לוח מצטיינים בית ספרי — שידור חי</span></h1>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="lang-btn" onclick="toggleLang()"><span aria-hidden="true">🌐</span> <span class="lang-label">EN</span></button>
+        <button class="btn" style="padding:8px 16px;font-size:.9rem;background:var(--minus)" onclick="closeKioskMode()" data-i18n="closeBtn">סגור</button>
+      </div>
+    </div>
+    <div id="kioskPodium" class="kiosk-podium"></div>
+    <div id="kioskList" class="kiosk-list"></div>
+  </div>
+
+  <!-- STAR BURST CONTAINER -->
+  <div id="burstWrap" class="burst-wrap" aria-hidden="true"></div>
 
   <!-- TOAST -->
-  <div id="toast" class="hidden"></div>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   <script>
     'use strict';
@@ -538,6 +713,8 @@
     let selectedStudents = new Set();
     let rankView = 'class';
     let studentClassId = null;
+    let studentSearchQuery = '';
+    let historyFilter = 'all';
     let USE_LOCAL_DEMO = false;
     const DEMO_STORAGE_KEY = 'smp_demo_db_v1';
 
@@ -724,7 +901,18 @@
         subValLabel: 'ערך הורדה',
         dailyLimitLabel: 'מגבלה יומית',
         confirmDeleteUser: 'לבטל משתמש זה?',
-        confirmDeleteClass: 'למחוק כיתה?'
+        confirmDeleteClass: 'למחוק כיתה?',
+        kioskBtn: 'מסך חי',
+        kioskTitle: 'לוח מצטיינים בית ספרי — שידור חי',
+        phEntryNote: 'הערה אופציונלית (למשל: עזרה לחבר)…',
+        phSearchStudent: '🔍 חפש תלמיד…',
+        filterAll: 'הכול',
+        filterPlus: 'זכות (+)',
+        filterMinus: 'חובה (−)',
+        tierStarter: '🌱 מתחיל חיובי',
+        tierRising: '⭐ כוכב עולה',
+        tierChampion: '🏆 אלוף המצוינות',
+        nextGoalAt: 'היעד הבא:'
       },
       en: {
         loading: 'Loading...',
@@ -819,9 +1007,68 @@
         subValLabel: 'Deduct Value (−)',
         dailyLimitLabel: 'Daily Limit',
         confirmDeleteUser: 'Deactivate this user?',
-        confirmDeleteClass: 'Delete this class?'
+        confirmDeleteClass: 'Delete this class?',
+        kioskBtn: 'TV Kiosk',
+        kioskTitle: 'Live School Merit Leaderboard',
+        phEntryNote: 'Optional note (e.g., Helping a classmate)…',
+        phSearchStudent: '🔍 Filter students…',
+        filterAll: 'All',
+        filterPlus: 'Awards (+)',
+        filterMinus: 'Deductions (−)',
+        tierStarter: '🌱 Positive Starter',
+        tierRising: '⭐ Rising Star',
+        tierChampion: '🏆 Merit Champion',
+        nextGoalAt: 'Next milestone:'
       }
     };
+
+    const CRITERION_ICONS = {
+      'תלבושת': '👕',
+      'ציצית': '🧵',
+      'הגעה בזמן': '⏰',
+      'מבצע חל"ל': '📚',
+      'התנהגות בדרך ארץ': '🤝',
+      'סדר וניקיון הכיתה': '🧹',
+      'קירות נקיים': '✨',
+      'כיתה מקושטת': '🎨',
+      'הרמת כיסאות בסוף היום': '🪑',
+      'תורנים כיתתיים': '📋',
+      'כוורות מסודרות': '🗄️'
+    };
+
+    function getCriterionIcon(name) {
+      return CRITERION_ICONS[name] || '⭐';
+    }
+
+    function computeStudentMilestone(score) {
+      const s = Math.max(0, +score || 0);
+      if (s < 10) {
+        return { badge: t('tierStarter'), next: 10, pct: Math.min(100, Math.round((s / 10) * 100)) };
+      }
+      if (s < 25) {
+        return { badge: t('tierRising'), next: 25, pct: Math.min(100, Math.round((s / 25) * 100)) };
+      }
+      return { badge: t('tierChampion'), next: 50, pct: Math.min(100, Math.round((s / 50) * 100)) };
+    }
+
+    function triggerStarBurst(delta) {
+      if (delta <= 0) return;
+      const wrap = document.getElementById('burstWrap');
+      if (!wrap) return;
+      const emojis = ['⭐', '🌟', '✨', '🏆'];
+      for (let i = 0; i < 12; i++) {
+        const span = document.createElement('span');
+        span.className = 'burst-star';
+        span.textContent = emojis[i % emojis.length];
+        const angle = (Math.PI * 2 * i) / 12;
+        const dist = 70 + (i % 3) * 35;
+        span.style.setProperty('--dx', Math.round(Math.cos(angle) * dist) + 'px');
+        span.style.setProperty('--dy', Math.round(Math.sin(angle) * dist - 40) + 'px');
+        span.style.setProperty('--rot', ((i % 2 ? 1 : -1) * 45) + 'deg');
+        wrap.appendChild(span);
+        setTimeout(() => span.remove(), 900);
+      }
+    }
 
     const DATA_EN_MAP = {
       // Users
@@ -901,6 +1148,10 @@
       if (USER) {
         setupUser();
         loadApp();
+      }
+      const ov = document.getElementById('kioskOverlay');
+      if (ov && !ov.classList.contains('hidden')) {
+        openKioskMode();
       }
     }
 
@@ -1250,6 +1501,8 @@
       const next = cur === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('points-theme', next);
+      const meta = document.getElementById('metaThemeColor');
+      if (meta) meta.setAttribute('content', next === 'dark' ? '#0d1426' : '#1f4fa3');
     }
 
     // ── Login ──
@@ -1320,12 +1573,18 @@
     async function loadStudent() {
       try {
         const dash = await api('GET', '/api/dashboard');
-        document.getElementById('stuScore').textContent = dash.personal || 0;
-        document.getElementById('stuGoal').textContent = t('keepItUp');
+        const score = dash.personal || 0;
+        document.getElementById('stuScore').textContent = score;
+        const ms = computeStudentMilestone(score);
+        const badgeEl = document.getElementById('stuTierBadge');
+        if (badgeEl) badgeEl.textContent = ms.badge;
+        const progEl = document.getElementById('stuProgFill');
+        if (progEl) progEl.style.width = ms.pct + '%';
+        document.getElementById('stuGoal').textContent = `${t('keepItUp')} · ${t('nextGoalAt')} ${ms.next} (${score}/${ms.next})`;
         if (dash.class_name) {
           studentClassId = dash.class_score ? dash.class_score : null;
           document.getElementById('stuClass').textContent = trData(dash.class_name);
-          document.getElementById('stuClassRank').textContent = `${dash.class_rank} ${t('outOf')} ${dash.total_classes}`;
+          document.getElementById('stuClassRank').textContent = `#${dash.class_rank} ${t('outOf')} ${dash.total_classes}`;
         }
         const hist = await api('GET', '/api/history?limit=20');
         renderStudentRecent(hist);
@@ -1336,7 +1595,7 @@
       const el = document.getElementById('stuRecent');
       el.innerHTML = hist.length ? hist.slice(0, 8).map(h => `
         <div class="ev${h.cancelled ? ' cancelled' : ''}">
-          <div>${trData(h.criterion)}<small>${fmtDate(h.ts)} · ${trData(h.teacher_name)}${h.note ? ' · ' + trData(h.note) : ''}</small></div>
+          <div>${getCriterionIcon(h.criterion)} <b>${trData(h.criterion)}</b><small>${fmtDate(h.ts)} · ${trData(h.teacher_name)}${h.note ? ' · “' + trData(h.note) + '”' : ''}</small></div>
           <span class="delta ${h.delta > 0 ? 'd-plus' : 'd-minus'}">${h.delta > 0 ? '+' + h.delta : h.delta}</span>
         </div>`).join('') : `<span class="muted">${t('noActionsYet')}</span>`;
     }
@@ -1364,13 +1623,23 @@
     async function loadStudentHistView() {
       try {
         const hist = await api('GET', '/api/history?limit=100');
+        const filtered = hist.filter(h => historyFilter === 'all' ? true : (historyFilter === 'plus' ? h.delta > 0 : h.delta < 0));
         const el = document.getElementById('stuHistoryFull');
-        el.innerHTML = hist.length ? hist.map(h => `
+        el.innerHTML = filtered.length ? filtered.map(h => `
           <div class="ev${h.cancelled ? ' cancelled' : ''}">
-            <div>${trData(h.criterion)}<small>${fmtDate(h.ts)} · ${trData(h.teacher_name)}${h.note ? ' · ' + trData(h.note) : ''}</small></div>
+            <div>${getCriterionIcon(h.criterion)} <b>${trData(h.criterion)}</b><small>${fmtDate(h.ts)} · ${trData(h.teacher_name)}${h.note ? ' · “' + trData(h.note) + '”' : ''}</small></div>
             <span class="delta ${h.delta > 0 ? 'd-plus' : 'd-minus'}">${h.delta > 0 ? '+' + h.delta : h.delta}</span>
           </div>`).join('') : `<span class="muted">${t('noHistory')}</span>`;
       } catch (e) { toast(t('loadError')); }
+    }
+
+    function setHistoryFilter(filter) {
+      historyFilter = filter;
+      document.querySelectorAll('.hist-pill').forEach(btn => {
+        btn.classList.toggle('on', btn.getAttribute('data-hf') === filter);
+      });
+      if (USER && USER.role === 'student') loadStudentHistView();
+      else loadHistory('teacherHist');
     }
 
     function switchStudentView(view) {
@@ -1414,24 +1683,48 @@
       try {
         const res = await api('GET', '/api/class-score?id=' + selectedClass);
         const members = res.members || [];
+        window.currentClassMembers = members;
         const el = (USER.role === 'admin') ? document.getElementById('adminStudentList') : document.getElementById('teacherStudentList');
-        el.innerHTML = '<div class="row"><span class="label">' + (entryKind === 'personal' ? t('studentsTab') : t('tabMyClass')) + '</span>' +
-          (entryKind === 'personal' ? `<span style="color:var(--brand);font-weight:700;font-size:12px;cursor:pointer" onclick="toggleAllStudents()">${t('selectAll')}</span>` : '') + '</div>';
+        const selCount = selectedStudents.size;
+        el.innerHTML = '<div class="row"><span class="label">' + (entryKind === 'personal' ? t('studentsTab') : t('tabMyClass')) +
+          (entryKind === 'personal' && selCount > 0 ? ` <span class="sel-badge">${selCount}</span>` : '') + '</span>' +
+          (entryKind === 'personal' ? `<button style="color:var(--brand);font-weight:800;font-size:12.5px" onclick="toggleAllStudents()">${t('selectAll')}</button>` : '') + '</div>';
         if (entryKind === 'personal') {
-          members.forEach(m => {
-            el.innerHTML += `<div class="st" onclick="toggleStudent(${m.id}, this)" data-sid="${m.id}"><span class="box${selectedStudents.has(m.id) ? ' on' : ''}"></span><span>${trData(m.name)}</span><span class="muted" style="font-variant-numeric:tabular-nums">${m.score}</span></div>`;
-          });
+          el.innerHTML += `<div class="search-wrap"><input class="search-fld" type="search" value="${studentSearchQuery}" placeholder="${t('phSearchStudent')}" aria-label="Filter students" oninput="filterStudentsList(this.value)"></div><div id="studentRowsContainer"></div>`;
+          renderStudentRows();
         } else {
           const cl = (window.allClasses || []).find(c => c.id === selectedClass);
-          el.innerHTML += `<div class="ev"><span>${cl ? trData(cl.name) : t('tabMyClass')}</span></div>`;
+          el.innerHTML += `<div class="ev"><span>🏫 <b>${cl ? trData(cl.name) : t('tabMyClass')}</b></span><span class="rk-val">${res.score || 0} ⭐</span></div>`;
         }
       } catch (e) { toast(t('loadError')); }
+    }
+
+    function renderStudentRows() {
+      const container = document.getElementById('studentRowsContainer');
+      if (!container) return;
+      const q = (studentSearchQuery || '').trim().toLowerCase();
+      const members = (window.currentClassMembers || []).filter(m => {
+        if (!q) return true;
+        return m.name.toLowerCase().includes(q) || trData(m.name).toLowerCase().includes(q);
+      });
+      container.innerHTML = members.map(m => {
+        const isSel = selectedStudents.has(m.id);
+        return `<div class="st${isSel ? ' selected-row' : ''}" onclick="toggleStudent(${m.id}, this)" data-sid="${m.id}"><span class="box${isSel ? ' on' : ''}"></span><span style="font-weight:600">${trData(m.name)}</span><span class="muted" style="margin-inline-start:auto;font-variant-numeric:tabular-nums;font-weight:700">${m.score} ⭐</span></div>`;
+      }).join('');
+    }
+
+    function filterStudentsList(query) {
+      studentSearchQuery = query || '';
+      renderStudentRows();
     }
 
     function toggleStudent(sid, el) {
       if (selectedStudents.has(sid)) selectedStudents.delete(sid);
       else selectedStudents.add(sid);
-      if (el) el.querySelector('.box').classList.toggle('on');
+      if (el) {
+        el.classList.toggle('selected-row', selectedStudents.has(sid));
+        el.querySelector('.box').classList.toggle('on', selectedStudents.has(sid));
+      }
     }
 
     function toggleAllStudents() {
@@ -1441,7 +1734,11 @@
       if (allSelected) { selectedStudents.clear(); } else {
         boxes.forEach(b => selectedStudents.add(+b.dataset.sid));
       }
-      boxes.forEach(b => b.querySelector('.box').classList.toggle('on', selectedStudents.has(+b.dataset.sid)));
+      boxes.forEach(b => {
+        const isSel = selectedStudents.has(+b.dataset.sid);
+        b.classList.toggle('selected-row', isSel);
+        b.querySelector('.box').classList.toggle('on', isSel);
+      });
     }
 
     async function loadCriteria(forTeacher) {
@@ -1462,7 +1759,10 @@
       if (filtered.length && !filtered.some(c => c.id === selectedCriterion)) {
         selectedCriterion = filtered[0].id;
       }
-      el.innerHTML = filtered.map(c => `<span class="chip${c.id === selectedCriterion ? ' on' : ''}" onclick="selectCriterion(${c.id})">${trData(c.name)}</span>`).join('');
+      el.innerHTML = filtered.map(c => {
+        const subTxt = c.sub_value ? `/−${c.sub_value}` : '';
+        return `<span class="chip${c.id === selectedCriterion ? ' on' : ''}" tabindex="0" role="button" onclick="selectCriterion(${c.id})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectCriterion(${c.id})}"><span>${getCriterionIcon(c.name)}</span><span>${trData(c.name)}</span><span class="c-val">+${c.add_value}${subTxt}</span></span>`;
+      }).join('');
     }
 
     function selectCriterion(cid) {
@@ -1526,17 +1826,23 @@
 
     async function doPoints(criterionId, delta) {
       if (entryKind === 'personal' && selectedStudents.size === 0) return toast(t('pickStudentsFirst'));
+      const noteInput = USER && USER.role === 'admin'
+        ? document.getElementById('entryNoteAdmin')
+        : document.getElementById('entryNoteTeacher');
+      const noteText = noteInput ? noteInput.value.trim() : '';
       try {
         const body = {
           target_type: entryKind === 'personal' ? 'student' : 'class',
           target_ids: entryKind === 'personal' ? [...selectedStudents] : [selectedClass],
           criterion_id: criterionId,
           delta: delta,
-          note: '',
+          note: noteText,
         };
         await api('POST', '/api/entries', body);
-        toast(delta > 0 ? `+${delta} ${t('pointsWord')}!` : `${delta} ${t('pointsWord')}`);
+        triggerStarBurst(delta);
+        toast(delta > 0 ? `⭐ +${delta} ${t('pointsWord')}!` : `${delta} ${t('pointsWord')}`);
         selectedStudents.clear();
+        if (noteInput) noteInput.value = '';
         await loadStudentsForClass();
         if (USER.role === 'student') await loadStudent();
       } catch (e) { toast(trData(e.error) || t('loadError')); }
@@ -1585,14 +1891,55 @@
       const el = document.getElementById(elId);
       try {
         const hist = await api('GET', '/api/history?limit=100');
-        el.innerHTML = hist.length ? hist.map(h => `
+        const filtered = hist.filter(h => historyFilter === 'all' ? true : (historyFilter === 'plus' ? h.delta > 0 : h.delta < 0));
+        el.innerHTML = filtered.length ? filtered.map(h => `
           <div class="ev${h.cancelled ? ' cancelled' : ''}">
-            <div>${trData(h.criterion)} · ${h.target_type === 'student' ? t('roleStudent') : t('tabMyClass')} #${h.target_id}
-              <small>${fmtDate(h.ts)} · ${trData(h.teacher_name)}${h.note ? ' · ' + trData(h.note) : ''}</small></div>
-            <div><span class="delta ${h.delta > 0 ? 'd-plus' : 'd-minus'}">${h.delta > 0 ? '+' + h.delta : h.delta}</span>
+            <div>${getCriterionIcon(h.criterion)} <b>${trData(h.criterion)}</b> · ${h.target_type === 'student' ? t('roleStudent') : t('tabMyClass')} #${h.target_id}
+              <small>${fmtDate(h.ts)} · ${trData(h.teacher_name)}${h.note ? ' · “' + trData(h.note) + '”' : ''}</small></div>
+            <div style="display:flex;align-items:center;gap:6px"><span class="delta ${h.delta > 0 ? 'd-plus' : 'd-minus'}">${h.delta > 0 ? '+' + h.delta : h.delta}</span>
               ${!h.cancelled ? `<button class="del" onclick="cancelEntry(${h.id})">${t('cancelBtn')}</button>` : ''}</div>
           </div>`).join('') : `<span class="muted">${t('noActionsYet')}</span>`;
       } catch (e) { toast(t('loadError')); }
+    }
+
+    async function openKioskMode() {
+      const ov = document.getElementById('kioskOverlay');
+      if (!ov) return;
+      ov.classList.remove('hidden');
+      try {
+        let rankings;
+        if (USER) {
+          rankings = await api('GET', '/api/rankings/classes');
+        } else {
+          const db = getDemoDb();
+          rankings = db.classes
+            .map(c => ({ id: c.id, name: c.name, grade: c.grade, score: calcClassScore(db, c.id) }))
+            .sort((a, b) => b.score - a.score);
+          rankings.forEach((r, i) => { r.rank = i + 1; });
+        }
+        const medals = ['🥇', '🥈', '🥉'];
+        const max = Math.max(...rankings.map(r => r.score || 1), 1);
+        document.getElementById('kioskPodium').innerHTML = rankings.slice(0, 3).map((r, idx) => `
+          <div class="kiosk-card${idx === 0 ? ' first' : ''}">
+            <span class="k-rank">${medals[idx] || '#' + r.rank}</span>
+            <span class="k-name">🏫 ${trData(r.name)}</span>
+            <span class="k-score">${r.score} ⭐</span>
+          </div>
+        `).join('');
+        document.getElementById('kioskList').innerHTML = rankings.map((r, idx) => `
+          <div class="kiosk-row">
+            <span style="width:38px;font-weight:800">${medals[idx] || '#' + r.rank}</span>
+            <span style="min-width:110px;font-weight:800">${trData(r.name)}</span>
+            <div class="rk-bar" style="flex:1;height:12px;background:rgba(255,255,255,0.14)"><i style="width:${Math.max(6, Math.round((r.score / max) * 100))}%;background:var(--gold)"></i></div>
+            <span class="rk-val" style="color:var(--gold);font-size:1.3rem">${r.score}</span>
+          </div>
+        `).join('');
+      } catch (e) { toast(t('loadError')); }
+    }
+
+    function closeKioskMode() {
+      const ov = document.getElementById('kioskOverlay');
+      if (ov) ov.classList.add('hidden');
     }
 
     async function cancelEntry(eid) {
@@ -1789,8 +2136,13 @@
           setModeUI(true);
         }
       }
-      // Support ?demo=student|teacher|admin deep-link from README
+      // Support ?demo=student|teacher|admin or ?kiosk=1 deep-link from README
       const urlParams = new URLSearchParams(location.search);
+      if (urlParams.get('kiosk') === '1') {
+        showLogin();
+        openKioskMode();
+        return;
+      }
       const demoRole = urlParams.get('demo');
       if (demoRole === 'student') return quickDemoLogin('student', 'noam', '1234');
       if (demoRole === 'teacher') return quickDemoLogin('teacher', 'david', 'teacher123');
