@@ -6,15 +6,19 @@
 
 1. **Fork** the repository / **Fork** את המאגר.
 2. Create a descriptive branch: / צור ענף עם שם תיאורי:
+
    ```bash
    git checkout -b feature/my-feature
    ```
+
 3. Make your changes / בצע את השינויים שלך.
-4. Run the automated test suite and make sure all **23 tests** pass:
-   הרץ את חבילת הבדיקות האוטומטית וודא שכל **23 הבדיקות** עוברות:
+4. Run the automated test suite and make sure all **25 tests** pass:
+   הרץ את חבילת הבדיקות האוטומטית וודא שכל **25 הבדיקות** עוברות:
+
    ```bash
    python3 -m unittest discover -s tests -v
    ```
+
    *(Recommended: enable the pre-commit hook / מומלץ להפעיל את ה-hook: `git config core.hooksPath .githooks`)*
 5. Verify it works by running `python3 server.py` and testing in a browser.
    וודא שהקוד עובד — הרץ `python3 server.py` ובדוק בדפדפן.
@@ -31,6 +35,7 @@
 ## Reporting Bugs / דיווח על באגים
 
 Open an Issue with:
+
 - Problem description / תיאור הבעיה
 - Steps to reproduce / צעדים לשחזור
 - Python version / גרסת Python

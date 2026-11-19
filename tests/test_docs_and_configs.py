@@ -2,10 +2,10 @@
 """Tests for documentation (README.md, spec.md, CONTRIBUTING.md, SECURITY.md), SVGs, PWA manifest, and CI configs."""
 
 import json
-from pathlib import Path
 import re
 import unittest
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
@@ -71,6 +71,7 @@ class TestDocsAndConfigs(unittest.TestCase):
             "/api/login",
             "/api/logout",
             "/api/me",
+            "/api/kiosk",
             "/api/dashboard",
             "/api/users",
             "/api/classes",
@@ -101,9 +102,86 @@ class TestDocsAndConfigs(unittest.TestCase):
 
         ci_yml = (ROOT_DIR / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
         self.assertIn("unittest", ci_yml, "ci.yml must execute the unittest suite")
+        self.assertIn("workflow_dispatch", ci_yml, "ci.yml should support manual workflow_dispatch")
 
         pages_yml = (ROOT_DIR / ".github" / "workflows" / "pages.yml").read_text(encoding="utf-8")
         self.assertIn("deploy-pages", pages_yml)
+
+        release_yml = (ROOT_DIR / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+        self.assertIn("gh release", release_yml)
+
+    def test_05_roadmap_tasks_issues_and_links(self):
+        """Verify ROADMAP.md tracks all SMP-xxx sprint tasks, ISS-xxx issues, and valid local links."""
+        roadmap = (ROOT_DIR / "ROADMAP.md").read_text(encoding="utf-8")
+
+        for task_id in (
+            "SMP-101", "SMP-106", "SMP-107", "SMP-108", "SMP-109",
+            "SMP-201", "SMP-205", "SMP-301", "SMP-304",
+            "SMP-401", "SMP-403", "SMP-501", "SMP-504",
+            "SMP-601", "SMP-603", "SMP-605",
+        ):
+            self.assertIn(task_id, roadmap, f"Missing sprint task {task_id} in ROADMAP.md")
+
+        for issue_id in (f"ISS-{i:03d}" for i in range(1, 13)):
+            self.assertIn(issue_id, roadmap, f"Missing tracked issue {issue_id} in ROADMAP.md")
+
+        md_links = re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", roadmap)
+        for target in md_links:
+            if target.startswith(("http://", "https://", "mailto:")):
+                continue
+            target_path = (ROOT_DIR / target).resolve()
+            self.assertTrue(target_path.exists(), f"Broken local link in ROADMAP.md: {target}")
+
+    def test_06_vscode_and_copilot_chat_workspace_configs(self):
+        """Verify .vscode/*.json, Copilot instructions/prompts/agents, and GitHub issue/PR templates."""
+        vscode_files = ("settings.json", "tasks.json", "launch.json", "extensions.json")
+        for vf in vscode_files:
+            p = ROOT_DIR / ".vscode" / vf
+            self.assertTrue(p.is_file(), f"Missing .vscode/{vf}")
+            parsed = json.loads(p.read_text(encoding="utf-8"))
+            self.assertIsInstance(parsed, dict)
+
+        settings = json.loads((ROOT_DIR / ".vscode" / "settings.json").read_text(encoding="utf-8"))
+        self.assertTrue(settings.get("python.testing.unittestEnabled"))
+        self.assertTrue(settings.get("github.copilot.chat.codeGeneration.useInstructionFiles"))
+
+        required_github_files = [
+            ".github/copilot-instructions.md",
+            ".github/prompts/implement-sprint-task.prompt.md",
+            ".github/prompts/audit-parity-and-tests.prompt.md",
+            ".github/prompts/github-release-check.prompt.md",
+            ".github/agents/smp-developer.agent.md",
+            ".github/ISSUE_TEMPLATE/config.yml",
+            ".github/ISSUE_TEMPLATE/bug_report.yml",
+            ".github/ISSUE_TEMPLATE/sprint_task.yml",
+            ".github/PULL_REQUEST_TEMPLATE.md",
+            ".github/dependabot.yml",
+        ]
+        for rel in required_github_files:
+            fp = ROOT_DIR / rel
+            self.assertTrue(fp.is_file(), f"Missing GitHub / Copilot config file: {rel}")
+            self.assertGreater(len(fp.read_text(encoding="utf-8").strip()), 50)
+
+        # Ensure all repo Markdown files have zero in-file duplicate headings or multiple consecutive blank lines
+        for md_path in sorted(ROOT_DIR.rglob("*.md")):
+            if ".git" in md_path.parts:
+                continue
+            txt = md_path.read_text(encoding="utf-8")
+            self.assertNotIn("\n\n\n", txt, f"Multiple consecutive blank lines in {md_path.relative_to(ROOT_DIR)}")
+            seen_headings = set()
+            in_code = False
+            for line in txt.splitlines():
+                s = line.strip()
+                if s.startswith("```"):
+                    in_code = not in_code
+                    continue
+                if in_code:
+                    continue
+                m = re.match(r"^(#{1,4})\s+(.+)", s)
+                if m:
+                    key = (m.group(1), m.group(2).strip().lower())
+                    self.assertNotIn(key, seen_headings, f"Duplicate heading {key} in {md_path.relative_to(ROOT_DIR)}")
+                    seen_headings.add(key)
 
 
 if __name__ == "__main__":

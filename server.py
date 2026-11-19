@@ -8,9 +8,11 @@ Usage: python3 server.py [--port 8080] [--db points.db]
 """
 
 import argparse
+import csv
 import hashlib
 import hmac
 import http.server
+import io
 import json
 import os
 import secrets
@@ -24,11 +26,12 @@ from pathlib import Path
 APP_DIR = Path(__file__).resolve().parent
 DB_DEFAULT = str(APP_DIR / "points.db")
 SECRET = os.environ.get("POINTS_SECRET") or secrets.token_hex(32)
+PUBLIC_STATIC_FILES = {"index.html", "spec.html", "manifest.webmanifest", "icon.svg"}
 
 # ── Database ──────────────────────────────────────────────────────────────────
 
 def get_db():
-    conn = sqlite3.connect(DB_DEFAULT)
+    conn = sqlite3.connect(DB_DEFAULT, timeout=10.0)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL")
@@ -239,10 +242,13 @@ def json_error(handler, msg, status=400):
 
 def read_json(handler):
     length = int(handler.headers.get("Content-Length", 0))
-    if length == 0:
+    if length <= 0:
         return {}
     raw = handler.rfile.read(length)
-    return json.loads(raw)
+    data = json.loads(raw.decode("utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("JSON body must be an object")
+    return data
 
 
 def require_auth(handler):
@@ -311,76 +317,86 @@ class PointServer(http.server.BaseHTTPRequestHandler):
         self._handle_api("DELETE", path)
 
     def _handle_api(self, method, path):
-        if path == "/api/login":
-            return self.api_login()
-        if path == "/api/logout":
-            return self.api_logout()
-        if path == "/api/me":
-            return self.api_me()
+        try:
+            if path == "/api/login":
+                return self.api_login()
+            if path == "/api/logout":
+                return self.api_logout()
+            if path == "/api/me":
+                return self.api_me()
+            if path == "/api/kiosk" and method == "GET":
+                return self.api_kiosk()
 
-        user = require_auth(self)
-        if not user:
-            return json_error(self, "נדרשת התחברות", 401)
+            user = require_auth(self)
+            if not user:
+                return json_error(self, "נדרשת התחברות", 401)
 
-        # ── Admin routes ──
-        if path == "/api/users" and method == "GET":
-            return self.api_list_users()
-        if path == "/api/users" and method == "POST":
-            return self.api_create_user()
-        if path.startswith("/api/users/") and method == "PUT":
-            return self.api_update_user(path)
-        if path.startswith("/api/users/") and method == "DELETE":
-            return self.api_delete_user(path)
-        if path == "/api/classes" and method == "GET":
-            return self.api_list_classes()
-        if path == "/api/classes" and method == "POST":
-            return self.api_create_class()
-        if path.startswith("/api/classes/") and method == "PUT":
-            return self.api_update_class(path)
-        if path.startswith("/api/classes/") and method == "DELETE":
-            return self.api_delete_class(path)
-        if path == "/api/criteria" and method == "GET":
-            return self.api_list_criteria()
-        if path == "/api/criteria" and method == "POST":
-            return self.api_create_criterion()
-        if path.startswith("/api/criteria/") and method == "PUT":
-            return self.api_update_criterion(path)
-        if path == "/api/class-members" and method == "POST":
-            return self.api_add_class_member()
-        if path.startswith("/api/class-members/") and method == "DELETE":
-            return self.api_remove_class_member(path)
+            # ── Admin routes ──
+            if path == "/api/users" and method == "GET":
+                return self.api_list_users()
+            if path == "/api/users" and method == "POST":
+                return self.api_create_user()
+            if path.startswith("/api/users/") and method == "PUT":
+                return self.api_update_user(path)
+            if path.startswith("/api/users/") and method == "DELETE":
+                return self.api_delete_user(path)
+            if path == "/api/classes" and method == "GET":
+                return self.api_list_classes()
+            if path == "/api/classes" and method == "POST":
+                return self.api_create_class()
+            if path.startswith("/api/classes/") and method == "PUT":
+                return self.api_update_class(path)
+            if path.startswith("/api/classes/") and method == "DELETE":
+                return self.api_delete_class(path)
+            if path == "/api/criteria" and method == "GET":
+                return self.api_list_criteria()
+            if path == "/api/criteria" and method == "POST":
+                return self.api_create_criterion()
+            if path.startswith("/api/criteria/") and method == "PUT":
+                return self.api_update_criterion(path)
+            if path == "/api/class-members" and method == "POST":
+                return self.api_add_class_member()
+            if path.startswith("/api/class-members/") and method == "DELETE":
+                return self.api_remove_class_member(path)
 
-        # ── Teacher routes ──
-        if path == "/api/entries" and method == "POST":
-            return self.api_add_entry()
-        if path.startswith("/api/entries/") and method == "DELETE":
-            return self.api_cancel_entry(path)
+            # ── Teacher routes ──
+            if path == "/api/entries" and method == "POST":
+                return self.api_add_entry()
+            if path.startswith("/api/entries/") and method == "DELETE":
+                return self.api_cancel_entry(path)
 
-        # ── Shared reads ──
-        if path == "/api/rankings/classes":
-            return self.api_class_rankings()
-        if path == "/api/rankings/students":
-            return self.api_student_rankings()
-        if path == "/api/student-score":
-            return self.api_student_score()
-        if path == "/api/class-score":
-            return self.api_class_score()
-        if path == "/api/history":
-            return self.api_history()
-        if path == "/api/export":
-            return self.api_export()
-        if path == "/api/dashboard":
-            return self.api_dashboard()
+            # ── Shared reads ──
+            if path == "/api/rankings/classes":
+                return self.api_class_rankings()
+            if path == "/api/rankings/students":
+                return self.api_student_rankings()
+            if path == "/api/student-score":
+                return self.api_student_score()
+            if path == "/api/class-score":
+                return self.api_class_score()
+            if path == "/api/history":
+                return self.api_history()
+            if path == "/api/export":
+                return self.api_export()
+            if path == "/api/dashboard":
+                return self.api_dashboard()
 
-        json_error(self, "לא נמצא", 404)
+            json_error(self, "לא נמצא", 404)
+        except (ValueError, KeyError, TypeError, json.JSONDecodeError):
+            return json_error(self, "בקשה לא תקינה", 400)
 
     # ── Static file serving ───────────────────────────────────────────────────
 
     def serve_static(self, path):
-        if path == "/" or path == "":
-            path = "/index.html"
-        file_path = APP_DIR / path.lstrip("/")
-        if not file_path.exists() or not file_path.is_file():
+        rel = path.lstrip("/") or "index.html"
+        allowed = rel in PUBLIC_STATIC_FILES or (
+            rel.startswith("assets/") and rel.endswith(".svg") and "/" not in rel[len("assets/"):]
+        )
+        if not allowed:
+            self.send_error(404)
+            return
+        file_path = (APP_DIR / rel).resolve()
+        if not file_path.is_relative_to(APP_DIR.resolve()) or not file_path.is_file():
             self.send_error(404)
             return
         content_types = {
@@ -672,15 +688,15 @@ class PointServer(http.server.BaseHTTPRequestHandler):
         else:
             delta = max(delta, -crit["sub_value"])
 
-        # daily limit check
-        if crit["daily_limit"] and delta > 0 and target_type == "student":
+        # daily limit check (ignores cancelled=1 entries; applies to both student & class criteria)
+        if crit["daily_limit"] and delta > 0 and target_type in ("student", "class"):
             today = time.strftime("%Y-%m-%d")
             start_today = f"{today} 00:00:00"
             end_today = f"{today} 23:59:59"
             for tid in target_ids:
                 cnt = conn.execute(
-                    "SELECT COUNT(*) FROM entries WHERE target_type='student' AND target_id=? AND criterion_id=? AND delta>0 AND ts >= ? AND ts <= ?",
-                    (tid, crit_id, start_today, end_today),
+                    "SELECT COUNT(*) FROM entries WHERE target_type=? AND target_id=? AND criterion_id=? AND delta>0 AND cancelled=0 AND ts >= ? AND ts <= ?",
+                    (target_type, int(tid), crit_id, start_today, end_today),
                 ).fetchone()[0]
                 if cnt >= crit["daily_limit"]:
                     conn.close()
@@ -792,11 +808,7 @@ class PointServer(http.server.BaseHTTPRequestHandler):
         conn.close()
         json_response(self, {"class_id": cid, "score": score, "members": member_data})
 
-    def api_class_rankings(self):
-        user = require_auth(self)
-        if not user:
-            return json_error(self, "נדרשת התחברות", 401)
-        conn = get_db()
+    def _get_ranked_classes(self, conn):
         classes = conn.execute("SELECT id, name, grade FROM classes ORDER BY grade, name").fetchall()
         ranked = []
         for c in classes:
@@ -805,6 +817,21 @@ class PointServer(http.server.BaseHTTPRequestHandler):
         ranked.sort(key=lambda x: -x["score"])
         for i, r in enumerate(ranked):
             r["rank"] = i + 1
+        return ranked
+
+    def api_class_rankings(self):
+        user = require_auth(self)
+        if not user:
+            return json_error(self, "נדרשת התחברות", 401)
+        conn = get_db()
+        ranked = self._get_ranked_classes(conn)
+        conn.close()
+        json_response(self, ranked)
+
+    def api_kiosk(self):
+        """Public read-only Hallway TV Kiosk endpoint (zero student PII)."""
+        conn = get_db()
+        ranked = self._get_ranked_classes(conn)
         conn.close()
         json_response(self, ranked)
 
@@ -931,12 +958,18 @@ class PointServer(http.server.BaseHTTPRequestHandler):
             JOIN users u ON e.teacher_id=u.id
             ORDER BY e.ts DESC
         """).fetchall()
-        lines = ["id,target_type,target_id,target,criterion,delta,teacher,note,ts,cancelled"]
+        buf = io.StringIO(newline="")
+        writer = csv.writer(buf, quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        writer.writerow(["id", "target_type", "target_id", "target", "criterion", "delta", "teacher", "note", "ts", "cancelled"])
         for r in rows:
-            line = ",".join(f'"{v}"' if isinstance(v, str) else str(v) for v in r)
-            lines.append(line)
-        csv = "\n".join(lines)
-        body = csv.encode("utf-8-sig")
+            sanitized = []
+            for v in r:
+                if isinstance(v, str) and v[:1] in ("=", "+", "-", "@"):
+                    sanitized.append("'" + v)
+                else:
+                    sanitized.append(v)
+            writer.writerow(sanitized)
+        body = buf.getvalue().encode("utf-8-sig")
         self.send_response(200)
         self.send_cors()
         self.send_header("Content-Type", "text/csv; charset=utf-8")
@@ -950,14 +983,14 @@ class PointServer(http.server.BaseHTTPRequestHandler):
 
 def main():
     global DB_DEFAULT  # noqa: PLW0603
-    parser = argparse.ArgumentParser(description="PointSystemPrize Server")
+    parser = argparse.ArgumentParser(description="SchoolMeritPoints Server")
     parser.add_argument("--port", type=int, default=8080, help="Listen port")
     parser.add_argument("--db", default=DB_DEFAULT, help="SQLite database path")
     args = parser.parse_args()
     DB_DEFAULT = args.db
     init_db()
     server = http.server.ThreadingHTTPServer(("0.0.0.0", args.port), PointServer)
-    print(f"PointSystemPrize running on http://0.0.0.0:{args.port}")
+    print(f"SchoolMeritPoints running on http://0.0.0.0:{args.port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

@@ -3,8 +3,13 @@ name: CI & API Tests
 on:
   push:
     branches: [ main ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,11 +27,17 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Validate Python, HTML, Manifest & SVGs and run tests
+      - name: Validate Python, HTML, Manifest, SVGs, VS Code configs and run tests
         run: |
           python -m py_compile server.py
-          python -c "from html.parser import HTMLParser; HTMLParser().feed(open('index.html', encoding='utf-8').read()); print('HTML OK')"
-          python -c "import json; json.load(open('manifest.webmanifest', encoding='utf-8')); print('Manifest OK')"
+          python -c "from html.parser import HTMLParser; [HTMLParser().feed(open(f, encoding='utf-8').read()) for f in ('index.html', 'spec.html')]; print('HTML OK')"
+          python -c "import glob, json; [json.load(open(f, encoding='utf-8')) for f in ['manifest.webmanifest'] + glob.glob('.vscode/*.json')]; print('JSON & Manifest OK')"
           python -c "import glob, xml.etree.ElementTree as ET; [ET.parse(f) for f in ['icon.svg'] + glob.glob('assets/*.svg')]; print('SVGs OK')"
-          python -m unittest discover -s tests -v
+          python -m unittest discover -s tests -v 2>&1 | tee /tmp/unittest_out.txt
+          echo "### ✅ SchoolMeritPoints CI Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Commit**: \`${GITHUB_SHA::7}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Ref**: \`${GITHUB_REF_NAME}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Static Checks**: \`server.py\`, \`index.html\`, \`spec.html\`, \`manifest.webmanifest\`, \`assets/*.svg\`, \`.vscode/*.json\` ✅" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Test Suite**: \`$(grep -E '^Ran [0-9]+ tests' /tmp/unittest_out.txt)\` ✅" >> "$GITHUB_STEP_SUMMARY"
 

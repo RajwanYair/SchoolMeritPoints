@@ -1,0 +1,58 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "test: unittest suite",
+			"type": "shell",
+			"command": "python3 -m unittest discover -s tests -v",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "validate: full CI quality gate",
+			"type": "shell",
+			"command": "python3 -m py_compile server.py && python3 -c \"from html.parser import HTMLParser; [HTMLParser().feed(open(f, encoding='utf-8').read()) for f in ('index.html', 'spec.html')]; print('HTML OK')\" && python3 -c \"import json; json.load(open('manifest.webmanifest', encoding='utf-8')); print('Manifest OK')\" && python3 -c \"import glob, xml.etree.ElementTree as ET; [ET.parse(f) for f in ['icon.svg'] + glob.glob('assets/*.svg')]; print('SVGs OK')\" && python3 -m unittest discover -s tests -v",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "server: run SchoolMeritPoints (port 8080)",
+			"type": "shell",
+			"command": "python3 server.py --port 8080",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "git: enable pre-commit hook",
+			"type": "shell",
+			"command": "git config core.hooksPath .githooks && chmod +x .githooks/pre-commit && echo 'Pre-commit hook enabled (.githooks/pre-commit)'",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "github: check release & workflow status",
+			"type": "shell",
+			"command": "gh release list && echo '--- Recent Workflow Runs ---' && gh run list -L 6 && echo '--- GitHub Pages Status ---' && gh api repos/RajwanYair/SchoolMeritPoints/pages --jq '{status: .status, url: .html_url, build_type: .build_type}'",
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}

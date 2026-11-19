@@ -1,0 +1,33 @@
+name: 🗺️ Sprint Task / Feature Implementation (SMP-xxx)
+description: Track or propose a sprint task from ROADMAP.md (SMP-101..SMP-604)
+title: "[SMP-xxx]: "
+labels: ["enhancement", "sprint-task"]
+body:
+  - type: input
+    id: task_id
+    attributes:
+      label: Roadmap Task ID
+      description: Task ID from ROADMAP.md (e.g. SMP-201, SMP-301, SMP-401)
+      placeholder: "SMP-201"
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Target Files & Endpoints
+      description: List the backend routes in server.py, frontend functions in index.html, and test files in tests/.
+      placeholder: |
+        - server.py: POST /api/users/:id/rotate-qr
+        - index.html: localApi() + Admin QR print modal
+        - tests/test_api_endpoints.py & tests/test_frontend_and_i18n.py
+    validations:
+      required: true
+  - type: checkboxes
+    id: invariants
+    attributes:
+      label: Architectural Invariants Checklist
+      options:
+        - label: Zero external dependencies (Python stdlib + vanilla HTML/CSS/JS only)
+        - label: Dual-runtime parity (works in both server.py and index.html localApi)
+        - label: Bilingual parity (I18N.he, I18N.en, and DATA_EN_MAP updated)
+        - label: Automated unittest coverage added under tests/

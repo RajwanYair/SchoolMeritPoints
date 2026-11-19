@@ -211,38 +211,10 @@ Where:
 
 ---
 
-## 📋 Built-in Merit Criteria (11 Default Rules)
+## 📋 Built-in Merit Criteria & 3-Tier RBAC
 
-These criteria are seeded automatically on first launch. Administrators can edit, disable, and add new criteria through the Admin console:
-
-| # | Hebrew Name | English Meaning | Scope (`kind`) | Award (`+`) | Deduct (`−`) | Daily Limit |
-| :-: | :--- | :--- | :---: | :---: | :---: | :---: |
-| 1 | **תלבושת** | School Uniform | `personal` | `+2` | `−1` | 1 / day |
-| 2 | **ציצית** | Tzitzit | `personal` | `+2` | `−1` | 1 / day |
-| 3 | **הגעה בזמן** | Punctuality / On-Time Arrival | `personal` | `+3` | `−2` | 1 / day |
-| 4 | **מבצע חל"ל** | Special Study / Chesed Initiative | `personal` | `+5` | — | Unlimited |
-| 5 | **התנהגות בדרך ארץ** | Exemplary Behavior & Derech Eretz | `personal` | `+5` | `−3` | Unlimited |
-| 6 | **סדר וניקיון הכיתה** | Classroom Order & Cleanliness | `class` | `+5` | `−3` | 1 / day |
-| 7 | **קירות נקיים** | Clean Classroom Walls | `class` | `+3` | `−3` | Unlimited |
-| 8 | **כיתה מקושטת** | Decorated Classroom | `class` | `+10` | — | Unlimited |
-| 9 | **הרמת כיסאות בסוף היום** | Chairs Raised at End of Day | `class` | `+2` | `−2` | 1 / day |
-| 10 | **תורנים כיתתיים** | Classroom Duty Monitors | `class` | `+3` | `−2` | 1 / day |
-| 11 | **כוורות מסודרות** | Organized Cubbies / Lockers | `class` | `+3` | `−2` | Unlimited |
-
----
-
-## 🔐 Role-Based Access Control (RBAC) Matrix
-
-| Capability | 🎓 Student | 👨‍🏫 Teacher | 🛡️ Admin |
-| :--- | :---: | :---: | :---: |
-| View own personal score, progress & history | ✅ | — | — |
-| View other students' individual scores | ❌ *(Blocked 403)* | ✅ | ✅ |
-| View normalized class leaderboard | ✅ | ✅ | ✅ |
-| Award / deduct personal & classroom points (single or batch) | ❌ | ✅ | ✅ |
-| Cancel / undo an entry | ❌ | ✅ *(Own entries, < 24h)* | ✅ *(Any entry, anytime)* |
-| Create / deactivate users & classes | ❌ | ❌ | ✅ |
-| Add / edit / toggle merit criteria | ❌ | ❌ | ✅ |
-| Export full audit log to Excel-ready UTF-8 CSV | ❌ | ✅ | ✅ |
+- **11 Seeded Merit Criteria** (5 personal: *School Uniform*, *Tzitzit*, *On-Time Arrival*, *Special Study Initiative*, *Exemplary Behavior*; 6 classroom: *Classroom Cleanliness*, *Clean Walls*, *Decorated Classroom*, *Chairs Raised*, *Duty Monitors*, *Organized Cubbies*) — customizable in the Admin console. See the full table in [spec.md §3](spec.md#3-️-merit-criteria--normalized-scoring-math).
+- **3-Tier Role-Based Access Control (`student` / `teacher` / `admin`)**: Students view only their own personal score (`403 Forbidden` on other students) and class rankings; Teachers award/deduct points in batch and undo their own entries within 24 hours; Admins manage users, classes, criteria, and exports. See the full permission matrix in [spec.md §2](spec.md#2--user-roles--rbac-permissions).
 
 ---
 
@@ -253,6 +225,7 @@ These criteria are seeded automatically on first launch. Administrators can edit
 | `POST` | `/api/login` | Public | Authenticate with `username` & `password`; returns 24h HMAC token |
 | `POST` | `/api/logout` | Any | End current session |
 | `GET` | `/api/me` | Any | Return active user profile (`id`, `name`, `role`, `username`) |
+| `GET` | `/api/kiosk` | Public | Read-only Hallway TV Kiosk class leaderboard (zero student PII) |
 | `GET` | `/api/dashboard` | Any | Role-tailored summary (Student score/rank or Teacher/Admin overview) |
 | `GET` | `/api/users` | Teacher, Admin | List active users (`id`, `name`, `role`, `username`) |
 | `POST` | `/api/users` | Admin | Create a new user (`name`, `role`, `username`, `password`) |
@@ -308,7 +281,7 @@ Then open **`http://localhost:8080`** in your browser.
 Every backend function, HTTP endpoint, frontend JavaScript function, bilingual `I18N` dictionary, responsive CSS breakpoint, SVG asset, configuration file, and documentation table is verified by a zero-dependency `unittest` suite under [`tests/`](tests/):
 
 ```bash
-# Run the complete test suite (23 test cases covering methods, APIs, UI, i18n and docs)
+# Run the complete test suite (25 test cases covering methods, APIs, UI, i18n, docs and workspace configs)
 python3 -m unittest discover -s tests -v
 
 # Enable the automatic Git pre-commit test hook
@@ -334,21 +307,37 @@ SchoolMeritPoints/
 ├── icon.svg                     # Vector star emblem for browser & mobile home screen
 ├── spec.md                      # Comprehensive English product & architecture specification
 ├── spec.html                    # Interactive Bilingual (EN/HE) + Dark/Light specification & mockups
+├── ROADMAP.md                   # 6-sprint development roadmap (SMP-101..605) & issue backlog (ISS-001..012)
 ├── assets/
 │   ├── hero-banner.svg          # README hero banner with UI preview
+│   ├── roadmap-sprints.svg      # 6-sprint agile roadmap visual timeline
+│   ├── social-preview.svg       # Open Graph / Twitter Card 1200×630 preview banner
 │   ├── system-flow.svg          # Architecture, dual runtime & scoring pipeline diagram
-│   └── ui-preview.svg           # 3-screen mobile UI showcase (Student, Teacher, Dark Mode)
+│   ├── ui-preview.svg           # 3-screen mobile UI showcase (Student, Teacher, Dark Mode)
+│   └── user-journey.svg         # Daily school merit journey diagram
 ├── tests/
 │   ├── test_server_unit.py      # Unit tests for DB helpers, auth tokens & scoring formulas
 │   ├── test_api_endpoints.py    # End-to-end HTTP integration & RBAC tests for all 19 endpoints
 │   ├── test_frontend_and_i18n.py# DOM, JS function inventory, EN/HE i18n parity & responsive tests
-│   └── test_docs_and_configs.py # Manifest, SVG XML, README link/API parity & CI config tests
+│   └── test_docs_and_configs.py # Manifest, SVG XML, README/ROADMAP link parity, VS Code & Copilot config tests
+├── .vscode/
+│   ├── settings.json            # Python unittest, UTF-8/RTL & GitHub Copilot Chat workspace settings
+│   ├── tasks.json               # 1-click test, CI quality gate, local server & GitHub status tasks
+│   ├── launch.json              # Debugger configurations for server.py and unittest
+│   └── extensions.json          # Recommended VS Code extensions
 ├── .githooks/
 │   └── pre-commit               # Git pre-commit hook enforcing the full unittest suite
 ├── .github/
+│   ├── copilot-instructions.md  # Repository-wide GitHub Copilot Chat instructions & invariants
+│   ├── prompts/                 # Reusable Copilot Chat slash prompts (/implement-sprint-task, etc.)
+│   ├── agents/                  # Custom @smp-developer agent definition
+│   ├── ISSUE_TEMPLATE/          # Structured Bug Report & Sprint Task (SMP-xxx) issue forms
+│   ├── PULL_REQUEST_TEMPLATE.md # PR quality gate checklist
+│   ├── dependabot.yml           # Weekly GitHub Actions version updates
 │   └── workflows/
-│       ├── ci.yml               # Automated unittest suite + syntax/asset validation on push/PR
-│       └── pages.yml            # Automatic deployment to GitHub Pages on push to main
+│       ├── ci.yml               # Automated unittest suite + syntax/asset validation on push/PR/tag
+│       ├── pages.yml            # Automatic deployment to GitHub Pages on push to main
+│       └── release.yml          # Automated release bundle (.tar.gz/.zip/.sha256) & GitHub Release publisher
 ├── CONTRIBUTING.md              # Contributor guidelines
 ├── SECURITY.md                  # Security model & production hardening checklist
 └── LICENSE                      # MIT License

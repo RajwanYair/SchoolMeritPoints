@@ -14,8 +14,12 @@ dist/
 build/
 *.egg
 
-# IDE
-.vscode/
+# IDE (keep shared VS Code workspace configs tracked)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 .idea/
 
 # OS

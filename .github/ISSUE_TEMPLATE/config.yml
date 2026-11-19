@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🌐 Live Web App (GitHub Pages Demo)
+    url: https://rajwanyair.github.io/SchoolMeritPoints/
+    about: Test the live serverless demo in Hebrew (RTL) or English (LTR) before filing an issue.
+  - name: 🗺️ Agile Sprint Roadmap (ROADMAP.md)
+    url: https://github.com/RajwanYair/SchoolMeritPoints/blob/main/ROADMAP.md
+    about: View planned sprint tasks (SMP-101..SMP-604) and tracked engineering issues (ISS-001..ISS-012).
+  - name: 📄 Product & Architecture Specification
+    url: https://rajwanyair.github.io/SchoolMeritPoints/spec.html
+    about: Interactive bilingual specification and screen mockups.

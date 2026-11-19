@@ -84,8 +84,10 @@ class TestApiEndpoints(unittest.TestCase):
             self.assertEqual(status, 200, f"Static GET {path} failed")
             self.assertTrue(len(str(body)) > 50)
 
-        status, _, _ = self.request("GET", "/nonexistent-file.xyz")
-        self.assertEqual(status, 404)
+        # ISS-001: Private files and non-allowlisted paths must return 404
+        for blocked in ("/nonexistent-file.xyz", "/server.py", "/points.db", "/.gitignore", "/assets/../server.py"):
+            status, _, _ = self.request("GET", blocked)
+            self.assertEqual(status, 404, f"Expected 404 for non-public path {blocked}")
 
     def test_02_auth_login_logout_me_and_cookie_fallback(self):
         """Test /api/login, /api/logout, /api/me with Bearer token, Cookie header, and invalid credentials."""
@@ -276,7 +278,7 @@ class TestApiEndpoints(unittest.TestCase):
         eid = entry_res["ids"][0]
 
         # Criterion 2 (ציצית): daily_limit=1. First award for student 7 succeeds, second on same day fails with 400
-        status, _, _ = self.request(
+        status, first_limit_res, _ = self.request(
             "POST",
             "/api/entries",
             {"target_type": "student", "target_ids": [7], "criterion_id": 2, "delta": 2},
@@ -291,6 +293,35 @@ class TestApiEndpoints(unittest.TestCase):
         )
         self.assertEqual(status, 400)
         self.assertIn("error", limit_err)
+
+        # ISS-002: Cancelling the daily_limit=1 entry allows re-awarding on the same day
+        status, _, _ = self.request("DELETE", f"/api/entries/{first_limit_res['ids'][0]}", token=david_tok)
+        self.assertEqual(status, 200)
+        status, reaward_res, _ = self.request(
+            "POST",
+            "/api/entries",
+            {"target_type": "student", "target_ids": [7], "criterion_id": 2, "delta": 2},
+            token=david_tok,
+        )
+        self.assertEqual(status, 201)
+        self.assertEqual(reaward_res["delta"], 2)
+
+        # ISS-002: Class criterion 10 (תורנים כיתתיים, daily_limit=1) enforces daily limit per class
+        status, _, _ = self.request(
+            "POST",
+            "/api/entries",
+            {"target_type": "class", "target_ids": [2], "criterion_id": 10, "delta": 3},
+            token=david_tok,
+        )
+        self.assertEqual(status, 201)
+        status, class_limit_err, _ = self.request(
+            "POST",
+            "/api/entries",
+            {"target_type": "class", "target_ids": [2], "criterion_id": 10, "delta": 3},
+            token=david_tok,
+        )
+        self.assertEqual(status, 400)
+        self.assertIn("error", class_limit_err)
 
         # Another teacher (moshe) cannot cancel david's entry
         status, _, _ = self.request("DELETE", f"/api/entries/{eid}", token=moshe_tok)
@@ -313,6 +344,12 @@ class TestApiEndpoints(unittest.TestCase):
         admin_tok = self.login_as("admin", "admin123")
         david_tok = self.login_as("david", "teacher123")
         noam_tok = self.login_as("noam", "1234")  # user id 4
+
+        # Public Hallway TV Kiosk endpoint (/api/kiosk) works without authentication and exposes zero student PII
+        status, kiosk_ranks, _ = self.request("GET", "/api/kiosk")
+        self.assertEqual(status, 200)
+        self.assertEqual(kiosk_ranks[0]["rank"], 1)
+        self.assertNotIn("members", kiosk_ranks[0])
 
         # Class rankings
         status, c_ranks, _ = self.request("GET", "/api/rankings/classes", token=noam_tok)
@@ -361,10 +398,26 @@ class TestApiEndpoints(unittest.TestCase):
         status, _, _ = self.request("GET", "/api/export", token=noam_tok)
         self.assertEqual(status, 403)
 
+        # ISS-003: Verify CSV quote escaping (מבצע חל"ל -> "מבצע חל""ל") and formula injection guard
+        status, _, _ = self.request(
+            "POST",
+            "/api/entries",
+            {"target_type": "student", "target_ids": [4], "criterion_id": 4, "delta": 5, "note": "=CMD|' /C calc'!A0"},
+            token=david_tok,
+        )
+        self.assertEqual(status, 201)
+
         status, csv_text, hdrs = self.request("GET", "/api/export", token=admin_tok)
         self.assertEqual(status, 200)
         self.assertIn("text/csv", hdrs.get("Content-Type", ""))
         self.assertTrue(csv_text.startswith("id,target_type,target_id,target,criterion,delta,teacher,note,ts,cancelled"))
+        self.assertIn('"מבצע חל""ל"', csv_text)
+        self.assertIn("'=CMD|", csv_text)
+
+        # ISS-005: Malformed route ID returns 400 instead of 500
+        status, bad_id_err, _ = self.request("DELETE", "/api/entries/not-an-int", token=admin_tok)
+        self.assertEqual(status, 400)
+        self.assertIn("error", bad_id_err)
 
         # Unknown API route -> 404
         status, _, _ = self.request("GET", "/api/does-not-exist", token=admin_tok)

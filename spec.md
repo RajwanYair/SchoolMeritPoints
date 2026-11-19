@@ -240,22 +240,13 @@ flowchart TB
 
 ## 10. 🗺️ Agile Development Sprints & Roadmap Summary
 
-All future features from this specification have been organized into actionable open-source sprints in **[`ROADMAP.md`](ROADMAP.md)**:
+All sprint deliverables (`SMP-101` through `SMP-605`), release gates, and tracked engineering issues (`ISS-001` through `ISS-012`) are maintained in **[`ROADMAP.md`](ROADMAP.md)**:
 
 <div align="center">
   <img src="assets/roadmap-sprints.svg" alt="SchoolMeritPoints 6-Sprint Agile Roadmap" width="100%"/>
 </div>
 
-| Sprint | Target Release | Status | Theme & Key Deliverables |
-| :---: | :---: | :---: | :--- |
-| **Sprint 1** | `v1.0` | ✅ **Completed** | Core PWA, 3-Tier RBAC, 11 Criteria, Fair Class Ranking, Bilingual EN/HE, Dark/Light Mode, 21 Automated Tests |
-| **Sprint 2** | `v1.1` | 🔜 **Next Up** | Printable QR Badges, Camera QR Scanner (`<3s`), Teacher 4-Digit PIN, 5-Attempt Lockout, Bulk CSV/Excel Student Import |
-| **Sprint 3** | `v1.2` | 📅 **Planned** | Academic Periods UI & Rollover API, Non-Negative Score Floor (`min_score=0`), Teacher Homeroom Scope Option |
-| **Sprint 4** | `v1.3` | 📅 **Planned** | Hallway TV Live Leaderboard Kiosk Mode, Printable Excellence Certificates, Star-Burst Award Animation, Live Sync |
-| **Sprint 5** | `v2.0` | 📅 **Planned** | Merit Prize Store & Redemption Ledger, Principal & Homeroom Analytics Dashboard, Special Campaign Tracker |
-| **Sprint 6** | `v2.1` | 📅 **Planned** | Read-Only Parent Portal Links, Automated Weekly Progress Digests, Student Milestone Badges & Accessibility Audit |
-
-👉 **See [`ROADMAP.md`](ROADMAP.md) for the full task breakdown (`SMP-101` through `SMP-604`), user stories, and sprint acceptance criteria.**
+👉 **See [`ROADMAP.md`](ROADMAP.md) for the authoritative sprint schedule, task status matrix, and issue backlog.**
 
 ---
 

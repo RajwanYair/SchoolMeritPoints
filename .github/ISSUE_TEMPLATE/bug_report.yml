@@ -1,0 +1,50 @@
+name: 🐛 Bug Report / דיווח באג
+description: Report a bug in server.py, index.html (Web Demo), bilingual i18n, or documentation
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: input
+    id: issue_id
+    attributes:
+      label: Tracked Issue / Task ID (optional)
+      description: If this relates to an existing item in ROADMAP.md (e.g. ISS-002 or SMP-201), enter it here.
+      placeholder: "ISS-002"
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime Mode
+      options:
+        - "Live Server Mode (python3 server.py + SQLite)"
+        - "Serverless Web Demo Mode (GitHub Pages / LocalStorage)"
+        - "Both Runtimes"
+        - "Documentation / CI / Workspace"
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Active User Role
+      options:
+        - "Student (תלמיד)"
+        - "Teacher (מורה)"
+        - "Admin (מנהל מערכת)"
+        - "Unauthenticated / Kiosk / Login"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem Description / תיאור הבעיה
+      description: Clear description of what happened vs. what was expected.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce / צעדים לשחזור
+      placeholder: |
+        1. Open index.html or run python3 server.py
+        2. Sign in as ...
+        3. Click ...
+    validations:
+      required: true

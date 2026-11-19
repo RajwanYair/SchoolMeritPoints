@@ -1146,7 +1146,8 @@
       'נדרשת התחברות': 'Authentication required',
       'אין הרשאה': 'Permission denied',
       'קריטריון לא נמצא': 'Criterion not found',
-      'הגעת למגבלה היומית לקריטריון זה': 'Daily limit reached for this criterion'
+      'הגעת למגבלה היומית לקריטריון זה': 'Daily limit reached for this criterion',
+      'בקשה לא תקינה': 'Invalid request'
     };
 
     function t(key) {
@@ -1225,6 +1226,13 @@
         return { token: `demo:${u.id}:${u.role}`, user: { id: u.id, name: u.name, role: u.role } };
       }
       if (path === '/api/logout') return { ok: true };
+      if (path === '/api/kiosk' && method === 'GET') {
+        const ranked = db.classes
+          .map(c => ({ id: c.id, name: c.name, grade: c.grade, score: calcClassScore(db, c.id) }))
+          .sort((a, b) => b.score - a.score);
+        ranked.forEach((r, i) => { r.rank = i + 1; });
+        return ranked;
+      }
       if (path === '/api/me') {
         if (!USER) throw { error: 'נדרשת התחברות' };
         const u = db.users.find(x => x.id === USER.id && x.active);
@@ -1374,8 +1382,23 @@
         let delta = +body.delta;
         delta = delta > 0 ? Math.min(delta, crit.add_value) : Math.max(delta, -(crit.sub_value || 1));
         const nowIso = new Date().toISOString().replace('T', ' ').slice(0, 19);
+        const today = nowIso.slice(0, 10);
+        const targetIds = body.target_ids || [body.target_id];
+        if (crit.daily_limit && delta > 0 && (body.target_type === 'student' || body.target_type === 'class')) {
+          for (const tid of targetIds) {
+            const cnt = db.entries.filter(e =>
+              !e.cancelled &&
+              e.target_type === body.target_type &&
+              e.target_id === +tid &&
+              e.criterion_id === crit.id &&
+              e.delta > 0 &&
+              (e.ts || '').slice(0, 10) === today
+            ).length;
+            if (cnt >= crit.daily_limit) throw { error: 'הגעת למגבלה היומית לקריטריון זה' };
+          }
+        }
         const ids = [];
-        for (const tid of (body.target_ids || [body.target_id])) {
+        for (const tid of targetIds) {
           const id = Math.max(0, ...db.entries.map(e => e.id)) + 1;
           db.entries.push({
             id,
@@ -1931,21 +1954,19 @@
       } catch (e) { toast(t('loadError')); }
     }
 
+    let KIOSK_TIMER = null;
+
     async function openKioskMode() {
       const ov = document.getElementById('kioskOverlay');
       if (!ov) return;
       ov.classList.remove('hidden');
+      if (!KIOSK_TIMER) {
+        KIOSK_TIMER = setInterval(() => {
+          if (!ov.classList.contains('hidden')) openKioskMode();
+        }, 30000);
+      }
       try {
-        let rankings;
-        if (USER) {
-          rankings = await api('GET', '/api/rankings/classes');
-        } else {
-          const db = getDemoDb();
-          rankings = db.classes
-            .map(c => ({ id: c.id, name: c.name, grade: c.grade, score: calcClassScore(db, c.id) }))
-            .sort((a, b) => b.score - a.score);
-          rankings.forEach((r, i) => { r.rank = i + 1; });
-        }
+        const rankings = await api('GET', '/api/kiosk');
         const medals = ['🥇', '🥈', '🥉'];
         const max = Math.max(...rankings.map(r => r.score || 1), 1);
         document.getElementById('kioskPodium').innerHTML = rankings.slice(0, 3).map((r, idx) => `
@@ -1967,6 +1988,10 @@
     }
 
     function closeKioskMode() {
+      if (KIOSK_TIMER) {
+        clearInterval(KIOSK_TIMER);
+        KIOSK_TIMER = null;
+      }
       const ov = document.getElementById('kioskOverlay');
       if (ov) ov.classList.add('hidden');
     }
