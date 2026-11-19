@@ -30,7 +30,7 @@ jobs:
           cp index.html spec.html manifest.webmanifest icon.svg .nojekyll site/
           cp -r assets site/
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
